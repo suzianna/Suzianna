@@ -1,3 +1,5 @@
+#tool "nuget:?package=xunit.runner.console"
+
 var solutionPath = Argument("SolutionPath", "../Code/Suzianna.sln");
 var buildNumber = Argument("BuildNumber","0");
 
@@ -29,12 +31,22 @@ Task("Build")
             .SetPlatformTarget(PlatformTarget.MSIL));
 });
 
-
+Task("Run-Unit-Tests")
+    .Does(() =>
+{
+    var testAssemblies = GetFiles("../Code/**/bin/Release/*.Tests.Unit.dll");
+    XUnit2(testAssemblies,
+        new XUnit2Settings {
+        Parallelism = ParallelismOption.All,
+        NoAppDomain = true,
+    });
+});
 
 Task("Default")
     .IsDependentOn("Clean")
     .IsDependentOn("Restore-NuGet-Packages")
     .IsDependentOn("Build")
+    .IsDependentOn("Run-Unit-Tests")
    ;
 
 RunTarget("Default");
