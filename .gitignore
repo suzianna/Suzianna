@@ -159,3 +159,8 @@ $RECYCLE.BIN/
 .vs/
 NDependOut
 *.ndproj
+
+#BuildScript
+BuildScript/tools/*
+!BuildScript/tools/packages.config
+!BuildScript/tools/packages.config.md5sum
