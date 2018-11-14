@@ -1,45 +1,46 @@
 #tool "nuget:?package=xunit.runner.console"
 
-var solutionPath = Argument("SolutionPath", "../Code/Suzianna.sln");
+var solutionPath = Argument("SolutionPath", "../Code/src/Suzianna.sln");
 var buildNumber = Argument("BuildNumber","0");
+
+var projects = GetFiles("../Code/src/**/*.csproj");
+var testProjects = GetFiles("../Code/test/**/*.csproj");
+var allProjects = projects.Union(testProjects).ToList();
 
 Task("Clean")
     .Does(()=>{
-        MSBuild(solutionPath, configurator =>
-            configurator.SetConfiguration("Release")
-                .SetVerbosity(Verbosity.Minimal)
-                .WithTarget("Clean")
-                .UseToolVersion(MSBuildToolVersion.VS2017)
-                .SetMSBuildPlatform(MSBuildPlatform.x86)
-                .SetPlatformTarget(PlatformTarget.MSIL));
+      foreach(var project in allProjects) {
+          DotNetCoreClean(project.FullPath);
+      }
 });
 
 Task("Restore-NuGet-Packages")
     .Does(() =>
 {
-    NuGetRestore(solutionPath);
+    var settings = new DotNetCoreRestoreSettings
+    {
+         PackagesDirectory = "../packages",
+         DisableParallel = true,
+    };
+    foreach(var project in allProjects) {
+        DotNetCoreRestore(project.FullPath, settings);
+    }
 });
 
 Task("Build")
 .Does(()=>
 {
-    MSBuild(solutionPath, configurator =>
-        configurator.SetConfiguration("Release")
-            .SetVerbosity(Verbosity.Minimal)
-            .UseToolVersion(MSBuildToolVersion.VS2017)
-            .SetMSBuildPlatform(MSBuildPlatform.x86)
-            .SetPlatformTarget(PlatformTarget.MSIL));
+    foreach(var project in allProjects) {
+        DotNetCoreBuild(project.FullPath);
+    }
 });
 
 Task("Run-Unit-Tests")
     .Does(() =>
 {
-    var testAssemblies = GetFiles("../Code/**/bin/Release/*.Tests.Unit.dll");
-    XUnit2(testAssemblies,
-        new XUnit2Settings {
-        Parallelism = ParallelismOption.All,
-        NoAppDomain = true,
-    });
+    foreach(var file in testProjects) {
+        DotNetCoreTest(file.FullPath);
+    }
 });
 
 Task("Default")
