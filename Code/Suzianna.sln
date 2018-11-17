@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2000
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Suzianna.Core", "src\Suzianna.Core\Suzianna.Core.csproj", "{52547245-804F-4FD1-A376-3954151E99EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suzianna.Core", "src\Suzianna.Core\Suzianna.Core.csproj", "{52547245-804F-4FD1-A376-3954151E99EC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{115F2B78-6D70-47AD-B931-03F890315DCD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{2095A416-8855-488C-BF39-AC663B80EF5D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Suzianna.Core.Tests.Unit", "test\Suzianna.Core.Tests.Unit\Suzianna.Core.Tests.Unit.csproj", "{8570B7C3-219A-418A-BE7C-EF7EFC18E045}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suzianna.Core.Tests.Unit", "test\Suzianna.Core.Tests.Unit\Suzianna.Core.Tests.Unit.csproj", "{8570B7C3-219A-418A-BE7C-EF7EFC18E045}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suzianna.Web", "src\Suzianna.Web\Suzianna.Web.csproj", "{13C1A8BF-2AE3-4D60-9D25-F3972B6764F8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suzianna.Web.GUI", "src\Suzianna.Web.GUI\Suzianna.Web.GUI.csproj", "{A2BAC508-A7CE-40BB-8BF5-6B64841FE05D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +33,10 @@ Global
 		{13C1A8BF-2AE3-4D60-9D25-F3972B6764F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13C1A8BF-2AE3-4D60-9D25-F3972B6764F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13C1A8BF-2AE3-4D60-9D25-F3972B6764F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2BAC508-A7CE-40BB-8BF5-6B64841FE05D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2BAC508-A7CE-40BB-8BF5-6B64841FE05D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2BAC508-A7CE-40BB-8BF5-6B64841FE05D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2BAC508-A7CE-40BB-8BF5-6B64841FE05D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -39,6 +45,7 @@ Global
 		{52547245-804F-4FD1-A376-3954151E99EC} = {115F2B78-6D70-47AD-B931-03F890315DCD}
 		{8570B7C3-219A-418A-BE7C-EF7EFC18E045} = {2095A416-8855-488C-BF39-AC663B80EF5D}
 		{13C1A8BF-2AE3-4D60-9D25-F3972B6764F8} = {115F2B78-6D70-47AD-B931-03F890315DCD}
+		{A2BAC508-A7CE-40BB-8BF5-6B64841FE05D} = {115F2B78-6D70-47AD-B931-03F890315DCD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {10110833-F56D-4316-BC70-01C3573FC979}
