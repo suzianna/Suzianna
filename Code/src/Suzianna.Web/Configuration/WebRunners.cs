@@ -1,6 +1,6 @@
 namespace Suzianna.Web.Configuration
 {
-    public enum WebRunner
+    public enum WebRunners
     {
         IisExpress,
         Kestrel   

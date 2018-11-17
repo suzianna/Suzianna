@@ -8,7 +8,7 @@ using Suzianna.Core;
 
 namespace Suzianna.Web.Hosting.IISExpress
 {
-    public class IISExpressHost : IStartableHost
+    public class IISExpressHost : IStartAbleHost
     {
         private const string IIS_EXPRESS = @"C:\Program Files (x86)\IIS Express\iisexpress.exe";
         private const string READY_MSG = @"Enter 'Q' to stop IIS Express";
@@ -29,7 +29,7 @@ namespace Suzianna.Web.Hosting.IISExpress
                 throw new ArgumentOutOfRangeException(nameof(port));
             }
 
-            path = path.TrimEnd('\\').SurroundByDoubleQoutes();
+            path = path.TrimEnd('\\').SurroundByDoubleQuotes();
             Port = port;
 
             if (string.IsNullOrEmpty(iisExePath))

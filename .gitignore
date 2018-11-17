@@ -164,3 +164,4 @@ NDependOut
 BuildScript/tools/*
 !BuildScript/tools/packages.config
 !BuildScript/tools/packages.config.md5sum
+.idea/

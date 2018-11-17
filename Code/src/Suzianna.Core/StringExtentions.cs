@@ -11,7 +11,7 @@ namespace Suzianna.Core
             return $"{surrondValue}{value}{surrondValue}";
         }
 
-        public static string SurroundByDoubleQoutes(this string value)
+        public static string SurroundByDoubleQuotes(this string value)
         {
             return SurroundBy(value, Characters.DoubleQoute);
         }

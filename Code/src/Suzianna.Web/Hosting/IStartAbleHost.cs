@@ -2,7 +2,7 @@
 
 namespace Suzianna.Web.Hosting
 {
-    public interface IStartableHost : IHost
+    public interface IStartAbleHost : IHost
     {
         Task Start();
         Task Stop();
