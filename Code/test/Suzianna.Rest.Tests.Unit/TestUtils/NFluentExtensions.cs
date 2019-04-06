@@ -1,7 +1,7 @@
 ﻿using NFluent;
 using NFluent.Extensibility;
 
-namespace Suzianna.Http.Tests.Unit.TestUtils
+namespace Suzianna.Rest.Tests.Unit.TestUtils
 {
     public static class NFluentExtensions
     {

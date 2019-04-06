@@ -1,9 +1,8 @@
 ﻿using Suzianna.Core.Screenplay;
-using Suzianna.Http.Tests.Unit.TestConstants;
-using Suzianna.Rest;
 using Suzianna.Rest.Screenplay.Abilities;
+using Suzianna.Rest.Tests.Unit.TestConstants;
 
-namespace Suzianna.Http.Tests.Unit.TestUtils
+namespace Suzianna.Rest.Tests.Unit.TestUtils
 {
     internal static class ActorFactory
     {

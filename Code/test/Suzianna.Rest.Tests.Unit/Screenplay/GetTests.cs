@@ -1,7 +1,7 @@
 ﻿using System.Net.Http;
 using Suzianna.Rest.Screenplay.Interactions;
 
-namespace Suzianna.Http.Tests.Unit.Screenplay
+namespace Suzianna.Rest.Tests.Unit.Screenplay
 {
     public class GetTests : HttpInteractionTests
     {

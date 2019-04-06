@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Net.Http;
 
-namespace Suzianna.Http.Tests.Unit.TestUtils
+namespace Suzianna.Rest.Tests.Unit.TestUtils
 {
     internal class HttpResponseBuilder
     {

@@ -1,8 +1,8 @@
 ﻿using System.Net.Http;
-using Suzianna.Http.Tests.Unit.TestUtils;
 using Suzianna.Rest.Screenplay.Interactions;
+using Suzianna.Rest.Tests.Unit.TestUtils;
 
-namespace Suzianna.Http.Tests.Unit.Screenplay
+namespace Suzianna.Rest.Tests.Unit.Screenplay
 {
     public class PatchTests : HttpInteractionWithContentTests
     {

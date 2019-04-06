@@ -1,7 +1,7 @@
 ﻿using System.Net.Http;
-using Suzianna.Http.Tests.Unit.TestConstants;
+using Suzianna.Rest.Tests.Unit.TestConstants;
 
-namespace Suzianna.Http.Tests.Unit.TestUtils
+namespace Suzianna.Rest.Tests.Unit.TestUtils
 {
     public static class HttpRequestFactory
     {

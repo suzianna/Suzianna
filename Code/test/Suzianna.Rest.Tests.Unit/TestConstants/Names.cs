@@ -1,4 +1,4 @@
-﻿namespace Suzianna.Http.Tests.Unit.TestConstants
+﻿namespace Suzianna.Rest.Tests.Unit.TestConstants
 {
     internal static class Names
     {

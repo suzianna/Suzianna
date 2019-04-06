@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suzianna.Rest", "src\Suzian
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suzianna.Core.Tests.Unit", "test\Suzianna.Core.Tests.Unit\Suzianna.Core.Tests.Unit.csproj", "{D12A4BDE-D5CB-40BC-8BF9-2BA57F4E7D78}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suzianna.Http.Tests.Unit", "test\Suzianna.Rest.Tests.Unit\Suzianna.Http.Tests.Unit.csproj", "{10A4D821-0756-435C-A1CD-CEFF712B7829}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suzianna.Rest.Tests.Unit", "test\Suzianna.Rest.Tests.Unit\Suzianna.Rest.Tests.Unit.csproj", "{10A4D821-0756-435C-A1CD-CEFF712B7829}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

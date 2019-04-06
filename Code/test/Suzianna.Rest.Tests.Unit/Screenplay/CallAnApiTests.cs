@@ -1,11 +1,11 @@
 ﻿using FluentAssertions;
-using Suzianna.Http.Tests.Unit.TestConstants;
-using Suzianna.Http.Tests.Unit.TestDoubles;
-using Suzianna.Http.Tests.Unit.TestUtils;
 using Suzianna.Rest.Screenplay.Abilities;
+using Suzianna.Rest.Tests.Unit.TestConstants;
+using Suzianna.Rest.Tests.Unit.TestDoubles;
+using Suzianna.Rest.Tests.Unit.TestUtils;
 using Xunit;
 
-namespace Suzianna.Http.Tests.Unit.Screenplay
+namespace Suzianna.Rest.Tests.Unit.Screenplay
 {
     public class CallAnApiTests
     {

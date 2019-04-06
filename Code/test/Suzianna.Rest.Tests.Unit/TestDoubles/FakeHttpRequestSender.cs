@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using Suzianna.Rest;
 
-namespace Suzianna.Http.Tests.Unit.TestDoubles
+namespace Suzianna.Rest.Tests.Unit.TestDoubles
 {
     public class FakeHttpRequestSender : IHttpRequestSender
     {
