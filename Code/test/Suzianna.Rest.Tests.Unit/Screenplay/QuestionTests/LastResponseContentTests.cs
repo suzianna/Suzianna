@@ -1,4 +1,5 @@
-﻿using Suzianna.Core.Screenplay.Questions;
+﻿using System.Net;
+using Suzianna.Core.Screenplay.Questions;
 using Suzianna.Rest.Screenplay.Interactions;
 using Suzianna.Rest.Screenplay.Questions;
 using Suzianna.Rest.Tests.Unit.TestDoubles;
@@ -23,9 +24,10 @@ namespace Suzianna.Rest.Tests.Unit.Screenplay.QuestionTests
             var expectedCustomer = new Customer() { Firstname = "foo", Lastname = "bar"};
             sender.SetupResponse(new HttpResponseBuilder().WithContent(response).Build());
             var actor = ActorFactory.CreateSomeActorWithApiCallAbility(sender);
+
             actor.AttemptsTo(Get.ResourceAt("api/resource"));
 
-            actor.Should(See.That(Response.Content<Customer>())).HasPropertiesWithSameValues(expectedCustomer);
+            actor.Should(See.That(LastResponse.Content<Customer>())).HasPropertiesWithSameValues(expectedCustomer);
         }
     }
 }

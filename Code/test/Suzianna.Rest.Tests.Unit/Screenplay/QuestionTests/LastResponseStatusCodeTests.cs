@@ -19,7 +19,7 @@ namespace Suzianna.Rest.Tests.Unit.Screenplay.QuestionTests
             var actor = ActorFactory.CreateSomeActorWithApiCallAbility(sender);
             actor.AttemptsTo(Get.ResourceAt("api/resource"));
 
-            actor.Should(See.That(Response.StatusCode())).IsEqualTo(HttpStatusCode.NotFound);
+            actor.Should(See.That(LastResponse.StatusCode())).IsEqualTo(HttpStatusCode.NotFound);
         }
     }
 }
