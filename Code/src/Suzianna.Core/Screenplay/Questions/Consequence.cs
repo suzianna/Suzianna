@@ -8,6 +8,7 @@ namespace Suzianna.Core.Screenplay.Questions
         {
             return Check.That(Answer(actor));
         }
-        protected abstract  T Answer(Actor actor);
+
+        protected abstract T Answer(Actor actor);
     }
 }
