@@ -9,12 +9,14 @@ namespace Suzianna.Core.Screenplay
     public class Actor
     {
         private readonly List<IAbility> _abilities;
+        private Notepad notepad;
         public IReadOnlyList<IAbility> Abilities => _abilities;
         public string Name { get; private set; }
         public Actor(string name)
         {
             this.Name = name ?? throw new ArgumentNullException(nameof(name), ExceptionFormats.ActorMustHaveAName);
             this._abilities = new List<IAbility>();
+            this.notepad = new Notepad();
         }
         public static Actor Named(string name)
         {
@@ -60,6 +62,23 @@ namespace Suzianna.Core.Screenplay
         public ICheck<T> Should<T>(IConsequence<T> question)
         {
             return this.AsksFor(question);
+        }
+
+        public void Remember(string key, object value)
+        {
+            notepad.WriteDown(key,value);
+        }
+
+        public T Remember<T>(string key, IQuestion<T> question)
+        {
+            var answer =  question.AnsweredBy(this);
+            Remember(key, answer);
+            return answer;
+        }
+
+        public T Recall<T>(string key)
+        {
+            return notepad.Read<T>(key);
         }
     }
 }
