@@ -15,7 +15,7 @@ namespace Sample_Sut_Api.Controllers
         private static List<Person> _people = new List<Person>();
 
         [HttpGet]
-        public List<Person> Get()
+        public List<Person> GetAll()
         {
             return _people;
         }
@@ -34,7 +34,7 @@ namespace Sample_Sut_Api.Controllers
         {
             person.Id = Guid.NewGuid();
             _people.Add(person);
-            return CreatedAtAction(nameof(Get), new {id = person.Id});
+            return CreatedAtAction(nameof(Get), new {id = person.Id}, person);
         }
 
         [HttpDelete]

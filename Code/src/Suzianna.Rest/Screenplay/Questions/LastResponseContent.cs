@@ -5,7 +5,7 @@ using Suzianna.Rest.Screenplay.Abilities;
 
 namespace Suzianna.Rest.Screenplay.Questions
 {
-    public class LastResponseTypedContent<T> : IQuestion<T>
+    internal class LastResponseTypedContent<T> : IQuestion<T>
     {
         public T AnsweredBy(Actor actor)
         {

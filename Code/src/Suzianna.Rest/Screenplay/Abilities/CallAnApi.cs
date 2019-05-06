@@ -14,7 +14,8 @@ namespace Suzianna.Rest.Screenplay.Abilities
         }
         public static CallAnApi At(string baseUrl)
         {
-            return new CallAnApi(baseUrl);
+            var ability =  new CallAnApi(baseUrl);
+            return ability.With(new DefaultHttpRequestSender());
         }
         public CallAnApi With(IHttpRequestSender sender)
         {
