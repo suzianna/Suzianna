@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Net.Http;
 using Suzianna.Core.Screenplay.Questions;
 using Suzianna.Rest.Screenplay.Interactions;
 using Suzianna.Rest.Screenplay.Questions;
@@ -8,7 +9,7 @@ using Xunit;
 
 namespace Suzianna.Rest.Tests.Unit.Screenplay.QuestionTests
 {
-    public class LastResponseContentTests
+    public class LastResponseContentTests : LastResponseTests
     {
         private class Customer
         {
@@ -19,15 +20,13 @@ namespace Suzianna.Rest.Tests.Unit.Screenplay.QuestionTests
         [Fact]
         public void should_return_last_http_content()
         {
-            var sender = new FakeHttpRequestSender();
             var response = "{firstname:'foo', lastname:'bar'}";
-            var expectedCustomer = new Customer() { Firstname = "foo", Lastname = "bar"};
-            sender.SetupResponse(new HttpResponseBuilder().WithContent(response).Build());
-            var actor = ActorFactory.CreateSomeActorWithApiCallAbility(sender);
+            this.SetupResponse(new HttpResponseBuilder().WithContent(response).Build());
+            var expectedCustomer = new Customer { Firstname = "foo", Lastname = "bar" };
 
-            actor.AttemptsTo(Get.ResourceAt("api/resource"));
+            Actor.AttemptsTo(Get.ResourceAt("api/resource"));
 
-            actor.Should(See.That(LastResponse.Content<Customer>())).HasPropertiesWithSameValues(expectedCustomer);
+            Actor.Should(See.That(LastResponse.Content<Customer>())).HasPropertiesWithSameValues(expectedCustomer);
         }
     }
 }

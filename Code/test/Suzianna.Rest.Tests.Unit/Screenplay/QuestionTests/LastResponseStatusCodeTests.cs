@@ -9,17 +9,16 @@ using Xunit;
 
 namespace Suzianna.Rest.Tests.Unit.Screenplay.QuestionTests
 {
-    public class LastResponseStatusCodeTests
+    public class LastResponseStatusCodeTests : LastResponseContentTests
     {
         [Fact]
         public void should_return_last_http_status_code()
         {
-            var sender = new FakeHttpRequestSender();
-            sender.SetupResponse(new HttpResponseBuilder().WithHttpStatusCode(HttpStatusCode.NotFound).Build());
-            var actor = ActorFactory.CreateSomeActorWithApiCallAbility(sender);
-            actor.AttemptsTo(Get.ResourceAt("api/resource"));
+            this.SetupResponse(new HttpResponseBuilder().WithHttpStatusCode(HttpStatusCode.NotFound).Build());
 
-            actor.Should(See.That(LastResponse.StatusCode())).IsEqualTo(HttpStatusCode.NotFound);
+            Actor.AttemptsTo(Get.ResourceAt("api/resource"));
+
+            Actor.Should(See.That(LastResponse.StatusCode())).IsEqualTo(HttpStatusCode.NotFound);
         }
     }
 }
