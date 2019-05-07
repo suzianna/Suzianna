@@ -4,8 +4,10 @@ var solutionPath = Argument("SolutionPath", "../Code/src/Suzianna.sln");
 var buildNumber = Argument("BuildNumber","0");
 
 var projects = GetFiles("../Code/src/**/*.csproj");
-var testProjects = GetFiles("../Code/test/**/*.csproj");
-var allProjects = projects.Union(testProjects).ToList();
+var unitTestProjects = GetFiles("../Code/test/**/*Tests.Unit.csproj");
+var integrationTestProjects = GetFiles("../Code/test/**/*Tests.Integration.csproj");
+
+var allProjects = projects.Union(unitTestProjects).Union(integrationTestProjects).ToList();
 
 Task("Clean")
     .Does(()=>{
@@ -38,7 +40,15 @@ Task("Build")
 Task("Run-Unit-Tests")
     .Does(() =>
 {
-    foreach(var file in testProjects) {
+    foreach(var file in unitTestProjects) {
+        DotNetCoreTest(file.FullPath);
+    }
+});
+
+Task("Run-Integration-Tests")
+    .Does(() =>
+{
+    foreach(var file in integrationTestProjects) {
         DotNetCoreTest(file.FullPath);
     }
 });
@@ -48,6 +58,7 @@ Task("Default")
     .IsDependentOn("Restore-NuGet-Packages")
     .IsDependentOn("Build")
     .IsDependentOn("Run-Unit-Tests")
+    .IsDependentOn("Run-Integration-Tests")
    ;
 
 RunTarget("Default");
