@@ -49,10 +49,9 @@ namespace Suzianna.Hosting.Tests.Integration
 
             _host.Stop();
 
-            Func<Task<HttpResponseMessage>> getData =()=> _client.GetAsync(HealthCheckEndpoint);
+            Func<Task<HttpResponseMessage>> getData = () => _client.GetAsync(HealthCheckEndpoint);
 
-            Check.ThatAsyncCode(getData).Throws<HttpRequestException>()
-                .AndWhichMessage().Contains(HttpErrorMessages.ConnectionRefusedMessage);
+            Check.ThatAsyncCode(getData).Throws<HttpRequestException>();
         }
 
         [Fact]

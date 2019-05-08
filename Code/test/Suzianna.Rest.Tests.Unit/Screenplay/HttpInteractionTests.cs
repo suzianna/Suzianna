@@ -15,7 +15,7 @@ namespace Suzianna.Rest.Tests.Unit.Screenplay
     public abstract class HttpInteractionTests
     {
         protected FakeHttpRequestSender Sender { get; } = new FakeHttpRequestSender();
-        public static IEnumerable<object[]> GetUrls()
+        public static IEnumerable<object[]> GetUrlsWithRelativeResources()
         {
             return new List<object[]>
             {
@@ -25,9 +25,18 @@ namespace Suzianna.Rest.Tests.Unit.Screenplay
                 new object[] {"http://localhost:5050/", "/api/users", "http://localhost:5050/api/users"},
             };
         }
+        public static IEnumerable<object[]> GetUrlsWithAbsoluteResources()
+        {
+            return new List<object[]>
+            {
+                new object[] {"http://localhost:5050", "http://localhost:5050/api/users", "http://localhost:5050/api/users"},
+                new object[] {"http://localhost:5050", "http://localhost:5050/api/users?id=10", "http://localhost:5050/api/users?id=10"},
+            };
+        }
 
         [Theory]
-        [MemberData(nameof(GetUrls))]
+        [MemberData(nameof(GetUrlsWithRelativeResources))]
+        [MemberData(nameof(GetUrlsWithAbsoluteResources))]
         public void should_send_request_to_correct_url(string baseUrl, string resource, string expectedUrl)
         {
             var juliet = Actor.Named(Names.Juliet).WhoCan(CallAnApi.At(baseUrl).With(Sender));
@@ -36,11 +45,11 @@ namespace Suzianna.Rest.Tests.Unit.Screenplay
         }
 
         [Fact]
-        public void should_omit_query_string_when_resource_have_query_string_in_it()
+        public void should_add_query_string_when_resource_have_query_string_in_it()
         {
             var baseUrl = "http://localhost:5050";
-            var resourceName = "api/users?something=2";
-            var expectedUrl = "http://localhost:5050/api/users";
+            var resourceName = "api/users?page=2";
+            var expectedUrl = "http://localhost:5050/api/users?page=2";
             var juliet = Actor.Named(Names.Juliet).WhoCan(CallAnApi.At(baseUrl).With(Sender));
 
             juliet.AttemptsTo(GetHttpInteraction(resourceName));

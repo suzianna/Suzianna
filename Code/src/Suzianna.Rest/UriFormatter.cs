@@ -16,6 +16,9 @@ namespace Suzianna.Rest
         }
         public void SetResourceName(string resourceName)
         {
+            var queryParameters = QueryStringUtil.ExtractParameters(resourceName);
+            queryParameters.ForEach(a => this.AddQueryParameter(a.Key, a.Value));
+
             if (resourceName.Contains("?"))
                 resourceName = resourceName.Substring(0, resourceName.IndexOf("?", StringComparison.Ordinal));
 
