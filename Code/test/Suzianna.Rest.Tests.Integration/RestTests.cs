@@ -30,11 +30,12 @@ namespace Suzianna.Rest.Tests.Integration
             var person = new CreatePerson { Firstname = "Sarah", Lastname = "Ohara"};
 
             jack.AttemptsTo(Post.DataAsJson(person).To("api/People"));
+            var resourceLocation = jack.AsksFor(LastResponse.Header(HttpHeaders.Location));
 
-            jack.AttemptsTo(Get.ResourceAt("api/People"));
+            jack.AttemptsTo(Get.ResourceAt(resourceLocation));
 
-            jack.Should(See.That(LastResponse.Content<List<Person>>()))
-                .HasElementAt(0).Which.HasFieldsWithSameValues(person);
+            jack.Should(See.That(LastResponse.Content<Person>()))
+                .Considering().All.Properties.HasFieldsWithSameValues(person);
         }
     }
 }
