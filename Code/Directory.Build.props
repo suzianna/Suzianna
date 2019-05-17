@@ -1,7 +1,7 @@
 ﻿<Project>
   <PropertyGroup>
-    <Version>0.1.0</Version>
-    <FileVersion>0.1.0</FileVersion>
+    <Version>2.1.0</Version>
+    <FileVersion>2.1.0</FileVersion>
     <Product>Suzianna</Product>
     <Authors>Hadi Ahmadi</Authors>
     <NeutralLanguage>en</NeutralLanguage>

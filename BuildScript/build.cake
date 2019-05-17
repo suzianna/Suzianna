@@ -13,8 +13,7 @@ var unitTestProjects = GetFiles("../Code/test/**/*Tests.Unit.csproj");
 var integrationTestProjects = GetFiles("../Code/test/**/*Tests.Integration.csproj");
 var allProjects = projects.Union(unitTestProjects).Union(integrationTestProjects).ToList();
 
-// var isRunningOnCiServer = AppVeyor.IsRunningOnAppVeyor;
-var isRunningOnCiServer = true;
+var isRunningOnCiServer = AppVeyor.IsRunningOnAppVeyor;
 
 Task("Clean")
     .Does(()=>{
@@ -40,7 +39,7 @@ Task("Version")
     .WithCriteria(isRunningOnCiServer)
     .Does(()=>
     {
-        var gitVersion = GitVersion();
+        var gitVersion = GitVersion(new GitVersionSettings{ UpdateAssemblyInfo = true });
 
         var nugetVersion = gitVersion.NuGetVersion;
 
