@@ -5,8 +5,6 @@ using System.Text.RegularExpressions;
 
 var solutionPath = Argument("SolutionPath", "../Code/Suzianna.sln");
 var buildNumber = Argument("BuildNumber","0");
-var nugetServerUrl = Argument("NugetServerUrl","");
-var nugetApiKey = Argument("NugetApiKey","");
 
 var projects = GetFiles("../Code/src/**/*.csproj");
 var unitTestProjects = GetFiles("../Code/test/**/*Tests.Unit.csproj");
@@ -109,8 +107,8 @@ Task("Push-Nuget-Packages")
         var files = System.IO.Directory.GetFiles("./artifacts", "*.nupkg").Select(z => new FilePath(z)).ToList();
         var settings = new NuGetPushSettings()
         {
-            Source = nugetServerUrl,
-            ApiKey = nugetApiKey,
+            Source = EnvironmentVariable("NUGET_SERVER_URL"),
+            ApiKey = EnvironmentVariable("NUGET_API_KEY"),
         };
 
         foreach(var f in files){
