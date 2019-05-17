@@ -1,15 +1,20 @@
 #tool "nuget:?package=xunit.runner.console"
 #tool "nuget:?package=GitVersion.CommandLine"
 
-var solutionPath = Argument("SolutionPath", "../Code/src/Suzianna.sln");
+using System.Text.RegularExpressions;
+
+var solutionPath = Argument("SolutionPath", "../Code/Suzianna.sln");
 var buildNumber = Argument("BuildNumber","0");
+var nugetServerUrl = Argument("NugetServerUrl","");
+var nugetApiKey = Argument("NugetApiKey","");
 
 var projects = GetFiles("../Code/src/**/*.csproj");
 var unitTestProjects = GetFiles("../Code/test/**/*Tests.Unit.csproj");
 var integrationTestProjects = GetFiles("../Code/test/**/*Tests.Integration.csproj");
 var allProjects = projects.Union(unitTestProjects).Union(integrationTestProjects).ToList();
 
-var isRunningOnCiServer = AppVeyor.IsRunningOnAppVeyor;
+// var isRunningOnCiServer = AppVeyor.IsRunningOnAppVeyor;
+var isRunningOnCiServer = true;
 
 Task("Clean")
     .Does(()=>{
@@ -32,26 +37,30 @@ Task("Restore-NuGet-Packages")
 });
 
 Task("Version")
+    .WithCriteria(isRunningOnCiServer)
     .Does(()=>
     {
-        var version = GetNuGetVersionForCommit();
-        var nugetVersion = versioning.NuGetVersion;
+        var gitVersion = GitVersion();
 
-        Information("version is : " + nugetVersion);
+        var nugetVersion = gitVersion.NuGetVersion;
 
-        // if (isRunningOnCiServer)
-		// {
-            var file = MakeAbsolute(File("../Code/Directory.Build.props"));
-            var pattern = @"<Version>(.*)<\/Version>";
-            var content = System.IO.File.ReadAllText(file.FullPath, Encoding.UTF8);
+        Information("version is : " + gitVersion.NuGetVersion);
 
-            var group = Regex.Match(content, pattern).Groups;
-            var version = group[group.Count - 1].Value;
-            version = "<Version>" + nugetVersion + "</Version>";
-            content = Regex.Replace(content, pattern, version);
-            System.IO.File.WriteAllText(file.FullPath, content, Encoding.UTF8);
-		// }
+        var file = MakeAbsolute(File("../Code/Directory.Build.props"));
+        var versionPattern = @"<Version>(.*)<\/Version>";
+
+        var content = System.IO.File.ReadAllText(file.FullPath, Encoding.UTF8);
+        var group = Regex.Match(content, versionPattern).Groups;
+        var version = group[group.Count - 1].Value;
+        version = "<Version>" + nugetVersion + "</Version>";
+        content = Regex.Replace(content, versionPattern, version);
+
+        System.IO.File.WriteAllText(file.FullPath, content, Encoding.UTF8);
+
+        Information("Build.Props file updated");
     });
+
+
 
 Task("Build")
     .Does(()=>
@@ -77,13 +86,49 @@ Task("Run-Integration-Tests")
         }
     });
 
+Task("Create-Nuget-Packages")
+    .WithCriteria(isRunningOnCiServer)
+    .Does(()=>
+    {
+        CleanDirectories("./artifacts/**");
+        var settings = new DotNetCorePackSettings
+        {
+            Configuration = "Release",
+            OutputDirectory = "./artifacts/",
+            IncludeSymbols = false,
+            NoBuild=true,
+            NoRestore=true,
+        };
+
+        DotNetCorePack(solutionPath, settings);
+    });
+
+Task("Push-Nuget-Packages")
+    .WithCriteria(isRunningOnCiServer)
+    .Does(() =>
+    {
+        var files = System.IO.Directory.GetFiles("./artifacts", "*.nupkg").Select(z => new FilePath(z)).ToList();
+        var settings = new NuGetPushSettings()
+        {
+            Source = nugetServerUrl,
+            ApiKey = nugetApiKey,
+        };
+
+        foreach(var f in files){
+            Console.WriteLine(f);
+        }
+        NuGetPush(files, settings);
+    });
+
 Task("Default")
-    // .IsDependentOn("Clean")
-    // .IsDependentOn("Restore-NuGet-Packages")
+    .IsDependentOn("Clean")
+    .IsDependentOn("Restore-NuGet-Packages")
     .IsDependentOn("Version")
-    // .IsDependentOn("Build")
-    // .IsDependentOn("Run-Unit-Tests")
-    // .IsDependentOn("Run-Integration-Tests")
-   ;
+    .IsDependentOn("Build")
+    .IsDependentOn("Run-Unit-Tests")
+    .IsDependentOn("Run-Integration-Tests")
+    .IsDependentOn("Create-Nuget-Packages")
+    .IsDependentOn("Push-Nuget-Packages")
+    ;
 
 RunTarget("Default");
