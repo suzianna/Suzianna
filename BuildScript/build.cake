@@ -1,4 +1,5 @@
 #tool "nuget:?package=xunit.runner.console"
+#tool "nuget:?package=GitVersion.CommandLine"
 
 var solutionPath = Argument("SolutionPath", "../Code/src/Suzianna.sln");
 var buildNumber = Argument("BuildNumber","0");
@@ -29,33 +30,40 @@ Task("Restore-NuGet-Packages")
     }
 });
 
+Task("Version")
+    .Does(()=>
+    {
+        
+    });
+
 Task("Build")
-.Does(()=>
-{
-    foreach(var project in allProjects) {
-        DotNetCoreBuild(project.FullPath);
-    }
-});
+    .Does(()=>
+    {
+        foreach(var project in allProjects) {
+            DotNetCoreBuild(project.FullPath);
+        }
+    });
 
 Task("Run-Unit-Tests")
     .Does(() =>
-{
-    foreach(var file in unitTestProjects) {
-        DotNetCoreTest(file.FullPath);
-    }
-});
+    {
+        foreach(var file in unitTestProjects) {
+            DotNetCoreTest(file.FullPath);
+        }
+    });
 
 Task("Run-Integration-Tests")
     .Does(() =>
-{
-    foreach(var file in integrationTestProjects) {
-        DotNetCoreTest(file.FullPath);
-    }
-});
+    {
+        foreach(var file in integrationTestProjects) {
+            DotNetCoreTest(file.FullPath);
+        }
+    });
 
 Task("Default")
     .IsDependentOn("Clean")
     .IsDependentOn("Restore-NuGet-Packages")
+    .IsDependentOn("Version")
     .IsDependentOn("Build")
     .IsDependentOn("Run-Unit-Tests")
     .IsDependentOn("Run-Integration-Tests")
