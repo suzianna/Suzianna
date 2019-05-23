@@ -6,13 +6,12 @@ for:
     branches:
       only:
         - master
-  build_script:
-    - ps: .\BuildScript\build.ps1 -Script BuildScript/build.cake -ScriptArgs '--shouldPublish="True"'
-
+    build_script:
+      - ps: .\BuildScript\build.ps1 -Script BuildScript/build.cake -ScriptArgs '--shouldPublish="True"'
   -
     branches:
-        only:
-          - develop
+      only:
+        - develop
     build_script:
       - ps: .\BuildScript\build.ps1 -Script BuildScript/build.cake -ScriptArgs '--shouldPublish="False"'
 test: off
