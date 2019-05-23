@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 
 var solutionPath = Argument("SolutionPath", "../Code/Suzianna.sln");
 var buildNumber = Argument("BuildNumber","0");
+var shouldPublish = Argument("ShouldPublish", false);
 
 var projects = GetFiles("../Code/src/**/*.csproj");
 var unitTestProjects = GetFiles("../Code/test/**/*Tests.Unit.csproj");
@@ -84,7 +85,7 @@ Task("Run-Integration-Tests")
     });
 
 Task("Create-Nuget-Packages")
-    .WithCriteria(isRunningOnCiServer)
+    .WithCriteria(isRunningOnCiServer && shouldPublish)
     .Does(()=>
     {
         CleanDirectories("./artifacts/**");
@@ -101,7 +102,7 @@ Task("Create-Nuget-Packages")
     });
 
 Task("Push-Nuget-Packages")
-    .WithCriteria(isRunningOnCiServer)
+    .WithCriteria(isRunningOnCiServer && shouldPublish)
     .Does(() =>
     {
         var files = System.IO.Directory.GetFiles("./artifacts", "*.nupkg").Select(z => new FilePath(z)).ToList();
