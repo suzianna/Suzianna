@@ -1,5 +1,8 @@
-#tool "nuget:?package=xunit.runner.console"
-#tool "nuget:?package=GitVersion.CommandLine"
+#tool "nuget:?package=xunit.runner.console&version=2.4.1"
+#tool "nuget:?package=GitVersion.CommandLine&version=4.0.0"
+#tool "nuget:?package=OpenCover&version=4.7.922"
+#tool "nuget:?package=coveralls.net&version=0.7.0"
+#addin Cake.Coveralls&version=0.7.0
 
 using System.Text.RegularExpressions;
 
@@ -68,13 +71,44 @@ Task("Build")
         }
     });
 
+Task("Prepare-Test-Result-Folder")
+    .Does(() =>
+    {
+        EnsureDirectoryExists("./test-results");
+        CleanDirectories("./test-results");
+    }
+);
+
 Task("Run-Unit-Tests")
     .Does(() =>
     {
         foreach(var file in unitTestProjects) {
-            DotNetCoreTest(file.FullPath);
+            var name = System.IO.Path.GetFileName(file.FullPath).Replace(".Tests.Unit.csproj","");
+
+            var settings = new OpenCoverSettings().WithFilter("+[" + name + "*]*").WithFilter("-[*Tests*]*");
+            settings.MergeOutput = true;
+            settings.OldStyle = true;
+
+            OpenCover(tool => {
+                tool.DotNetCoreTest(file.FullPath);
+            },
+                new FilePath("./test-results/result.xml"),
+                settings
+            );
         }
-    });
+});
+
+Task("Publish-Unit-Tests-Coverage-Result")
+    .WithCriteria(isRunningOnCiServer)
+    .Does(() =>
+    {
+        CoverallsNet("./test-results/result.xml", 
+                CoverallsNetReportType.OpenCover, new CoverallsNetSettings()
+        {
+            RepoToken = EnvironmentVariable("COVERALLS_TOKEN")
+        });
+    }
+);
 
 Task("Run-Integration-Tests")
     .Does(() =>
@@ -123,7 +157,9 @@ Task("Default")
     .IsDependentOn("Restore-NuGet-Packages")
     .IsDependentOn("Version")
     .IsDependentOn("Build")
+    .IsDependentOn("Prepare-Test-Result-Folder")
     .IsDependentOn("Run-Unit-Tests")
+    .IsDependentOn("Publish-Unit-Tests-Coverage-Result")
     .IsDependentOn("Run-Integration-Tests")
     .IsDependentOn("Create-Nuget-Packages")
     .IsDependentOn("Push-Nuget-Packages")
