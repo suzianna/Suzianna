@@ -7,12 +7,12 @@ for:
       only:
         - master
     build_script:
-      - ps: .\BuildScript\build.ps1 -Script BuildScript/build.cake -ScriptArgs '--shouldPublish="True"'
+      - ps: .\BuildScript\build.ps1 -Script BuildScript/build.cake -ScriptArgs '--shouldPublish="True" --BranchName="master"'
   -
     branches:
       only:
         - develop
     build_script:
-      - ps: .\BuildScript\build.ps1 -Script BuildScript/build.cake -ScriptArgs '--shouldPublish="False"'
+      - ps: .\BuildScript\build.ps1 -Script BuildScript/build.cake -ScriptArgs '--shouldPublish="False" --BranchName="develop"'
 test: off
 deploy: off

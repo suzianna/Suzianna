@@ -1,14 +1,15 @@
 #tool "nuget:?package=xunit.runner.console&version=2.4.1"
 #tool "nuget:?package=GitVersion.CommandLine&version=4.0.0"
 #tool "nuget:?package=OpenCover&version=4.7.922"
-#tool "nuget:?package=coveralls.net&version=0.7.0"
-#addin Cake.Coveralls&version=0.7.0
+#tool nuget:?package=Codecov
+#addin nuget:?package=Cake.Codecov
 
 using System.Text.RegularExpressions;
 
 var solutionPath = Argument("SolutionPath", "../Code/Suzianna.sln");
 var buildNumber = Argument("BuildNumber","0");
 var shouldPublish = Argument("ShouldPublish", false);
+var branchName = Argument("BranchName", "");
 
 var projects = GetFiles("../Code/src/**/*.csproj");
 var unitTestProjects = GetFiles("../Code/test/**/*Tests.Unit.csproj");
@@ -102,10 +103,10 @@ Task("Publish-Unit-Tests-Coverage-Result")
     .WithCriteria(isRunningOnCiServer)
     .Does(() =>
     {
-        CoverallsNet("./test-results/result.xml", 
-                CoverallsNetReportType.OpenCover, new CoverallsNetSettings()
-        {
-            RepoToken = EnvironmentVariable("COVERALLS_TOKEN")
+        Codecov(new CodecovSettings(){
+            Files = new[] { "./test-results/result.xml" },
+            Token = EnvironmentVariable("CODECOV_TOKEN"),,
+            Branch = branchName
         });
     }
 );
