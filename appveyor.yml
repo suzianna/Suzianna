@@ -14,5 +14,7 @@ for:
         - develop
     build_script:
       - ps: .\BuildScript\build.ps1 -Script BuildScript/build.cake -shouldPublish="False" -BranchName="develop"
+cache:
+  - BuildScript\tools
 test: off
 deploy: off
