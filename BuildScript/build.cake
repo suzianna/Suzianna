@@ -105,7 +105,7 @@ Task("Publish-Unit-Tests-Coverage-Result")
     {
         Codecov(new CodecovSettings(){
             Files = new[] { "./test-results/result.xml" },
-            Token = EnvironmentVariable("CODECOV_TOKEN"),,
+            Token = EnvironmentVariable("CODECOV_TOKEN"),
             Branch = branchName
         });
     }
