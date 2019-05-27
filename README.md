@@ -10,3 +10,8 @@
 
 * master : [![codecov](https://codecov.io/gh/H-Ahmadi/Suzianna/branch/master/graph/badge.svg)](https://codecov.io/gh/H-Ahmadi/Suzianna)
 * develop : [![codecov](https://codecov.io/gh/H-Ahmadi/Suzianna/branch/develop/graph/badge.svg)](https://codecov.io/gh/H-Ahmadi/Suzianna)
+
+
+### Code Analysis Report
+
+[![](https://codescene.io/projects/4948/status.svg) Get more details at **codescene.io**.](https://codescene.io/projects/4948/jobs/latest-successful/results)
