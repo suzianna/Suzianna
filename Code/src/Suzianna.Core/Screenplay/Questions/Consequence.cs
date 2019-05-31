@@ -1,4 +1,5 @@
 ﻿using NFluent;
+using Suzianna.Core.Screenplay.Actors;
 
 namespace Suzianna.Core.Screenplay.Questions
 {

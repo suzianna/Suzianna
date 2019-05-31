@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Suzianna.Core.Screenplay
+namespace Suzianna.Core.Screenplay.Actors
 {
     public class ActorIsUnableException<T> : Exception  where T: IAbility
     {

@@ -1,5 +1,6 @@
 ﻿using NFluent;
 using Suzianna.Core.Screenplay;
+using Suzianna.Core.Screenplay.Actors;
 using Suzianna.Core.Screenplay.Questions;
 using Suzianna.Core.Tests.Unit.Utils.Constants;
 using Suzianna.Core.Tests.Unit.Utils.TestDoubles;

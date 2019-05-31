@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Suzianna.Core.Screenplay.Actors;
 
 namespace Suzianna.Core.Screenplay.Questions
 {

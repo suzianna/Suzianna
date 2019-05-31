@@ -1,4 +1,6 @@
-﻿namespace Suzianna.Core.Screenplay
+﻿using Suzianna.Core.Screenplay.Actors;
+
+namespace Suzianna.Core.Screenplay
 {
     public interface IPerformable
     {

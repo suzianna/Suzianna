@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using NFluent;
+using Suzianna.Core.Events;
+using Suzianna.Core.Screenplay.Actors.Events;
 using Suzianna.Core.Screenplay.Questions;
 
-namespace Suzianna.Core.Screenplay
+namespace Suzianna.Core.Screenplay.Actors
 {
     public class Actor
     {
@@ -50,6 +52,7 @@ namespace Suzianna.Core.Screenplay
         }
         public void AttemptsTo(params IPerformable[] tasks)
         {
+            Broadcaster.Publish(new ActorBeginsPerformanceEvent(this.Name));
             foreach (var performable in tasks)
             {
                 performable.PerformAs(this);

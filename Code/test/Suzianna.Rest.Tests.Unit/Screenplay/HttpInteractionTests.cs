@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net.Http;
 using FluentAssertions;
 using Suzianna.Core.Screenplay;
+using Suzianna.Core.Screenplay.Actors;
 using Suzianna.Rest.Screenplay.Abilities;
 using Suzianna.Rest.Screenplay.Interactions;
 using Suzianna.Rest.Tests.Unit.TestConstants;

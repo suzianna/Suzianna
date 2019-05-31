@@ -1,5 +1,6 @@
 ﻿using System.Net.Http;
 using Suzianna.Core.Screenplay;
+using Suzianna.Core.Screenplay.Actors;
 using Suzianna.Rest.Screenplay.Abilities;
 using Suzianna.Rest.Tests.Unit.TestConstants;
 using Suzianna.Rest.Tests.Unit.TestDoubles;

@@ -1,4 +1,5 @@
 ﻿using Suzianna.Core.Screenplay;
+using Suzianna.Core.Screenplay.Actors;
 using Suzianna.Rest.Screenplay.Abilities;
 
 namespace Suzianna.Rest.Screenplay.Interactions

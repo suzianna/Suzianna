@@ -2,6 +2,7 @@ using System;
 using NFluent;
 using NSubstitute;
 using Suzianna.Core.Screenplay;
+using Suzianna.Core.Screenplay.Actors;
 using Suzianna.Core.Tests.Unit.Utils;
 using Suzianna.Core.Tests.Unit.Utils.Constants;
 using Suzianna.Core.Tests.Unit.Utils.TestDoubles;
