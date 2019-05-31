@@ -23,7 +23,8 @@ namespace Suzianna.Rest.Tests.Unit.Screenplay
                 new object[] {"http://localhost:5050", "api/users", "http://localhost:5050/api/users"},
                 new object[] {"http://localhost:5050", "/api/users", "http://localhost:5050/api/users"},
                 new object[] {"http://localhost:5050/", "api/users", "http://localhost:5050/api/users"},
-                new object[] {"http://localhost:5050/", "/api/users", "http://localhost:5050/api/users"}
+                new object[] {"http://localhost:5050/", "/api/users", "http://localhost:5050/api/users"},
+                new object[] {"http://localhost:5050/api/", "users", "http://localhost:5050/api/users"}
             };
         }
 
@@ -32,8 +33,11 @@ namespace Suzianna.Rest.Tests.Unit.Screenplay
             return new List<object[]>
             {
                 new object[]
-                    {"http://localhost:5050", "http://localhost:5050/api/users", "http://localhost:5050/api/users"},
-                new object[] { "http://localhost:5050", "http://localhost:5050/api/users?id=10", "http://localhost:5050/api/users?id=10"
+                {
+                    "http://localhost:5050", "http://localhost:5050/api/users", "http://localhost:5050/api/users"
+                },
+                new object[] {
+                    "http://localhost:5050", "http://localhost:5050/api/users?id=10", "http://localhost:5050/api/users?id=10"
                 }
             };
         }
