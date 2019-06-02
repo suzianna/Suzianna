@@ -2,7 +2,7 @@
 
 namespace Suzianna.Core.Screenplay.Actors.Events
 {
-    public class ActorEndsPerformanceEvent : IEvent
+    public class ActorEndsPerformanceEvent : ISelfDescriptiveEvent
     {
         public ActorEndsPerformanceEvent(string actorName)
         {
@@ -10,5 +10,9 @@ namespace Suzianna.Core.Screenplay.Actors.Events
         }
 
         public string ActorName { get; private set; }
+        public string Describe()
+        {
+            return $"{ActorName} performance ended.";
+        }
     }
 }

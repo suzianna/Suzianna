@@ -4,7 +4,7 @@ using Suzianna.Core.Screenplay.Actors;
 
 namespace Suzianna.Rest.Events
 {
-    public class StartSendingHttpRequestEvent : IEvent
+    public class StartSendingHttpRequestEvent : ISelfDescriptiveEvent
     {
         public StartSendingHttpRequestEvent(Actor actor, HttpRequestMessage message)
         {
@@ -16,5 +16,9 @@ namespace Suzianna.Rest.Events
         public string Url { get; private set; }
         public HttpMethod Method { get; private set; }
         public string ActorName { get; set; }
+        public string Describe()
+        {
+            return $"{ActorName} is going to send a '{this.Method}' request to '{this.Url}'.";
+        }
     }
 }

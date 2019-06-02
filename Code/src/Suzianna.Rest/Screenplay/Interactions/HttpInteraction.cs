@@ -1,4 +1,5 @@
-﻿using Suzianna.Core.Events;
+﻿using Suzianna.Core;
+using Suzianna.Core.Events;
 using Suzianna.Core.Screenplay;
 using Suzianna.Core.Screenplay.Actors;
 using Suzianna.Rest.Events;
