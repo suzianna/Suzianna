@@ -1,9 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using FluentAssertions;
+using NFluent;
+using Suzianna.Core.Events;
 using Suzianna.Core.Screenplay;
 using Suzianna.Core.Screenplay.Actors;
+using Suzianna.Rest.Events;
 using Suzianna.Rest.Screenplay.Abilities;
 using Suzianna.Rest.Screenplay.Interactions;
 using Suzianna.Rest.Tests.Unit.TestConstants;
@@ -118,6 +123,43 @@ namespace Suzianna.Rest.Tests.Unit.Screenplay
                 .WithQueryParameter("LocationId", "3"));
 
             Sender.GetLastSentMessage().RequestUri.AbsoluteUri.Should().Be(expectedUrl);
+        }
+
+        [Fact]
+        public void should_raise_start_sending_http_request_event()
+        {
+            var baseUrl = "http://localhost:5050";
+            var resourceName = "api/users";
+            var expectedUrl = "http://localhost:5050/api/users";
+            var juliet = Actor.Named(Names.Juliet).WhoCan(CallAnApi.At(baseUrl).With(Sender));
+            var publishedEvents = new Queue<IEvent>();
+            Broadcaster.SubscribeToAllEvents(new DelegatingEventHandler(z=> publishedEvents.Enqueue(z)));
+
+            juliet.AttemptsTo(GetHttpInteraction(resourceName));
+
+            Check.That(publishedEvents.CountOfType<StartSendingHttpRequestEvent>()).IsEqualTo(1);
+            Check.That(publishedEvents.FirstElementOfType<StartSendingHttpRequestEvent>().Method).IsEqualTo(GetHttpMethod());
+            Check.That(publishedEvents.FirstElementOfType<StartSendingHttpRequestEvent>().Url).IsEqualTo(expectedUrl);
+            Check.That(publishedEvents.FirstElementOfType<StartSendingHttpRequestEvent>().ActorName).IsEqualTo(Names.Juliet);
+        }
+
+        [Fact]
+        public void should_raise_http_request_sent_event()
+        {
+            Sender.SetupResponse(new HttpResponseBuilder()
+                            .WithHttpStatusCode(HttpStatusCode.Accepted)
+                            .WithContent(Contents.JackProfile)
+                            .Build());
+
+            var juliet = ActorFactory.CreateSomeActorWithApiCallAbility(Sender);
+            var publishedEvents = new Queue<IEvent>();
+            Broadcaster.SubscribeToAllEvents(new DelegatingEventHandler(z => publishedEvents.Enqueue(z)));
+
+            juliet.AttemptsTo(GetHttpInteraction(""));
+
+            Check.That(publishedEvents.CountOfType<HttpRequestSentEvent>()).IsEqualTo(1);
+            Check.That(publishedEvents.FirstElementOfType<HttpRequestSentEvent>().ResponseCode).IsEqualTo(HttpStatusCode.Accepted);
+            Check.That(publishedEvents.FirstElementOfType<HttpRequestSentEvent>().ResponseContent).IsEqualTo(Contents.JackProfile);
         }
     }
 }

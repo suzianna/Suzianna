@@ -8,6 +8,7 @@ using Suzianna.Core.Events;
 using Suzianna.Core.Screenplay;
 using Suzianna.Core.Screenplay.Actors;
 using Suzianna.Core.Screenplay.Actors.Events;
+using Suzianna.Core.Tests.Unit.Tests.Utilities;
 using Suzianna.Core.Tests.Unit.Utils.Constants;
 using Suzianna.Core.Tests.Unit.Utils.TestDoubles;
 using Xunit;
@@ -18,23 +19,33 @@ namespace Suzianna.Core.Tests.Unit.Tests.Screenplay
     {
         private Actor actor;
         private ITask task;
-        private List<IEvent> publishedEvents;
+        private Queue<IEvent> publishedEvents;
         public ActorEventTests()
         {
             this.actor = Actor.Named(Names.Jack);
             this.task = new FakeTask();
-            this.publishedEvents = new List<IEvent>();
-            Broadcaster.SubscribeToAllEvents(new DelegatingEventHandler(a=> publishedEvents.Add(a)));
+            this.publishedEvents = new Queue<IEvent>();
+            Broadcaster.SubscribeToAllEvents(new DelegatingEventHandler(a=> publishedEvents.Enqueue(a)));
+
+
         }
 
         [Fact]
-        public void should_raise_actor_begin_performance_event_when_actor_start_performing()
+        public void should_raise_actor_raise_performance_begin_event_when_actor_performs_a_task()
         {
             actor.AttemptsTo(task);
 
-            Check.That(publishedEvents).CountIs(1);
-            Check.That(publishedEvents.First()).IsInstanceOfType(typeof(ActorBeginsPerformanceEvent));
-            Check.That(((ActorBeginsPerformanceEvent) publishedEvents.First()).ActorName).IsEqualTo(actor.Name);
+            Check.That(publishedEvents.First()).IsInstanceOf<ActorBeginsPerformanceEvent>();
+            Check.That(publishedEvents.First().As<ActorBeginsPerformanceEvent>().ActorName).IsEqualTo(actor.Name);
+        }
+
+        [Fact]
+        public void should_raise_actor_raise_performance_end_event_when_actor_performs_a_task()
+        {
+            actor.AttemptsTo(task);
+
+            Check.That(publishedEvents.Last()).IsInstanceOf<ActorEndsPerformanceEvent>();
+            Check.That(publishedEvents.Last().As<ActorEndsPerformanceEvent>().ActorName).IsEqualTo(actor.Name);
         }
     }
 }

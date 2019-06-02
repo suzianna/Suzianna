@@ -2,9 +2,9 @@
 
 namespace Suzianna.Core.Screenplay.Actors.Events
 {
-    public class ActorBeginsPerformanceEvent : IEvent
+    public class ActorEndsPerformanceEvent : IEvent
     {
-        public ActorBeginsPerformanceEvent(string actorName)
+        public ActorEndsPerformanceEvent(string actorName)
         {
             ActorName = actorName;
         }

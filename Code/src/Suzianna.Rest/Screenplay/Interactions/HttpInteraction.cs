@@ -1,5 +1,7 @@
-﻿using Suzianna.Core.Screenplay;
+﻿using Suzianna.Core.Events;
+using Suzianna.Core.Screenplay;
 using Suzianna.Core.Screenplay.Actors;
+using Suzianna.Rest.Events;
 using Suzianna.Rest.Screenplay.Abilities;
 
 namespace Suzianna.Rest.Screenplay.Interactions
@@ -14,8 +16,10 @@ namespace Suzianna.Rest.Screenplay.Interactions
         public void PerformAs<T>(T actor) where  T : Actor
         {
             var ability = actor.FindAbility<CallAnApi>();
-            this.RequestBuilder.WithBaseUrl(ability.BaseUrl);
-            ability.SendRequest(this.RequestBuilder.Build());
+            var request = this.RequestBuilder.WithBaseUrl(ability.BaseUrl).Build();
+            Broadcaster.Publish(new StartSendingHttpRequestEvent(actor, request));
+            ability.SendRequest(request);
+            Broadcaster.Publish(new HttpRequestSentEvent(ability.LastResponse));
         }
         public HttpInteraction WithQueryParameter(string key, string value)
         {

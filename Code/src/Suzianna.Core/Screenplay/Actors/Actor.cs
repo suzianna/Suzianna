@@ -57,6 +57,7 @@ namespace Suzianna.Core.Screenplay.Actors
             {
                 performable.PerformAs(this);
             }
+            Broadcaster.Publish(new ActorEndsPerformanceEvent(this.Name));
         }
         public T AsksFor<T>(IQuestion<T> question)
         {
