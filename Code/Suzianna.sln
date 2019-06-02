@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2000
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.352
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suzianna.Core", "src\Suzianna.Core\Suzianna.Core.csproj", "{52547245-804F-4FD1-A376-3954151E99EC}"
 EndProject
@@ -25,7 +25,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "integration", "integration"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suzianna.Hosting.Tests.Integration", "test\Suzianna.Hosting.Tests.Integration\Suzianna.Hosting.Tests.Integration.csproj", "{18F9DE42-C3B8-4BDB-A4F9-ECD00B52708C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Suzianna.Rest.Tests.Integration", "test\Suzianna.Rest.Tests.Integration\Suzianna.Rest.Tests.Integration.csproj", "{D4C869CF-7511-4E03-96B7-56E20117A478}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suzianna.Rest.Tests.Integration", "test\Suzianna.Rest.Tests.Integration\Suzianna.Rest.Tests.Integration.csproj", "{D4C869CF-7511-4E03-96B7-56E20117A478}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Suzianna.Reporting", "src\Suzianna.Reporting\Suzianna.Reporting.csproj", "{D73B5F42-231C-4EE9-A5AD-63F648AEEEEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Suzianna.Reporting.Tests.Unit", "test\Suzianna.Reporting.Tests.Unit\Suzianna.Reporting.Tests.Unit.csproj", "{CE9364BE-2354-4EBC-BF3F-2317C8DDA885}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,6 +69,14 @@ Global
 		{D4C869CF-7511-4E03-96B7-56E20117A478}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4C869CF-7511-4E03-96B7-56E20117A478}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4C869CF-7511-4E03-96B7-56E20117A478}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D73B5F42-231C-4EE9-A5AD-63F648AEEEEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D73B5F42-231C-4EE9-A5AD-63F648AEEEEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D73B5F42-231C-4EE9-A5AD-63F648AEEEEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D73B5F42-231C-4EE9-A5AD-63F648AEEEEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE9364BE-2354-4EBC-BF3F-2317C8DDA885}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE9364BE-2354-4EBC-BF3F-2317C8DDA885}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE9364BE-2354-4EBC-BF3F-2317C8DDA885}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE9364BE-2354-4EBC-BF3F-2317C8DDA885}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,6 +92,8 @@ Global
 		{1D04D148-C088-4074-B3D4-2CF9AAB9BB73} = {2095A416-8855-488C-BF39-AC663B80EF5D}
 		{18F9DE42-C3B8-4BDB-A4F9-ECD00B52708C} = {1D04D148-C088-4074-B3D4-2CF9AAB9BB73}
 		{D4C869CF-7511-4E03-96B7-56E20117A478} = {1D04D148-C088-4074-B3D4-2CF9AAB9BB73}
+		{D73B5F42-231C-4EE9-A5AD-63F648AEEEEA} = {115F2B78-6D70-47AD-B931-03F890315DCD}
+		{CE9364BE-2354-4EBC-BF3F-2317C8DDA885} = {370E192C-D0CA-492F-8BCA-F13A764ECC73}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {10110833-F56D-4316-BC70-01C3573FC979}
