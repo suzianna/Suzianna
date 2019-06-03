@@ -1,7 +1,19 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Template\report.lqd" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Template\report.lqd" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="liquid.net" Version="0.10.0" />
+  </ItemGroup>
 
 </Project>

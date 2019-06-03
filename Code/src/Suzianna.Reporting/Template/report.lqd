@@ -1,0 +1,2 @@
+﻿<Report Start="{{model.totalduration.startdate | suziannaDate }}" End="{{model.totalduration.enddate | suziannaDate }}" Duration="{{model.totalduration.duration}}">
+</Report>

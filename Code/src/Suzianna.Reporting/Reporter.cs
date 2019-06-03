@@ -19,19 +19,11 @@ namespace Suzianna.Reporting
         public void TestSuiteStarted()
         {
             _report.TotalDuration.SetStartDate(_clock.Now());
-            //_doc.AppendChild(reportElement);
         }
 
         public void TestSuiteEnded()
         {
             _report.TotalDuration.SetEndDate(_clock.Now());
-
-            //if (_doc.DocumentElement == null) throw new TestSuiteHasNotBeenStartedException();
-            //endDate = _clock.Now();
-            //_doc.DocumentElement.SetAttribute(ReportConstants.Attributes.EndTime, endDate.ToReportFormat());
-
-            //var diff = endDate - startDate;
-            //_doc.DocumentElement.SetAttribute(ReportConstants.Attributes.Duration, diff.ToString());
         }
 
         public XmlDocument GetReport()

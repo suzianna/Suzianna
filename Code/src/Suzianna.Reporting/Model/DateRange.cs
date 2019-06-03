@@ -6,6 +6,7 @@ namespace Suzianna.Reporting.Model
     {
         public DateTime? StartDate { get; private set; }
         public DateTime? EndDate { get; private set; }
+        public string Duration => CalculateDuration();
         public void SetStartDate(DateTime dateTime)
         {
             this.StartDate = dateTime;
@@ -14,10 +15,10 @@ namespace Suzianna.Reporting.Model
         {
             this.EndDate = dateTime;
         }
-        public TimeSpan? CalculateDuration()
+        private string CalculateDuration()
         {
-            if (this.EndDate == null || this.StartDate == null) return null;
-            return this.EndDate.Value - this.StartDate.Value;
+            if (this.EndDate == null || this.StartDate == null) return ReportConstants.Unknown;
+            return (this.EndDate.Value - this.StartDate.Value).ToString("hh':'mm':'ss");
         }
     }
 }
