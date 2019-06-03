@@ -1,2 +1,15 @@
 ﻿<Report Start="{{model.totalduration.startdate | suziannaDate }}" End="{{model.totalduration.enddate | suziannaDate }}" Duration="{{model.totalduration.duration}}">
+  <Features>
+    {% for feature in model.features %}
+      <Feature Title="{{feature.title}}" Description="{{feature.description}}">
+        {% for scenario in feature.scenarios %}
+          <Scenario Title="{{scenario.title}}" Status="{{scenario.status}}" Start="{{scenario.duration.startdate | suziannaDate }}" End="{{scenario.duration.enddate | suziannaDate}}" Duration="{{scenario.duration.duration}}">
+            {% if scenario.failurereason != "" %}
+              <FailureReason>{{scenario.failurereason}}</FailureReason>
+            {% endif %}
+          </Scenario>
+        {% endfor %}
+      </Feature>
+    {% endfor %}
+  </Features>
 </Report>

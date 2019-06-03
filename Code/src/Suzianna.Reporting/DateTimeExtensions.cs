@@ -10,12 +10,5 @@ namespace Suzianna.Reporting
         {
             return date.ToString(ReportConstants.DateFormat);
         }
-
-        public static string ToReportFormat(this DateTime? date)
-        {
-            if (date == null) return ReportConstants.Unknown;
-
-            return date.Value.ToString(ReportConstants.DateFormat);
-        }
     }
 }

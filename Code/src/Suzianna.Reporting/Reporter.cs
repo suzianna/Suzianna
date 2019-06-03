@@ -1,8 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Text;
-using System.Xml;
-using Suzianna.Reporting.Model;
+﻿using Suzianna.Reporting.Model;
 
 namespace Suzianna.Reporting
 {
@@ -10,6 +6,7 @@ namespace Suzianna.Reporting
     {
         private readonly IClock _clock;
         private readonly Report _report;
+
         public Reporter(IClock clock)
         {
             _clock = clock;
@@ -26,9 +23,29 @@ namespace Suzianna.Reporting
             _report.TotalDuration.SetEndDate(_clock.Now());
         }
 
-        public XmlDocument GetReport()
+        public void FeatureStarted(Feature feature)
+        {
+            _report.AddFeature(feature);
+        }
+
+        public string GetReport()
         {
             return _report.ToXml();
+        }
+
+        public void ScenarioStarted(string featureTitle, Scenario scenario)
+        {
+            _report.StartScenario(featureTitle, scenario, _clock.Now());
+        }
+
+        public void MarkScenarioAsPassed(string featureTitle, string scenarioTitle)
+        {
+            _report.MarkScenarioAsPassed(featureTitle, scenarioTitle, _clock.Now());
+        }
+
+        public void MarkScenarioAsFailed(string featureTitle, string scenarioTitle, string reason = null)
+        {
+            _report.MarkScenarioAsFailed(featureTitle, scenarioTitle, _clock.Now(), reason);
         }
     }
 }

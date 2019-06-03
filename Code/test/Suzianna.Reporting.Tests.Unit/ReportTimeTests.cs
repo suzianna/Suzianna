@@ -4,6 +4,9 @@ using System.Text;
 using System.Xml;
 using Microsoft.VisualStudio.TestPlatform.Common.ExtensionFramework;
 using NFluent;
+using Org.XmlUnit;
+using Org.XmlUnit.Builder;
+using Org.XmlUnit.Xpath;
 using Suzianna.Reporting.Tests.Unit.TestDoubles;
 using Suzianna.Reporting.Tests.Unit.TestUtils;
 using Xunit;
@@ -11,25 +14,18 @@ using static Suzianna.Reporting.Tests.Unit.TestUtils.DateFactory;
 
 namespace Suzianna.Reporting.Tests.Unit
 {
-    public class ReportTimeTests
+    public class ReportTimeTests : ReportTests
     {
-        private Reporter _reporter;
-        private StubClock _clock;
-        public ReportTimeTests()
-        {
-            _clock = new StubClock();
-            _reporter = new Reporter(_clock);
-        }
-
         [Fact]
         public void should_set_test_suite_start_time()
         {
             var start = SomeDate();
             GotoTimeAndStartTestSuite(start);
+            var expected = start.ToReportFormat();
 
-            var report = _reporter.GetReport();
+            var report = Reporter.GetReport().ToXmlSource();
 
-            Check.That(report.DocumentElement.Attributes[ReportConstants.Attributes.StartTime].Value).IsEqualTo(start.ToReportFormat());
+            Check.That(report.EvaluateXPath("//Report/@Start")).IsEqualTo(expected);
         }
 
         [Fact]
@@ -38,9 +34,9 @@ namespace Suzianna.Reporting.Tests.Unit
             var date = SomeDate();
             GotoTimeAndEndTestSuite(date);
 
-            var report = _reporter.GetReport();
+            var report = Reporter.GetReport().ToXmlSource();
 
-            Check.That(report.DocumentElement.Attributes[ReportConstants.Attributes.EndTime].Value).IsEqualTo(date.ToReportFormat());
+            Check.That(report.EvaluateXPath("//Report/@End")).IsEqualTo(date.ToReportFormat());
         }
 
         [Fact]
@@ -52,46 +48,37 @@ namespace Suzianna.Reporting.Tests.Unit
             GotoTimeAndStartTestSuite(start);
             GotoTimeAndEndTestSuite(end);
 
-            var report = _reporter.GetReport();
+            var report = Reporter.GetReport().ToXmlSource();
 
-            Check.That(report.DocumentElement.Attributes[ReportConstants.Attributes.Duration].Value).IsEqualTo(expected);
+            Check.That(report.EvaluateXPath("//Report/@Duration")).IsEqualTo(expected);
         }
 
         [Fact]
         public void should_set_report_duration_to_unknown_when_report_start_not_called()
         {
-            var report = _reporter.GetReport();
+            var report = Reporter.GetReport().ToXmlSource();
 
-            Check.That(report.DocumentElement.Attributes[ReportConstants.Attributes.Duration].Value).IsEqualTo(ReportConstants.Unknown);
+            Check.That(report.EvaluateXPath("//Report/@Duration")).IsEqualTo(ReportConstants.Unknown);
         }
 
         [Fact]
         public void should_set_report_duration_to_unknown_when_report_end_not_called()
         {
-            _reporter.TestSuiteStarted();
+            Reporter.TestSuiteStarted();
 
-            var report = _reporter.GetReport();
+            var report = Reporter.GetReport().ToXmlSource();
 
-            Check.That(report.DocumentElement.Attributes[ReportConstants.Attributes.Duration].Value).IsEqualTo(ReportConstants.Unknown);
+            Check.That(report.EvaluateXPath("//Report/@Duration")).IsEqualTo(ReportConstants.Unknown);
         }
 
         [Fact]
         public void should_set_start_time_to_unknown_when_report_start_not_called()
         {
-            var report = _reporter.GetReport();
+            var report = Reporter.GetReport().ToXmlSource();
 
-            Check.That(report.DocumentElement.Attributes[ReportConstants.Attributes.StartTime].Value).IsEqualTo(ReportConstants.Unknown);
+            Check.That(report.EvaluateXPath("//Report/@Start")).IsEqualTo(ReportConstants.Unknown);
         }
 
-        private void GotoTimeAndStartTestSuite(DateTime time)
-        {
-            _clock.TimeTravelTo(time);
-            _reporter.TestSuiteStarted();
-        }
-        private void GotoTimeAndEndTestSuite(DateTime time)
-        {
-            _clock.TimeTravelTo(time);
-            _reporter.TestSuiteEnded();
-        }
+       
     }
 }

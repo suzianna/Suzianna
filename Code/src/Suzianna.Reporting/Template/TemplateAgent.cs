@@ -14,7 +14,7 @@ namespace Suzianna.Reporting.Template
     internal static class TemplateAgent
     {
         //TODO:refactoring case
-        public static XmlDocument Render(Report report)
+        public static string Render(Report report)
         {
             var ctx = new TemplateContext();
             ctx.WithFilter<SuziannaDateFilter>("suziannaDate");
@@ -26,10 +26,7 @@ namespace Suzianna.Reporting.Template
 
             var parsingResult = LiquidTemplate.Create(text);
             var result = parsingResult.LiquidTemplate.Render(ctx).Result;
-
-            var doc = new XmlDocument();
-            doc.LoadXml(result);
-            return doc;
+            return result;
         }
     }
 }
