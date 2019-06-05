@@ -24,7 +24,6 @@ namespace Suzianna.Reporting.Tests.Unit
             Reporter.StepStarted(feature.Title, scenario.Title, SampleSteps.RefundedItems.GivenText);
 
             var report = Reporter.GetReport().ToXmlSource();
-            var x = Reporter.GetReport();
             
             Check.That(report.EvaluateXPath("//Report/Features/Feature/Scenario/Steps/Step[1]/text()"))
                 .IsEqualTo(SampleSteps.RefundedItems.GivenText);

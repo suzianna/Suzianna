@@ -80,7 +80,7 @@ namespace Suzianna.Reporting.Tests.Unit
 
             var report = Reporter.GetReport().ToXmlSource();
 
-            Check.That(report.EvaluateXPath("//Report/Features/Feature/Scenario/FailureReason/text()"))
+            Check.That(report.EvaluateXPath("//Report/Features/Feature/Scenario/FailureReason"))
                 .IsEqualTo(string.Empty);
         }
 
