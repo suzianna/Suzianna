@@ -7,6 +7,11 @@
             {% if scenario.failurereason != "" %}
               <FailureReason>{{scenario.failurereason}}</FailureReason>
             {% endif %}
+            <Steps>
+                {% for step in scenario.steps %}
+                    <Step>{{step.title}}</Step>
+                {% endfor %}
+            </Steps>
           </Scenario>
         {% endfor %}
       </Feature>

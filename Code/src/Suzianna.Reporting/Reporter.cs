@@ -47,5 +47,10 @@ namespace Suzianna.Reporting
         {
             _report.MarkScenarioAsFailed(featureTitle, scenarioTitle, _clock.Now(), reason);
         }
+
+        public void StepStarted(string featureTitle, string scenarioTitle, string stepText)
+        {
+            _report.StartStep(featureTitle, scenarioTitle, stepText);
+        }
     }
 }

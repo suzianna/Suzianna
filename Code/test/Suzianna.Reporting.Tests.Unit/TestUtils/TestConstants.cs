@@ -51,5 +51,17 @@ namespace Suzianna.Reporting.Tests.Unit.TestUtils
                 };
             }
         }
+        
+        public static class SampleSteps
+        {
+            public static class RefundedItems
+            {
+                public const string GivenText = "Given That a customer previously bought a black sweater from me";
+                public const string AndText = "And I have three black sweaters in stock.";
+                public const string WhenText = "When They return the black sweater for a refund";
+                public const string ThenText = "Then I should have four black sweaters in stock.";
+            }
+        }
+                
     }
 }

@@ -1,20 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
+﻿using System.Net.Http;
 
 namespace Suzianna.Rest
 {
     internal class DefaultHttpRequestSender : IHttpRequestSender
     {
-        private static HttpClient _client;
+        private static readonly HttpClient Client;
+
         static DefaultHttpRequestSender()
         {
-            _client = new HttpClient();
+            Client = new HttpClient();
         }
+
         public HttpResponseMessage Send(HttpRequestMessage message)
         {
-            return _client.SendAsync(message).Result;
+            return Client.SendAsync(message).Result;
         }
     }
 }

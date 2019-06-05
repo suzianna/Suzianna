@@ -141,7 +141,6 @@ namespace Suzianna.Reporting.Tests.Unit
             var report = Reporter.GetReport().ToXmlSource();
 
             Check.That(report.EvaluateXPath("//Report/Features/Feature/Scenario/@Duration")).IsEqualTo(expected);
-
         }
     }
 }

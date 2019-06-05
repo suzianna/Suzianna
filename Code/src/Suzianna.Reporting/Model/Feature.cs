@@ -31,11 +31,14 @@ namespace Suzianna.Reporting.Model
             _scenarios.Enqueue(scenario);
             scenario.Duration.SetStartDate(date);
         }
+        public void AddStepToScenario(string scenarioTitle, string stepText)
+        {
+            var scenario = FindScenario(scenarioTitle);
+            scenario.AddStep(new Step(stepText));
+        }
         private Scenario FindScenario(string scenarioTitle)
         {
             return _scenarios.First(a => a.Title == scenarioTitle);
         }
-
-       
     }
 }

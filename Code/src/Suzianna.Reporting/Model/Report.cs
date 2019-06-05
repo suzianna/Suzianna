@@ -47,5 +47,11 @@ namespace Suzianna.Reporting.Model
             var feature = _features.FirstOrDefault(a => a.Title == featureTitle);
             feature.MarkScenarioAsFailed(scenarioTitle, date, reason);
         }
+
+        public void StartStep(string featureTitle, string scenarioTitle, string stepText)
+        {
+            var feature = _features.FirstOrDefault(a => a.Title == featureTitle);
+            feature.AddStepToScenario(scenarioTitle, stepText);
+        }
     }
 }
