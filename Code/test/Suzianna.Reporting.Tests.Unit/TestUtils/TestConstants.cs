@@ -62,6 +62,10 @@ namespace Suzianna.Reporting.Tests.Unit.TestUtils
                 public const string ThenText = "Then I should have four black sweaters in stock.";
             }
         }
-                
+
+        public static class SampleEvents
+        {
+            public const string AdminAttemptsToDefineUsers = "Admin attemps to define users via posting data to url localhost:5050/users";
+        }
     }
 }

@@ -53,5 +53,11 @@ namespace Suzianna.Reporting.Model
             var feature = _features.FirstOrDefault(a => a.Title == featureTitle);
             feature.AddStepToScenario(scenarioTitle, stepText);
         }
+
+        public void EventPublished(string featureTitle, string scenarioTitle, string eventText)
+        {
+            var feature = _features.FirstOrDefault(a=>a.Title == featureTitle);
+            feature.AddEventTheToLatestStepOf(scenarioTitle, eventText);
+        }
     }
 }

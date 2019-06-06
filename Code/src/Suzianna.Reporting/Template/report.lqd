@@ -9,7 +9,7 @@
             {% endif %}
             <Steps>
                 {% for step in scenario.steps %}
-                    <Step>{{step.title}}</Step>
+                    <Step>{{step.title}}{% for event in step.events %}<Event>{{event}}</Event>{% endfor %}</Step>
                 {% endfor %}
             </Steps>
           </Scenario>

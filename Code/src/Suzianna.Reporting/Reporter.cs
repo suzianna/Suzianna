@@ -52,5 +52,10 @@ namespace Suzianna.Reporting
         {
             _report.StartStep(featureTitle, scenarioTitle, stepText);
         }
+
+        public void EventPublished(string featureTitle, string scenarioTitle, string eventText)
+        {
+            _report.EventPublished(featureTitle, scenarioTitle, eventText);
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Suzianna.Reporting.Model
 {
@@ -17,6 +18,11 @@ namespace Suzianna.Reporting.Model
         public void AddStep(Step step)
         {
             this.Steps.Add(step);
+        }
+        public void AddEvent(string eventText)
+        {
+            var latestStep = this.Steps.Last();
+            latestStep.Events.Add(eventText);
         }
     }
 }
