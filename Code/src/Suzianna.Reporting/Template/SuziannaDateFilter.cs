@@ -5,7 +5,7 @@ using Liquid.NET.Utils;
 
 namespace Suzianna.Reporting.Template
 {
-    public class SuziannaDateFilter : FilterExpression<LiquidDate, LiquidString>
+    internal class SuziannaDateFilter : FilterExpression<LiquidDate, LiquidString>
     {
         public override LiquidExpressionResult ApplyTo(ITemplateContext ctx, LiquidDate val)
         {
