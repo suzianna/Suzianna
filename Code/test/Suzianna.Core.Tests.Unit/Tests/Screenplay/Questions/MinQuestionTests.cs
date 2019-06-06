@@ -32,29 +32,29 @@ namespace Suzianna.Core.Tests.Unit.Tests.Screenplay.Questions
         [Fact]
         public void should_return_maximum_of_results_on_complex_objects()
         {
-            var oldMan = new Person(70);
-            var youngMan = new Person(25);
-            var oldManQuestion = new StubQuestion<Person>().SetAnswer(oldMan);
-            var youngManQuestion = new StubQuestion<Person>().SetAnswer(youngMan);
+            var hot = new Celsius(70);
+            var cold = new Celsius(25);
+            var hotQuestion = new StubQuestion<Celsius>().SetAnswer(hot);
+            var coldQuestion = new StubQuestion<Celsius>().SetAnswer(cold);
 
-            var answer = _actor.AsksFor(Min.Of(oldManQuestion, youngManQuestion));
+            var answer = _actor.AsksFor(Min.Of(hotQuestion, coldQuestion));
 
-            Check.That(answer).IsEqualTo(youngMan);
+            Check.That(answer).IsEqualTo(cold);
         }
         
-        private class Person : IComparable<Person>
+        private class Celsius : IComparable<Celsius>
         {
-            private long Age { get; set; }
-            public Person(long age)
+            private byte Temperature { get; set; }
+            public Celsius(byte temperature)
             {
-                Age = age;
+                Temperature = temperature;
             }
 
-            public int CompareTo(Person other)
+            public int CompareTo(Celsius other)
             {
                 if (ReferenceEquals(this, other)) return 0;
                 if (ReferenceEquals(null, other)) return 1;
-                return Age.CompareTo(other.Age);
+                return this.Temperature.CompareTo(other.Temperature);
             }
         }
     }
