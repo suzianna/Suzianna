@@ -67,16 +67,17 @@ namespace Suzianna.Rest.Tests.Unit.Screenplay
         [Fact]
         public void should_intercept_requests_in_order_of_registration()
         {
-            var firstInterceptor = FakeHttpInterceptor.SetupToAddHeader("Sandbox", "test");
-            var secondInterceptor = FakeHttpInterceptor.SetupToAddHeader("Sandbox", "test test");
+            const string sandbox = "Sandbox";
+            var firstInterceptor = FakeHttpInterceptor.SetupToAddHeader(sandbox, "test");
+            var secondInterceptor = FakeHttpInterceptor.SetupToAddHeader(sandbox, "test test");
             var callAnApi = CallAnApi.At(Urls.Google).With(_sender)
                 .WhichRequestsInterceptedBy(firstInterceptor)
                 .WhichRequestsInterceptedBy(secondInterceptor);
 
             callAnApi.SendRequest(_request);
 
-            Check.That(_sender.GetLastSentMessage().FirstValueOfHeader("Sandbox")).IsEqualTo("test");
-            Check.That(_sender.GetLastSentMessage().SecondValueOfHeader("Sandbox")).IsEqualTo("test test");
+            Check.That(_sender.GetLastSentMessage().FirstValueOfHeader(sandbox)).IsEqualTo("test");
+            Check.That(_sender.GetLastSentMessage().SecondValueOfHeader(sandbox)).IsEqualTo("test test");
         }
     }
 }
