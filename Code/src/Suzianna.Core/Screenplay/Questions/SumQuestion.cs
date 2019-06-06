@@ -4,7 +4,7 @@ using Suzianna.Core.Screenplay.Actors;
 
 namespace Suzianna.Core.Screenplay.Questions
 {
-    public class SumQuestion : IQuestion<long>
+    internal class SumQuestion : IQuestion<long>
     {
         private readonly List<IQuestion<long>> _questions;
         public SumQuestion(List<IQuestion<long>> questions)
