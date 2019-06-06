@@ -13,20 +13,30 @@ namespace Suzianna.Reporting.Template
 {
     internal static class TemplateAgent
     {
-        //TODO:refactoring case
         public static string Render(Report report)
+        {
+            var ctx = CreateTemplateContext();
+            ctx.DefineLocalVariable("model", report.ToLiquid());
+            var template = ReadTemplate();
+            return Render(template, ctx);
+        }
+        private static TemplateContext CreateTemplateContext()
         {
             var ctx = new TemplateContext();
             ctx.WithFilter<SuziannaDateFilter>("suziannaDate");
-            ctx.DefineLocalVariable("model", report.ToLiquid());
-
+            return ctx;
+        }
+        private static string ReadTemplate()
+        {
             var stream = typeof(TemplateAgent).Assembly.GetManifestResourceStream("Suzianna.Reporting.Template.report.lqd");
             var reader = new StreamReader(stream);
             var text = reader.ReadToEnd();
-
-            var parsingResult = LiquidTemplate.Create(text);
-            var result = parsingResult.LiquidTemplate.Render(ctx).Result;
-            return result;
+            return text;
+        }
+        private static string Render(string template, TemplateContext ctx)
+        {
+            var parsingResult = LiquidTemplate.Create(template);
+            return parsingResult.LiquidTemplate.Render(ctx).Result;
         }
     }
 }

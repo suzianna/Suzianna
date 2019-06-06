@@ -1,4 +1,7 @@
-﻿using FluentAssertions;
+﻿using System.Linq;
+using System.Net.Http;
+using FluentAssertions;
+using NFluent;
 using Suzianna.Rest.Screenplay.Abilities;
 using Suzianna.Rest.Tests.Unit.TestConstants;
 using Suzianna.Rest.Tests.Unit.TestDoubles;
@@ -9,6 +12,14 @@ namespace Suzianna.Rest.Tests.Unit.Screenplay
 {
     public class CallAnApiTests
     {
+        private readonly FakeHttpRequestSender _sender;
+        private readonly HttpRequestMessage _request;
+        public CallAnApiTests()
+        {
+            this._sender = new FakeHttpRequestSender();
+            this._request = HttpRequestFactory.CreateRequest();
+        }
+        
         [Fact]
         public void should_set_base_url()
         {
@@ -20,13 +31,52 @@ namespace Suzianna.Rest.Tests.Unit.Screenplay
         [Fact]
         public void should_send_http_request_using_sender()
         {
-            var sender = new FakeHttpRequestSender();
-            var callAnApi = CallAnApi.At(Urls.Google).With(sender);
-            var request = HttpRequestFactory.CreateRequest();
+            var callAnApi = CallAnApi.At(Urls.Google).With(_sender);
 
-            callAnApi.SendRequest(request);
+            callAnApi.SendRequest(_request);
 
-            sender.GetLastSentMessage().Should().Be(request);
+            _sender.GetLastSentMessage().Should().Be(_request);
+        }
+
+        [Fact]
+        public void should_intercept_requests_with_interceptors()
+        {
+            var interceptor = FakeHttpInterceptor.SetupToAddHeader(HttpHeaders.Authorization, Tokens.SomeToken);
+            var callAnApi = CallAnApi.At(Urls.Google).With(_sender).WhichRequestsInterceptedBy(interceptor);
+
+            callAnApi.SendRequest(_request);
+
+            Check.That(_sender.GetLastSentMessage().FirstValueOfHeader(HttpHeaders.Authorization)).IsEqualTo(Tokens.SomeToken);
+        }
+
+        [Fact]
+        public void should_intercept_requests_with_multiple_interceptors()
+        {
+            var tokenInterceptor = FakeHttpInterceptor.SetupToAddHeader(HttpHeaders.Authorization, Tokens.SomeToken);
+            var acceptInterceptor = FakeHttpInterceptor.SetupToAddHeader(HttpHeaders.Accept, MediaTypes.ApplicationJson);
+            var callAnApi = CallAnApi.At(Urls.Google).With(_sender)
+                .WhichRequestsInterceptedBy(tokenInterceptor)
+                .WhichRequestsInterceptedBy(acceptInterceptor);
+
+            callAnApi.SendRequest(_request);
+
+            Check.That(_sender.GetLastSentMessage().FirstValueOfHeader(HttpHeaders.Authorization)).IsEqualTo(Tokens.SomeToken);
+            Check.That(_sender.GetLastSentMessage().FirstValueOfHeader(HttpHeaders.Accept)).IsEqualTo(MediaTypes.ApplicationJson);
+        }
+        
+        [Fact]
+        public void should_intercept_requests_in_order_of_registration()
+        {
+            var firstInterceptor = FakeHttpInterceptor.SetupToAddHeader("Sandbox", "test");
+            var secondInterceptor = FakeHttpInterceptor.SetupToAddHeader("Sandbox", "test test");
+            var callAnApi = CallAnApi.At(Urls.Google).With(_sender)
+                .WhichRequestsInterceptedBy(firstInterceptor)
+                .WhichRequestsInterceptedBy(secondInterceptor);
+
+            callAnApi.SendRequest(_request);
+
+            Check.That(_sender.GetLastSentMessage().FirstValueOfHeader("Sandbox")).IsEqualTo("test");
+            Check.That(_sender.GetLastSentMessage().SecondValueOfHeader("Sandbox")).IsEqualTo("test test");
         }
     }
 }
