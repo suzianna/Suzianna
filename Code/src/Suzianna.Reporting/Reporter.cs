@@ -7,7 +7,10 @@ namespace Suzianna.Reporting
     {
         private readonly IClock _clock;
         private readonly Report _report;
+        public Reporter():this(new SystemClock())
+        {
 
+        }
         public Reporter(IClock clock)
         {
             _clock = clock;

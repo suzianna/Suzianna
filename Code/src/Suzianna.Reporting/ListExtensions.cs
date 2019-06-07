@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Suzianna.Reporting
 {
-    public static class ListExtensions
+    internal static class ListExtensions
     {
         public static bool IsEmpty<T>(this List<T> items)
         {
