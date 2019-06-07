@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using Suzianna.Reporting.Exceptions;
 
 namespace Suzianna.Reporting.Model
 {
@@ -43,7 +44,10 @@ namespace Suzianna.Reporting.Model
         }
         private Scenario FindScenario(string scenarioTitle)
         {
-            return _scenarios.First(a => a.Title == scenarioTitle);
+            var scenario =  _scenarios.FirstOrDefault(a => a.Title == scenarioTitle);
+            if (scenario == null)
+                throw new ScenarioNotFoundException(scenarioTitle, this.Title);
+            return scenario;
         }
     }
 }

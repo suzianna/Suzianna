@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Suzianna.Reporting.Exceptions;
 
 namespace Suzianna.Reporting.Model
 {
@@ -21,6 +22,9 @@ namespace Suzianna.Reporting.Model
         }
         public void AddEvent(string eventText)
         {
+            if (this.Steps.IsEmpty())
+                throw new StepNotFoundException(this.Title);
+
             var latestStep = this.Steps.Last();
             latestStep.Events.Add(eventText);
         }

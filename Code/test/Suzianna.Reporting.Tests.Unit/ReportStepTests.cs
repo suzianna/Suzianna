@@ -1,4 +1,6 @@
+using System;
 using NFluent;
+using Suzianna.Reporting.Exceptions;
 using Suzianna.Reporting.Model;
 using Suzianna.Reporting.Tests.Unit.TestUtils;
 using Xunit;
@@ -44,6 +46,14 @@ namespace Suzianna.Reporting.Tests.Unit
             Check.That(report.EvaluateXPath("//Step[2]/text()")).IsEqualTo(SampleSteps.RefundedItems.AndText);
             Check.That(report.EvaluateXPath("//Step[3]/text()")).IsEqualTo(SampleSteps.RefundedItems.WhenText);
             Check.That(report.EvaluateXPath("//Step[4]/text()")).IsEqualTo(SampleSteps.RefundedItems.ThenText);
+        }
+
+        [Fact]
+        public void should_throw_on_publishing_events_when_scenario_has_no_steps()
+        {
+            Action publishingEvent = ()=> Reporter.EventPublished(feature.Title, scenario.Title, SampleEvents.AdminAttemptsToDefineUsers);
+
+            Check.ThatCode(publishingEvent).Throws<StepNotFoundException>().WithProperty(a => a.ScenarioTitle, scenario.Title);
         }
     }
 }
