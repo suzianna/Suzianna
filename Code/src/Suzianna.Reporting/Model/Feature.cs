@@ -12,32 +12,32 @@ namespace Suzianna.Reporting.Model
         public string Title { get; set; }
         public string Description { get; set; }
         public List<Scenario> Scenarios => _scenarios.ToList();
-        
-        public void MarkScenarioAsPassed(string scenarioTitle, DateTime date)
+
+        internal void MarkScenarioAsPassed(string scenarioTitle, DateTime date)
         {
             var scenario = FindScenario(scenarioTitle);
             scenario.Status = ScenarioStatus.Passed;
             scenario.Duration.SetEndDate(date);
         }
 
-        public void MarkScenarioAsFailed(string scenarioTitle, DateTime date,string reason)
+        internal void MarkScenarioAsFailed(string scenarioTitle, DateTime date,string reason)
         {
             var scenario = FindScenario(scenarioTitle);
             scenario.Status = ScenarioStatus.Failed;
             scenario.FailureReason = reason;
             scenario.Duration.SetEndDate(date);
         }
-        public void StartScenario(Scenario scenario, DateTime date)
+        internal void StartScenario(Scenario scenario, DateTime date)
         {
             _scenarios.Enqueue(scenario);
             scenario.Duration.SetStartDate(date);
         }
-        public void AddStepToScenario(string scenarioTitle, string stepText)
+        internal void AddStepToScenario(string scenarioTitle, string stepText)
         {
             var scenario = FindScenario(scenarioTitle);
             scenario.AddStep(new Step(stepText));
         }
-        public void AddEventTheToLatestStepOf(string scenarioTitle, string eventText)
+        internal void AddEventTheToLatestStepOf(string scenarioTitle, string eventText)
         {
             var scenario = FindScenario(scenarioTitle);
             scenario.AddEvent(eventText);

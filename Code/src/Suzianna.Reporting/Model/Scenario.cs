@@ -16,11 +16,11 @@ namespace Suzianna.Reporting.Model
             Duration = new DateRange();
             Steps = new List<Step>();
         }
-        public void AddStep(Step step)
+        internal void AddStep(Step step)
         {
             this.Steps.Add(step);
         }
-        public void AddEvent(string eventText)
+        internal void AddEvent(string eventText)
         {
             if (this.Steps.IsEmpty())
                 throw new StepNotFoundException(this.Title);
