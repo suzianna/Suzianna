@@ -1,4 +1,5 @@
 ﻿using Suzianna.Reporting.Model;
+using Suzianna.Reporting.Template;
 
 namespace Suzianna.Reporting
 {
@@ -30,7 +31,7 @@ namespace Suzianna.Reporting
 
         public string GetReport()
         {
-            return _report.ToXml();
+            return TemplateAgent.Render(this._report);
         }
 
         public void ScenarioStarted(string featureTitle, Scenario scenario)

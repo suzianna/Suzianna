@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using Antlr4.Runtime;
+using Suzianna.Reporting.Exceptions;
 using Suzianna.Reporting.Template;
 
 namespace Suzianna.Reporting.Model
@@ -19,45 +20,45 @@ namespace Suzianna.Reporting.Model
         public DateRange TotalDuration { get; private set; }
         public List<Feature> Features => _features.ToList();
 
-        public void AddFeature(Feature feature)
+        internal void AddFeature(Feature feature)
         {
             _features.Enqueue(feature);
         }
-
-
-        public void StartScenario(string featureTitle, Scenario scenario, DateTime date)
+        internal void StartScenario(string featureTitle, Scenario scenario, DateTime date)
         {
-            var feature = _features.FirstOrDefault(a => a.Title == featureTitle);
+            var feature = FindFeature(featureTitle);
             feature.StartScenario(scenario, date);
         }
-
-        public string ToXml()
+        internal void MarkScenarioAsPassed(string featureTitle, string scenarioTitle, DateTime date)
         {
-            return TemplateAgent.Render(this);
-        }
-
-        public void MarkScenarioAsPassed(string featureTitle, string scenarioTitle, DateTime date)
-        {
-            var feature = _features.FirstOrDefault(a => a.Title == featureTitle);
+            var feature = FindFeature(featureTitle);
             feature.MarkScenarioAsPassed(scenarioTitle, date);
         }
 
-        public void MarkScenarioAsFailed(string featureTitle, string scenarioTitle, DateTime date, string reason = null)
+        internal void MarkScenarioAsFailed(string featureTitle, string scenarioTitle, DateTime date, string reason = null)
         {
-            var feature = _features.FirstOrDefault(a => a.Title == featureTitle);
+            var feature = FindFeature(featureTitle);
             feature.MarkScenarioAsFailed(scenarioTitle, date, reason);
         }
 
-        public void StartStep(string featureTitle, string scenarioTitle, string stepText)
+        internal void StartStep(string featureTitle, string scenarioTitle, string stepText)
         {
-            var feature = _features.FirstOrDefault(a => a.Title == featureTitle);
+            var feature = FindFeature(featureTitle);
             feature.AddStepToScenario(scenarioTitle, stepText);
         }
 
-        public void EventPublished(string featureTitle, string scenarioTitle, string eventText)
+        internal void EventPublished(string featureTitle, string scenarioTitle, string eventText)
         {
-            var feature = _features.FirstOrDefault(a=>a.Title == featureTitle);
+            var feature = FindFeature(featureTitle);
             feature.AddEventTheToLatestStepOf(scenarioTitle, eventText);
+        }
+        
+        private Feature FindFeature(string featureTitle)
+        {
+            var feature = _features.FirstOrDefault(a => a.Title == featureTitle);
+            if (feature == null) 
+                throw new FeatureNotFoundException(featureTitle);
+            return feature;
         }
     }
 }
