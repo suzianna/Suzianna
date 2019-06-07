@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using NFluent;
 using Suzianna.Reporting.Exceptions;
 using Suzianna.Reporting.Model;
 using Suzianna.Reporting.Tests.Unit.TestUtils;
 using Xunit;
-using static Suzianna.Reporting.Tests.Unit.TestUtils.TestConstants;
 
-namespace Suzianna.Reporting.Tests.Unit
+namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
 {
     public class ReportNotStartingScenarioExceptionTests : ReportTests
     {
@@ -16,8 +13,8 @@ namespace Suzianna.Reporting.Tests.Unit
         private Scenario _notStartedScenario;
         public ReportNotStartingScenarioExceptionTests()
         {
-            _feature = SampleFeatures.ReturnsGoToStock;
-            _notStartedScenario = SampleScenarios.ReplacedItems;
+            _feature = TestConstants.SampleFeatures.ReturnsGoToStock;
+            _notStartedScenario = TestConstants.SampleScenarios.ReplacedItems;
             Reporter.FeatureStarted(_feature);
         }
 
@@ -41,7 +38,7 @@ namespace Suzianna.Reporting.Tests.Unit
         [Fact]
         public void should_throw_on_starting_a_step_when_scenario_has_not_started()
         {
-            var step = SampleSteps.RefundedItems.GivenText;
+            var step = TestConstants.SampleSteps.RefundedItems.GivenText;
 
             Action startingStep = () => Reporter.StepStarted(_feature.Title, _notStartedScenario.Title, step);
 
@@ -51,7 +48,7 @@ namespace Suzianna.Reporting.Tests.Unit
         [Fact]
         public void should_throw_on_publishing_an_event_when_scenario_has_not_started()
         {
-            var eventText = SampleEvents.AdminAttemptsToDefineUsers;
+            var eventText = TestConstants.SampleEvents.AdminAttemptsToDefineUsers;
 
             Action publishingEvent = () => Reporter.EventPublished(_feature.Title, _notStartedScenario.Title, eventText);
 

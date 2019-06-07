@@ -2,10 +2,10 @@ using System;
 using NFluent;
 using Suzianna.Reporting.Exceptions;
 using Suzianna.Reporting.Model;
+using Suzianna.Reporting.Tests.Unit.TestUtils;
 using Xunit;
-using static Suzianna.Reporting.Tests.Unit.TestUtils.TestConstants;
 
-namespace Suzianna.Reporting.Tests.Unit
+namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
 {
     public class ReportNotStartingFeatureExceptionTests : ReportTests
     {
@@ -13,13 +13,13 @@ namespace Suzianna.Reporting.Tests.Unit
 
         public ReportNotStartingFeatureExceptionTests()
         {
-            _nonStartedFeature = SampleFeatures.ReturnsGoToStock;
+            _nonStartedFeature = TestConstants.SampleFeatures.ReturnsGoToStock;
         }
         
         [Fact]
         public void should_throw_on_adding_a_scenario_to_a_non_started_feature()
         {
-            var scenario = SampleScenarios.RefundedItems;
+            var scenario = TestConstants.SampleScenarios.RefundedItems;
             
             Action startingScenario = ()=> Reporter.ScenarioStarted(_nonStartedFeature.Title, scenario);
 
@@ -29,7 +29,7 @@ namespace Suzianna.Reporting.Tests.Unit
         [Fact]
         public void should_throw_on_marking_a_scenario_as_passed_in_a_non_started_feature()
         {
-            var scenario = SampleScenarios.RefundedItems;
+            var scenario = TestConstants.SampleScenarios.RefundedItems;
 
             Action markScenarioAsPassed = () => Reporter.MarkScenarioAsPassed(_nonStartedFeature.Title, scenario.Title);
 
@@ -39,7 +39,7 @@ namespace Suzianna.Reporting.Tests.Unit
         [Fact]
         public void should_throw_on_marking_a_scenario_as_failed_in_a_non_started_feature()
         {
-            var scenario = SampleScenarios.RefundedItems;
+            var scenario = TestConstants.SampleScenarios.RefundedItems;
 
             Action markScenarioAsPassed = () => Reporter.MarkScenarioAsFailed(_nonStartedFeature.Title, scenario.Title);
 
@@ -49,8 +49,8 @@ namespace Suzianna.Reporting.Tests.Unit
         [Fact]
         public void should_throw_on_starting_a_step_in_a_non_started_feature()
         {
-            var scenario = SampleScenarios.RefundedItems;
-            var step = SampleSteps.RefundedItems.GivenText;
+            var scenario = TestConstants.SampleScenarios.RefundedItems;
+            var step = TestConstants.SampleSteps.RefundedItems.GivenText;
 
             Action startingStep = () => Reporter.StepStarted(_nonStartedFeature.Title, scenario.Title, step);
             
@@ -60,8 +60,8 @@ namespace Suzianna.Reporting.Tests.Unit
         [Fact]
         public void should_throw_on_publishing_an_event_in_a_non_started_feature()
         {
-            var scenario = SampleScenarios.RefundedItems;
-            var eventText = SampleEvents.AdminAttemptsToDefineUsers;
+            var scenario = TestConstants.SampleScenarios.RefundedItems;
+            var eventText = TestConstants.SampleEvents.AdminAttemptsToDefineUsers;
 
             Action publishingEvent = () => Reporter.EventPublished(_nonStartedFeature.Title, scenario.Title, eventText);
             

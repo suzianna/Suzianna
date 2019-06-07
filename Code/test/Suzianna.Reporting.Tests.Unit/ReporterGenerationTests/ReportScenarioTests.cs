@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using NFluent;
+﻿using NFluent;
 using Suzianna.Reporting.Model;
-using Suzianna.Reporting.Tests.Unit.Resources;
 using Suzianna.Reporting.Tests.Unit.TestUtils;
 using Xunit;
-using static Suzianna.Reporting.Tests.Unit.Resources.TestFeaturesResources;
-using static Suzianna.Reporting.Tests.Unit.TestUtils.TestConstants;
 
-namespace Suzianna.Reporting.Tests.Unit
+namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
 {
     public class ReportScenarioTests : ReportTests
     {
-        private readonly Feature _feature = SampleFeatures.ReturnsGoToStock;
+        private readonly Feature _feature = TestConstants.SampleFeatures.ReturnsGoToStock;
 
         public ReportScenarioTests()
         {
@@ -23,7 +17,7 @@ namespace Suzianna.Reporting.Tests.Unit
         [Fact]
         public void should_add_scenario_with_correct_title_to_report()
         {
-            var scenario = SampleScenarios.ReplacedItems;
+            var scenario = TestConstants.SampleScenarios.ReplacedItems;
             Reporter.ScenarioStarted(_feature.Title, scenario);
 
             var report = Reporter.GetReport().ToXmlSource();
@@ -34,7 +28,7 @@ namespace Suzianna.Reporting.Tests.Unit
         [Fact]
         public void should_mark_scenario_as_passed_in_report()
         {
-            var scenario = SampleScenarios.ReplacedItems;
+            var scenario = TestConstants.SampleScenarios.ReplacedItems;
             Reporter.ScenarioStarted(_feature.Title, scenario);
             Reporter.MarkScenarioAsPassed(_feature.Title, scenario.Title);
 
@@ -47,7 +41,7 @@ namespace Suzianna.Reporting.Tests.Unit
         [Fact]
         public void should_mark_scenario_as_failed_in_report()
         {
-            var scenario = SampleScenarios.ReplacedItems;
+            var scenario = TestConstants.SampleScenarios.ReplacedItems;
             Reporter.ScenarioStarted(_feature.Title, scenario);
             Reporter.MarkScenarioAsFailed(_feature.Title, scenario.Title);
 
@@ -61,7 +55,7 @@ namespace Suzianna.Reporting.Tests.Unit
         public void should_put_fail_reason_when_scenario_has_a_reason_of_failure()
         {
             var reason = "I don't know, Something bad happened.";
-            var scenario = SampleScenarios.ReplacedItems;
+            var scenario = TestConstants.SampleScenarios.ReplacedItems;
             Reporter.ScenarioStarted(_feature.Title, scenario);
             Reporter.MarkScenarioAsFailed(_feature.Title, scenario.Title, reason);
 
@@ -74,7 +68,7 @@ namespace Suzianna.Reporting.Tests.Unit
         [Fact]
         public void should_not_put_failure_reason_when_scenario_has_not_a_reason_of_failure()
         {
-            var scenario = SampleScenarios.ReplacedItems;
+            var scenario = TestConstants.SampleScenarios.ReplacedItems;
             Reporter.ScenarioStarted(_feature.Title, scenario);
             Reporter.MarkScenarioAsFailed(_feature.Title, scenario.Title);
 
@@ -89,7 +83,7 @@ namespace Suzianna.Reporting.Tests.Unit
         {
             var start = DateFactory.SomeDate();
             TimeTravelTo(start);
-            var scenario = SampleScenarios.ReplacedItems;
+            var scenario = TestConstants.SampleScenarios.ReplacedItems;
             Reporter.ScenarioStarted(_feature.Title, scenario);
 
             var report = Reporter.GetReport().ToXmlSource();
@@ -101,7 +95,7 @@ namespace Suzianna.Reporting.Tests.Unit
         [Fact]
         public void should_set_scenario_end_time_when_scenario_marked_as_passed()
         {
-            var scenario = SampleScenarios.ReplacedItems;
+            var scenario = TestConstants.SampleScenarios.ReplacedItems;
             Reporter.ScenarioStarted(_feature.Title, scenario);
             var end = DateFactory.SomeDate();
             TimeTravelTo(end);
@@ -115,7 +109,7 @@ namespace Suzianna.Reporting.Tests.Unit
         [Fact]
         public void should_set_scenario_end_time_when_scenario_marked_as_failed()
         {
-            var scenario = SampleScenarios.ReplacedItems;
+            var scenario = TestConstants.SampleScenarios.ReplacedItems;
             Reporter.ScenarioStarted(_feature.Title, scenario);
             var end = DateFactory.SomeDate();
             TimeTravelTo(end);
@@ -129,7 +123,7 @@ namespace Suzianna.Reporting.Tests.Unit
         [Fact]
         public void should_set_scenario_duration_based_on_start_and_end_time()
         {
-            var scenario = SampleScenarios.ReplacedItems;
+            var scenario = TestConstants.SampleScenarios.ReplacedItems;
             var start = DateFactory.SomeDate().At("5:30:00");
             var end = DateFactory.SomeDate().At("5:32:30");
             var expected = "00:02:30";

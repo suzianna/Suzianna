@@ -1,25 +1,15 @@
-using System;
-using System.IO;
-using System.Text;
-using System.Xml;
-using Microsoft.VisualStudio.TestPlatform.Common.ExtensionFramework;
 using NFluent;
-using Org.XmlUnit;
-using Org.XmlUnit.Builder;
-using Org.XmlUnit.Xpath;
-using Suzianna.Reporting.Tests.Unit.TestDoubles;
 using Suzianna.Reporting.Tests.Unit.TestUtils;
 using Xunit;
-using static Suzianna.Reporting.Tests.Unit.TestUtils.DateFactory;
 
-namespace Suzianna.Reporting.Tests.Unit
+namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
 {
     public class ReportTimeTests : ReportTests
     {
         [Fact]
         public void should_set_test_suite_start_time()
         {
-            var start = SomeDate();
+            var start = DateFactory.SomeDate();
             GotoTimeAndStartTestSuite(start);
             var expected = start.ToReportFormat();
 
@@ -31,7 +21,7 @@ namespace Suzianna.Reporting.Tests.Unit
         [Fact]
         public void should_set_test_suite_end_time()
         {
-            var date = SomeDate();
+            var date = DateFactory.SomeDate();
             GotoTimeAndEndTestSuite(date);
 
             var report = Reporter.GetReport().ToXmlSource();
@@ -42,8 +32,8 @@ namespace Suzianna.Reporting.Tests.Unit
         [Fact]
         public void should_calculate_duration_of_test_suite_correctly()
         {
-            var start = SomeDate().At("17:30:20");
-            var end = SomeDate().At("17:32:00");
+            var start = DateFactory.SomeDate().At("17:30:20");
+            var end = DateFactory.SomeDate().At("17:32:00");
             var expected = "00:01:40";
             GotoTimeAndStartTestSuite(start);
             GotoTimeAndEndTestSuite(end);
