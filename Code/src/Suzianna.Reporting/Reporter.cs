@@ -1,5 +1,5 @@
-﻿using Suzianna.Reporting.Model;
-using Suzianna.Reporting.Template;
+﻿using Suzianna.Reporting.Template;
+using Suzianna.Reporting.XmlNodes;
 
 namespace Suzianna.Reporting
 {
@@ -19,27 +19,32 @@ namespace Suzianna.Reporting
 
         public void TestSuiteStarted()
         {
-            _report.TotalDuration.SetStartDate(_clock.Now());
+            _report.SetStart(_clock.Now());
         }
 
         public void TestSuiteEnded()
         {
-            _report.TotalDuration.SetEndDate(_clock.Now());
+            _report.SetEnd(_clock.Now());
         }
 
-        public void FeatureStarted(Feature feature)
+        public void FeatureStarted(string title, string description)
         {
-            _report.AddFeature(feature);
+            var feature = new FeatureNode()
+            {
+                Title = title,
+                Description = description,
+            };
+            _report.Features.Add(feature);
         }
 
         public string GetReport()
         {
-            return TemplateAgent.Render(this._report);
+            return XmlAgent.ToXml(this._report);
         }
 
-        public void ScenarioStarted(string featureTitle, Scenario scenario)
+        public void ScenarioStarted(string featureTitle, string scenarioTitle)
         {
-            _report.StartScenario(featureTitle, scenario, _clock.Now());
+            _report.StartScenario(featureTitle, scenarioTitle, _clock.Now());
         }
 
         public void MarkScenarioAsPassed(string featureTitle, string scenarioTitle)

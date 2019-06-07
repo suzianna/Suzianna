@@ -15,7 +15,7 @@ namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
 
             var report = Reporter.GetReport().ToXmlSource();
 
-            Check.That(report.EvaluateXPath("//Report/@Start")).IsEqualTo(expected);
+            Check.That(report.EvaluateXPath("//Report/Start")).IsEqualTo(expected);
         }
 
         [Fact]
@@ -26,7 +26,7 @@ namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
 
             var report = Reporter.GetReport().ToXmlSource();
 
-            Check.That(report.EvaluateXPath("//Report/@End")).IsEqualTo(date.ToReportFormat());
+            Check.That(report.EvaluateXPath("//Report/End")).IsEqualTo(date.ToReportFormat());
         }
 
         [Fact]
@@ -34,13 +34,13 @@ namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
         {
             var start = DateFactory.SomeDate().At("17:30:20");
             var end = DateFactory.SomeDate().At("17:32:00");
-            var expected = "00:01:40";
+            var expected = "PT1M40S";
             GotoTimeAndStartTestSuite(start);
             GotoTimeAndEndTestSuite(end);
 
             var report = Reporter.GetReport().ToXmlSource();
 
-            Check.That(report.EvaluateXPath("//Report/@Duration")).IsEqualTo(expected);
+            Check.That(report.EvaluateXPath("//Report/Duration")).IsEqualTo(expected);
         }
 
         [Fact]
@@ -48,7 +48,8 @@ namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
         {
             var report = Reporter.GetReport().ToXmlSource();
 
-            Check.That(report.EvaluateXPath("//Report/@Duration")).IsEqualTo(ReportConstants.Unknown);
+            Check.That(report.EvaluateXPath("//Report/Duration")).IsEmpty();
+            Check.That(report.EvaluateXPath("//Report/Duration/@*[local-name()='nil']").ToBoolean()).IsTrue();
         }
 
         [Fact]
@@ -58,7 +59,8 @@ namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
 
             var report = Reporter.GetReport().ToXmlSource();
 
-            Check.That(report.EvaluateXPath("//Report/@Duration")).IsEqualTo(ReportConstants.Unknown);
+            Check.That(report.EvaluateXPath("//Report/Duration")).IsEmpty();
+            Check.That(report.EvaluateXPath("//Report/Duration/@*[local-name()='nil']").ToBoolean()).IsTrue();
         }
 
         [Fact]
@@ -66,9 +68,8 @@ namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
         {
             var report = Reporter.GetReport().ToXmlSource();
 
-            Check.That(report.EvaluateXPath("//Report/@Start")).IsEqualTo(ReportConstants.Unknown);
+            Check.That(report.EvaluateXPath("//Report/Start")).IsEmpty();
+            Check.That(report.EvaluateXPath("//Report/Start/@*[local-name()='nil']").ToBoolean()).IsTrue();
         }
-
-       
     }
 }

@@ -6,7 +6,7 @@ namespace Suzianna.Reporting
 {
     public static class ReportConstants
     {
-        public const string DateFormat = "yyyy-MM-dd HH:mm:ss";
+        public const string DateFormat = "yyyy-MM-ddTHH:mm:ss";
         public const string Unknown = "Unknown";
     }
 }

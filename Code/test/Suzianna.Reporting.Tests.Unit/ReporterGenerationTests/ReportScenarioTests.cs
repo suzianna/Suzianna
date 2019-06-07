@@ -1,6 +1,6 @@
 ﻿using NFluent;
-using Suzianna.Reporting.Model;
 using Suzianna.Reporting.Tests.Unit.TestUtils;
+using Suzianna.Reporting.XmlNodes;
 using Xunit;
 
 namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
@@ -11,7 +11,7 @@ namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
 
         public ReportScenarioTests()
         {
-            Reporter.FeatureStarted(_feature);
+            Reporter.FeatureStarted(_feature.Title, _feature.Description);
         }
 
         [Fact]
@@ -22,7 +22,7 @@ namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
 
             var report = Reporter.GetReport().ToXmlSource();
 
-            Check.That(report.EvaluateXPath("//Report/Features/Feature/Scenario/@Title")).IsEqualTo(scenario.Title);
+            Check.That(report.EvaluateXPath("//Report/Features/FeatureNode/Scenarios/ScenarioNode/Title")).IsEqualTo(scenario);
         }
 
         [Fact]
@@ -30,12 +30,12 @@ namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
         {
             var scenario = TestConstants.SampleScenarios.ReplacedItems;
             Reporter.ScenarioStarted(_feature.Title, scenario);
-            Reporter.MarkScenarioAsPassed(_feature.Title, scenario.Title);
+            Reporter.MarkScenarioAsPassed(_feature.Title, scenario);
 
             var report = Reporter.GetReport().ToXmlSource();
 
-            Check.That(report.EvaluateXPath("//Report/Features/Feature/Scenario/@Status"))
-                .IsEqualTo(ScenarioStatus.Passed);
+            Check.That(report.EvaluateXPath("//Report/Features/FeatureNode/Scenarios/ScenarioNode/Status"))
+                .IsEqualTo(ScenarioStatus.Passed.ToString());
         }
 
         [Fact]
@@ -43,12 +43,12 @@ namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
         {
             var scenario = TestConstants.SampleScenarios.ReplacedItems;
             Reporter.ScenarioStarted(_feature.Title, scenario);
-            Reporter.MarkScenarioAsFailed(_feature.Title, scenario.Title);
+            Reporter.MarkScenarioAsFailed(_feature.Title, scenario);
 
             var report = Reporter.GetReport().ToXmlSource();
 
-            Check.That(report.EvaluateXPath("//Report/Features/Feature/Scenario/@Status"))
-                .IsEqualTo(ScenarioStatus.Failed);
+            Check.That(report.EvaluateXPath("//Report/Features/FeatureNode/Scenarios/ScenarioNode/Status"))
+                .IsEqualTo(ScenarioStatus.Failed.ToString());
         }
 
         [Fact]
@@ -57,11 +57,11 @@ namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
             var reason = "I don't know, Something bad happened.";
             var scenario = TestConstants.SampleScenarios.ReplacedItems;
             Reporter.ScenarioStarted(_feature.Title, scenario);
-            Reporter.MarkScenarioAsFailed(_feature.Title, scenario.Title, reason);
+            Reporter.MarkScenarioAsFailed(_feature.Title, scenario, reason);
 
             var report = Reporter.GetReport().ToXmlSource();
 
-            Check.That(report.EvaluateXPath("//Report/Features/Feature/Scenario/FailureReason/text()"))
+            Check.That(report.EvaluateXPath("//Report/Features/FeatureNode/Scenarios/ScenarioNode/FailureReason"))
                 .IsEqualTo(reason);
         }
 
@@ -70,12 +70,11 @@ namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
         {
             var scenario = TestConstants.SampleScenarios.ReplacedItems;
             Reporter.ScenarioStarted(_feature.Title, scenario);
-            Reporter.MarkScenarioAsFailed(_feature.Title, scenario.Title);
+            Reporter.MarkScenarioAsFailed(_feature.Title, scenario);
 
             var report = Reporter.GetReport().ToXmlSource();
 
-            Check.That(report.EvaluateXPath("//Report/Features/Feature/Scenario/FailureReason"))
-                .IsEqualTo(string.Empty);
+            Check.That(report.EvaluateXPath("//Report/Features/FeatureNode/Scenarios/ScenarioNode/FailureReason")).IsEqualTo(string.Empty);
         }
 
         [Fact]
@@ -88,8 +87,7 @@ namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
 
             var report = Reporter.GetReport().ToXmlSource();
 
-            Check.That(report.EvaluateXPath("//Report/Features/Feature/Scenario/@Start"))
-                .IsEqualTo(start.ToReportFormat());
+            Check.That(report.EvaluateXPath("//Report/Features/FeatureNode/Scenarios/ScenarioNode/Start")).IsEqualTo(start.ToReportFormat());
         }
 
         [Fact]
@@ -99,11 +97,11 @@ namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
             Reporter.ScenarioStarted(_feature.Title, scenario);
             var end = DateFactory.SomeDate();
             TimeTravelTo(end);
-            Reporter.MarkScenarioAsPassed(_feature.Title, scenario.Title);
+            Reporter.MarkScenarioAsPassed(_feature.Title, scenario);
 
             var report = Reporter.GetReport().ToXmlSource();
 
-            Check.That(report.EvaluateXPath("//Report/Features/Feature/Scenario/@End")).IsEqualTo(end.ToReportFormat());
+            Check.That(report.EvaluateXPath("//Report/Features/FeatureNode/Scenarios/ScenarioNode/End")).IsEqualTo(end.ToReportFormat());
         }
 
         [Fact]
@@ -113,28 +111,28 @@ namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
             Reporter.ScenarioStarted(_feature.Title, scenario);
             var end = DateFactory.SomeDate();
             TimeTravelTo(end);
-            Reporter.MarkScenarioAsFailed(_feature.Title, scenario.Title);
+            Reporter.MarkScenarioAsFailed(_feature.Title, scenario);
 
             var report = Reporter.GetReport().ToXmlSource();
 
-            Check.That(report.EvaluateXPath("//Report/Features/Feature/Scenario/@End")).IsEqualTo(end.ToReportFormat());
+            Check.That(report.EvaluateXPath("//Report/Features/FeatureNode/Scenarios/ScenarioNode/End")).IsEqualTo(end.ToReportFormat());
         }
 
         [Fact]
         public void should_set_scenario_duration_based_on_start_and_end_time()
         {
             var scenario = TestConstants.SampleScenarios.ReplacedItems;
-            var start = DateFactory.SomeDate().At("5:30:00");
-            var end = DateFactory.SomeDate().At("5:32:30");
-            var expected = "00:02:30";
+            var start = DateFactory.SomeDate().At("05:30:00");
+            var end = DateFactory.SomeDate().At("05:32:30");
+            var expected = "PT2M30S";
             TimeTravelTo(start);
             Reporter.ScenarioStarted(_feature.Title, scenario);
             TimeTravelTo(end);
-            Reporter.MarkScenarioAsPassed(_feature.Title, scenario.Title);
+            Reporter.MarkScenarioAsPassed(_feature.Title, scenario);
 
             var report = Reporter.GetReport().ToXmlSource();
 
-            Check.That(report.EvaluateXPath("//Report/Features/Feature/Scenario/@Duration")).IsEqualTo(expected);
+            Check.That(report.EvaluateXPath("//Report/Features/FeatureNode/Scenarios/ScenarioNode/Duration")).IsEqualTo(expected);
         }
     }
 }

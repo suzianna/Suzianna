@@ -17,5 +17,10 @@ namespace Suzianna.Reporting.Tests.Unit.TestUtils
         {
             return int.Parse(input);
         }
+
+        public static bool ToBoolean(this string input)
+        {
+            return bool.Parse(input);
+        }
     }
 }

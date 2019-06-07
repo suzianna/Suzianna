@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
-using Suzianna.Reporting.Model;
 using Suzianna.Reporting.Tests.Unit.Resources;
 
 namespace Suzianna.Reporting.Tests.Unit.TestUtils
 {
-    public static class TestConstants
+    internal static class TestConstants
     {
         public static class SampleFeatures
         {
@@ -29,27 +28,12 @@ namespace Suzianna.Reporting.Tests.Unit.TestUtils
                     Description = TestFeaturesResources.OnlineMembershipRenewal_Description,
                 };
             }
-
         }
 
         public static class SampleScenarios
         {
-            public static Scenario RefundedItems => CreateRefundedItems();
-            public static Scenario ReplacedItems => CreateReplacedItems();
-            private static Scenario CreateRefundedItems()
-            {
-                return new Scenario()
-                {
-                    Title = TestScenarioResources.RefundStockScenario_Title,
-                };
-            }
-            private static Scenario CreateReplacedItems()
-            {
-                return new Scenario()
-                {
-                    Title = TestScenarioResources.ReplacedItemsScenario_Title
-                };
-            }
+            public static string RefundedItems = TestScenarioResources.RefundStockScenario_Title;
+            public static string ReplacedItems = TestScenarioResources.ReplacedItemsScenario_Title;
         }
         
         public static class SampleSteps

@@ -1,7 +1,6 @@
 using System;
 using NFluent;
 using Suzianna.Reporting.Exceptions;
-using Suzianna.Reporting.Model;
 using Suzianna.Reporting.Tests.Unit.TestUtils;
 using Xunit;
 
@@ -9,11 +8,10 @@ namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
 {
     public class ReportNotStartingFeatureExceptionTests : ReportTests
     {
-        private readonly Feature _nonStartedFeature;
-
+        private readonly string _nonStartedFeature;
         public ReportNotStartingFeatureExceptionTests()
         {
-            _nonStartedFeature = TestConstants.SampleFeatures.ReturnsGoToStock;
+            _nonStartedFeature = TestConstants.SampleFeatures.ReturnsGoToStock.Title;
         }
         
         [Fact]
@@ -21,7 +19,7 @@ namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
         {
             var scenario = TestConstants.SampleScenarios.RefundedItems;
             
-            Action startingScenario = ()=> Reporter.ScenarioStarted(_nonStartedFeature.Title, scenario);
+            Action startingScenario = ()=> Reporter.ScenarioStarted(_nonStartedFeature, scenario);
 
             CheckThatMethodThrowsFeatureNotFoundException(startingScenario);
         }
@@ -31,7 +29,7 @@ namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
         {
             var scenario = TestConstants.SampleScenarios.RefundedItems;
 
-            Action markScenarioAsPassed = () => Reporter.MarkScenarioAsPassed(_nonStartedFeature.Title, scenario.Title);
+            Action markScenarioAsPassed = () => Reporter.MarkScenarioAsPassed(_nonStartedFeature, scenario);
 
             CheckThatMethodThrowsFeatureNotFoundException(markScenarioAsPassed);
         }
@@ -41,7 +39,7 @@ namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
         {
             var scenario = TestConstants.SampleScenarios.RefundedItems;
 
-            Action markScenarioAsPassed = () => Reporter.MarkScenarioAsFailed(_nonStartedFeature.Title, scenario.Title);
+            Action markScenarioAsPassed = () => Reporter.MarkScenarioAsFailed(_nonStartedFeature, scenario);
 
             CheckThatMethodThrowsFeatureNotFoundException(markScenarioAsPassed);
         }
@@ -52,7 +50,7 @@ namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
             var scenario = TestConstants.SampleScenarios.RefundedItems;
             var step = TestConstants.SampleSteps.RefundedItems.GivenText;
 
-            Action startingStep = () => Reporter.StepStarted(_nonStartedFeature.Title, scenario.Title, step);
+            Action startingStep = () => Reporter.StepStarted(_nonStartedFeature, scenario, step);
             
             CheckThatMethodThrowsFeatureNotFoundException(startingStep);
         }
@@ -63,7 +61,7 @@ namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
             var scenario = TestConstants.SampleScenarios.RefundedItems;
             var eventText = TestConstants.SampleEvents.AdminAttemptsToDefineUsers;
 
-            Action publishingEvent = () => Reporter.EventPublished(_nonStartedFeature.Title, scenario.Title, eventText);
+            Action publishingEvent = () => Reporter.EventPublished(_nonStartedFeature, scenario, eventText);
             
             CheckThatMethodThrowsFeatureNotFoundException(publishingEvent);
         }
@@ -71,7 +69,7 @@ namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
         private void CheckThatMethodThrowsFeatureNotFoundException(Action startingStep)
         {
             Check.ThatCode(startingStep).Throws<FeatureNotFoundException>()
-                .WithProperty(a => a.FeatureTitle, _nonStartedFeature.Title);
+                .WithProperty(a => a.FeatureTitle, _nonStartedFeature);
         }
     }
 }
