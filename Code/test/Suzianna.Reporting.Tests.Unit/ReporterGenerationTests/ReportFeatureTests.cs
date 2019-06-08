@@ -13,7 +13,7 @@ namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
             var feature = SampleFeatures.ReturnsGoToStock;
             Reporter.FeatureStarted(feature.Title, feature.Description);
 
-            var report = Reporter.GetReport().ToXmlSource();
+            var report = Reporter.ExportXml().ToXmlSource();
 
             Check.That(report.EvaluateXPath("//Report/Features/FeatureNode/Title")).IsEqualTo(feature.Title);
         }
@@ -24,7 +24,7 @@ namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
             var feature = SampleFeatures.ReturnsGoToStock;
             Reporter.FeatureStarted(feature.Title, feature.Description);
 
-            var report = Reporter.GetReport().ToXmlSource();
+            var report = Reporter.ExportXml().ToXmlSource();
 
             Check.That(report.EvaluateXPath("//Report/Features/FeatureNode/Description")).IsEqualTo(feature.Description);
         }
@@ -35,7 +35,7 @@ namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
             Reporter.FeatureStarted(SampleFeatures.ReturnsGoToStock.Title, SampleFeatures.ReturnsGoToStock.Description);
             Reporter.FeatureStarted(SampleFeatures.OnlineMembershipRenewal.Title, SampleFeatures.OnlineMembershipRenewal.Description);
 
-            var report = Reporter.GetReport().ToXmlSource();
+            var report = Reporter.ExportXml().ToXmlSource();
 
             Check.That(report.EvaluateXPath("count(//Report/Features/FeatureNode)").ToNumber()).IsEqualTo(2);
             Check.That(report.EvaluateXPath("//Report/Features/FeatureNode[1]/Title")).IsEqualTo(SampleFeatures.ReturnsGoToStock.Title);

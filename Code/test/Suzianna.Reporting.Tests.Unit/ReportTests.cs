@@ -1,7 +1,7 @@
 ﻿using System;
 using Suzianna.Reporting.Tests.Unit.TestDoubles;
 
-namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
+namespace Suzianna.Reporting.Tests.Unit
 {
     public abstract class ReportTests
     {

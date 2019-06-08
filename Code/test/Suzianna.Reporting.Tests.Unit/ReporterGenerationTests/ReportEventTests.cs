@@ -26,7 +26,7 @@ namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
         {
             Reporter.EventPublished(_feature.Title, _scenario, SampleEvents.AdminAttemptsToDefineUsers);
 
-            var report = Reporter.GetReport().ToXmlSource();
+            var report = Reporter.ExportXml().ToXmlSource();
 
             Check.That(report.EvaluateXPath("//Report/Features/FeatureNode/Scenarios/ScenarioNode/Steps/StepNode/Events/string"))
                  .IsEqualTo(TestConstants.SampleEvents.AdminAttemptsToDefineUsers);

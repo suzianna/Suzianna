@@ -37,7 +37,7 @@ namespace Suzianna.Reporting
             _report.Features.Add(feature);
         }
 
-        public string GetReport()
+        public string ExportXml()
         {
             return XmlAgent.ToXml(this._report);
         }

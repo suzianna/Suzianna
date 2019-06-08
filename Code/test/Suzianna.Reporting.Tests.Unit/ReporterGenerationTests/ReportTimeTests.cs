@@ -13,7 +13,7 @@ namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
             GotoTimeAndStartTestSuite(start);
             var expected = start.ToReportFormat();
 
-            var report = Reporter.GetReport().ToXmlSource();
+            var report = Reporter.ExportXml().ToXmlSource();
 
             Check.That(report.EvaluateXPath("//Report/Start")).IsEqualTo(expected);
         }
@@ -24,7 +24,7 @@ namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
             var date = DateFactory.SomeDate();
             GotoTimeAndEndTestSuite(date);
 
-            var report = Reporter.GetReport().ToXmlSource();
+            var report = Reporter.ExportXml().ToXmlSource();
 
             Check.That(report.EvaluateXPath("//Report/End")).IsEqualTo(date.ToReportFormat());
         }
@@ -38,7 +38,7 @@ namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
             GotoTimeAndStartTestSuite(start);
             GotoTimeAndEndTestSuite(end);
 
-            var report = Reporter.GetReport().ToXmlSource();
+            var report = Reporter.ExportXml().ToXmlSource();
 
             Check.That(report.EvaluateXPath("//Report/Duration")).IsEqualTo(expected);
         }
@@ -46,7 +46,7 @@ namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
         [Fact]
         public void should_set_report_duration_to_unknown_when_report_start_not_called()
         {
-            var report = Reporter.GetReport().ToXmlSource();
+            var report = Reporter.ExportXml().ToXmlSource();
 
             Check.That(report.EvaluateXPath("//Report/Duration")).IsEmpty();
             Check.That(report.EvaluateXPath("//Report/Duration/@*[local-name()='nil']").ToBoolean()).IsTrue();
@@ -57,7 +57,7 @@ namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
         {
             Reporter.TestSuiteStarted();
 
-            var report = Reporter.GetReport().ToXmlSource();
+            var report = Reporter.ExportXml().ToXmlSource();
 
             Check.That(report.EvaluateXPath("//Report/Duration")).IsEmpty();
             Check.That(report.EvaluateXPath("//Report/Duration/@*[local-name()='nil']").ToBoolean()).IsTrue();
@@ -66,7 +66,7 @@ namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
         [Fact]
         public void should_set_start_time_to_unknown_when_report_start_not_called()
         {
-            var report = Reporter.GetReport().ToXmlSource();
+            var report = Reporter.ExportXml().ToXmlSource();
 
             Check.That(report.EvaluateXPath("//Report/Start")).IsEmpty();
             Check.That(report.EvaluateXPath("//Report/Start/@*[local-name()='nil']").ToBoolean()).IsTrue();
