@@ -42,7 +42,6 @@ namespace Suzianna.Reporting.Tests.Unit.ReportParsingTests
 
             var report = ReportParser.Parse(Reporter.ExportXml());
 
-            Check.That(LatestStep(report).Events).CountIs(1);
             Check.That(LatestStep(report).Events).ContainsExactly(eventText);
         }
 
