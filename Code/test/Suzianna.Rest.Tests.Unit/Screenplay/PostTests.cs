@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Net.Http;
-using FluentAssertions;
+using NFluent;
 using Suzianna.Rest.Screenplay.Interactions;
 using Suzianna.Rest.Tests.Unit.TestConstants;
 using Suzianna.Rest.Tests.Unit.TestUtils;
@@ -23,7 +23,7 @@ namespace Suzianna.Rest.Tests.Unit.Screenplay
 
             actor.AttemptsTo(Post.DataAsJson(ContentFactory.SomeContent()).To(Urls.UsersApi));
 
-            Sender.GetLastSentMessage().Content.Headers.ContentType.MediaType.Should().Be(MediaTypes.ApplicationJson);
+            Check.That(Sender.GetLastSentMessage().Content.Headers.ContentType.MediaType).IsEqualTo(MediaTypes.ApplicationJson);
         }
     }
 }

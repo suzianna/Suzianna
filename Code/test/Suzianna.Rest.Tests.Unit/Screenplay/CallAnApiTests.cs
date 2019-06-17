@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Net.Http;
-using FluentAssertions;
 using NFluent;
 using Suzianna.Rest.Screenplay.Abilities;
 using Suzianna.Rest.Tests.Unit.TestConstants;
@@ -25,7 +24,7 @@ namespace Suzianna.Rest.Tests.Unit.Screenplay
         {
             var callAnApi = CallAnApi.At(Urls.Google);
 
-            callAnApi.BaseUrl.Should().Be(Urls.Google);
+            Check.That(callAnApi.BaseUrl).IsEqualTo(Urls.Google);
         }
 
         [Fact]
@@ -35,7 +34,7 @@ namespace Suzianna.Rest.Tests.Unit.Screenplay
 
             callAnApi.SendRequest(_request);
 
-            _sender.GetLastSentMessage().Should().Be(_request);
+            Check.That(_sender.GetLastSentMessage()).IsEqualTo(_request);
         }
 
         [Fact]

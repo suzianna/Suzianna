@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using FluentAssertions;
+using NFluent;
 using Suzianna.Rest.Tests.Unit.TestConstants;
 using Suzianna.Rest.Tests.Unit.TestUtils;
 using Xunit;
@@ -16,7 +16,7 @@ namespace Suzianna.Rest.Tests.Unit.Screenplay
             actor.AttemptsTo(GetHttpInteraction(Urls.UsersApi)
                 .WithHeader(HttpHeaders.ContentEncoding, ContentEncodings.GZip));
 
-            Sender.GetLastSentMessage().Content.Headers.ContentEncoding.First().Should().Be(ContentEncodings.GZip);
+            Check.That(Sender.GetLastSentMessage().Content.Headers.ContentEncoding.First()).IsEqualTo(ContentEncodings.GZip);
         }
     }
 }

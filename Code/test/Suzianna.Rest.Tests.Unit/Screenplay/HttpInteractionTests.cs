@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using FluentAssertions;
 using NFluent;
 using Suzianna.Core.Events;
 using Suzianna.Core.Screenplay;
@@ -55,7 +54,8 @@ namespace Suzianna.Rest.Tests.Unit.Screenplay
         {
             var juliet = Actor.Named(Names.Juliet).WhoCan(CallAnApi.At(baseUrl).With(Sender));
             juliet.AttemptsTo(GetHttpInteraction(resource));
-            Sender.GetLastSentMessage().RequestUri.AbsoluteUri.Should().Be(expectedUrl);
+
+            Check.That(Sender.GetLastSentMessage().RequestUri.AbsoluteUri).IsEqualTo(expectedUrl);
         }
 
         protected abstract HttpMethod GetHttpMethod();
@@ -71,7 +71,7 @@ namespace Suzianna.Rest.Tests.Unit.Screenplay
 
             juliet.AttemptsTo(GetHttpInteraction(resourceName));
 
-            Sender.GetLastSentMessage().RequestUri.AbsoluteUri.Should().Be(expectedUrl);
+            Check.That(Sender.GetLastSentMessage().RequestUri.AbsoluteUri).IsEqualTo(expectedUrl);
         }
 
         [Fact]
@@ -82,7 +82,7 @@ namespace Suzianna.Rest.Tests.Unit.Screenplay
             actor.AttemptsTo(GetHttpInteraction(Urls.UsersApi)
                 .WithHeader(HttpHeaders.Accept, MediaTypes.ApplicationXml));
 
-            Sender.GetLastSentMessage().Headers.Accept.First().MediaType.Should().Be(MediaTypes.ApplicationXml);
+            Check.That(Sender.GetLastSentMessage().Headers.Accept.First().MediaType).IsEqualTo(MediaTypes.ApplicationXml);
         }
 
         [Fact]
@@ -97,7 +97,7 @@ namespace Suzianna.Rest.Tests.Unit.Screenplay
                 .WithQueryParameter("UserId", "2")
                 .WithQueryParameter("LocationId", "3"));
 
-            Sender.GetLastSentMessage().RequestUri.AbsoluteUri.Should().Be(expectedUrl);
+            Check.That(Sender.GetLastSentMessage().RequestUri.AbsoluteUri).IsEqualTo(expectedUrl);
         }
 
         [Fact]
@@ -107,7 +107,7 @@ namespace Suzianna.Rest.Tests.Unit.Screenplay
 
             actor.AttemptsTo(GetHttpInteraction(Urls.UsersApi));
 
-            Sender.GetLastSentMessage().Method.Should().Be(GetHttpMethod());
+            Check.That(Sender.GetLastSentMessage().Method).IsEqualTo(GetHttpMethod());
         }
 
         [Fact]
@@ -122,7 +122,7 @@ namespace Suzianna.Rest.Tests.Unit.Screenplay
                 .WithQueryParameter("UserId", "2")
                 .WithQueryParameter("LocationId", "3"));
 
-            Sender.GetLastSentMessage().RequestUri.AbsoluteUri.Should().Be(expectedUrl);
+            Check.That(Sender.GetLastSentMessage().RequestUri.AbsoluteUri).IsEqualTo(expectedUrl);
         }
 
         [Fact]
