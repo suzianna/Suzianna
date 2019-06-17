@@ -14,10 +14,8 @@ namespace Suzianna.Rest.Tests.Unit.Screenplay
             var actor = ActorFactory.CreateSomeActorWithApiCallAbility(Sender);
 
             actor.AttemptsTo(GetHttpInteraction(Urls.UsersApi)
-                .WithHeader(HttpHeaders.ContentType, MediaTypes.ApplicationJson)
                 .WithHeader(HttpHeaders.ContentEncoding, ContentEncodings.GZip));
 
-            Sender.GetLastSentMessage().Content.Headers.ContentType.MediaType.Should().Be(MediaTypes.ApplicationJson);
             Sender.GetLastSentMessage().Content.Headers.ContentEncoding.First().Should().Be(ContentEncodings.GZip);
         }
     }
