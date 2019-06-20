@@ -1,31 +1,30 @@
 ﻿using System.Net.Http;
-using NFluent;
 using Suzianna.Rest.Screenplay.Interactions;
 using Suzianna.Rest.Tests.Unit.TestConstants;
 using Suzianna.Rest.Tests.Unit.TestUtils;
-using Xunit;
 
-namespace Suzianna.Rest.Tests.Unit.Screenplay
+namespace Suzianna.Rest.Tests.Unit.Tests.Screenplay
 {
-    public class PutTests : HttpInteractionWithContentTests
+    public class PatchTests : HttpInteractionWithContentTests
     {
-        protected override HttpMethod GetHttpMethod() => HttpMethod.Put;
+        protected override HttpMethod GetHttpMethod() => HttpMethod.Patch;
         protected override HttpInteraction GetHttpInteraction(string resource)
         {
-            return Put.DataAsJson(ContentFactory.SomeContent()).To(resource);
+            return Patch.DataAsJson(ContentFactory.SomeContent()).To(resource);
         }
         protected override HttpInteraction GetHttpInteractionWithJsonContent(object content)
         {
-            return Put.DataAsJson(content).To(Urls.UsersApi);
+            return Patch.DataAsJson(content).To(Urls.UsersApi);
         }
+
         protected override HttpInteraction GetHttpInteractionWithXmlContent(object content)
         {
-            return Put.DataAsXml(content).To(Urls.UsersApi);
+            return Patch.DataAsXml(content).To(Urls.UsersApi);
         }
 
         protected override HttpInteraction GetHttpInteractionWithCustomContent(string content)
         {
-            return Put.Data(content).To(Urls.UsersApi);
+            return Patch.Data(content).To(Urls.UsersApi);
         }
     }
 }

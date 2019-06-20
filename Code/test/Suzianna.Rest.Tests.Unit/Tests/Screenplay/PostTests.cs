@@ -1,13 +1,10 @@
-﻿using System.Linq;
-using System.Net.Http;
-using NFluent;
+﻿using System.Net.Http;
 using Suzianna.Core.Screenplay.Actors;
 using Suzianna.Rest.Screenplay.Interactions;
 using Suzianna.Rest.Tests.Unit.TestConstants;
 using Suzianna.Rest.Tests.Unit.TestUtils;
-using Xunit;
 
-namespace Suzianna.Rest.Tests.Unit.Screenplay
+namespace Suzianna.Rest.Tests.Unit.Tests.Screenplay
 {
     public class PostTests : HttpInteractionWithContentTests
     {

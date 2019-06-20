@@ -1,13 +1,13 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using NFluent;
 using Suzianna.Core.Events;
-using Suzianna.Core.Screenplay;
 using Suzianna.Core.Screenplay.Actors;
 using Suzianna.Rest.Events;
+using Suzianna.Rest.OAuth;
 using Suzianna.Rest.Screenplay.Abilities;
 using Suzianna.Rest.Screenplay.Interactions;
 using Suzianna.Rest.Tests.Unit.TestConstants;
@@ -15,7 +15,7 @@ using Suzianna.Rest.Tests.Unit.TestDoubles;
 using Suzianna.Rest.Tests.Unit.TestUtils;
 using Xunit;
 
-namespace Suzianna.Rest.Tests.Unit.Screenplay
+namespace Suzianna.Rest.Tests.Unit.Tests.Screenplay
 {
     public abstract class HttpInteractionTests
     {
@@ -160,6 +160,19 @@ namespace Suzianna.Rest.Tests.Unit.Screenplay
             Check.That(publishedEvents.CountOfType<HttpRequestSentEvent>()).IsEqualTo(1);
             Check.That(publishedEvents.FirstElementOfType<HttpRequestSentEvent>().ResponseCode).IsEqualTo(HttpStatusCode.Accepted);
             Check.That(publishedEvents.FirstElementOfType<HttpRequestSentEvent>().ResponseContent).IsEqualTo(Contents.JackProfile);
+        }
+
+        [Fact]
+        public void should_send_request_with_authorization_header_when_actor_has_remembered_access_token()
+        {
+            var actor = ActorFactory.CreateSomeActorWithApiCallAbility(Sender);
+            var token = OAuthTokenFactory.SomeToken();
+            actor.Remember(TokenConstants.TokenKey, token);
+
+            actor.AttemptsTo(GetHttpInteraction(Urls.UsersApi));
+
+            Check.That(Sender.GetLastSentMessage().Headers.Authorization.Scheme).IsEqualTo(token.TokenType);
+            Check.That(Sender.GetLastSentMessage().Headers.Authorization.Parameter).IsEqualTo(token.AccessToken);
         }
     }
 }

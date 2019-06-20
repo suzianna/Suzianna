@@ -2,13 +2,12 @@
 using NFluent;
 using Org.XmlUnit.Builder;
 using Org.XmlUnit.Xpath;
-using Suzianna.Core.Screenplay;
 using Suzianna.Rest.Screenplay.Interactions;
 using Suzianna.Rest.Tests.Unit.TestConstants;
 using Suzianna.Rest.Tests.Unit.TestUtils;
 using Xunit;
 
-namespace Suzianna.Rest.Tests.Unit.Screenplay
+namespace Suzianna.Rest.Tests.Unit.Tests.Screenplay
 {
     public abstract class HttpInteractionWithContentTests : HttpInteractionTests
     {

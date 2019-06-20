@@ -84,5 +84,10 @@ namespace Suzianna.Core.Screenplay.Actors
         {
             return notepad.Read<T>(key);
         }
+
+        public bool CanRecall(string key)
+        {
+            return this.notepad.HasWroteDown(key);
+        }
     }
 }

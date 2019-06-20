@@ -6,7 +6,7 @@ using Suzianna.Rest.Screenplay.Questions;
 using Suzianna.Rest.Tests.Unit.TestUtils;
 using Xunit;
 
-namespace Suzianna.Rest.Tests.Unit.Screenplay.QuestionTests
+namespace Suzianna.Rest.Tests.Unit.Tests.Screenplay.QuestionTests
 {
     //TODO: needs refactoring
     public class LastResponseHeaderTests : LastResponseTests

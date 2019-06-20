@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
-using System.Text;
 using NFluent;
-using Suzianna.Core.Screenplay.Questions;
 using Suzianna.Rest.Screenplay.Interactions;
 using Suzianna.Rest.Screenplay.Questions;
 using Suzianna.Rest.Tests.Unit.TestConstants;
 using Suzianna.Rest.Tests.Unit.TestUtils;
 using Xunit;
 
-namespace Suzianna.Rest.Tests.Unit.Screenplay.QuestionTests
+namespace Suzianna.Rest.Tests.Unit.Tests.Screenplay.QuestionTests
 {
     public class LastResponseRawTests : LastResponseTests
     {

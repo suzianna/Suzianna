@@ -69,5 +69,23 @@ namespace Suzianna.Core.Tests.Unit.Tests.Screenplay
 
             actor.Should(See.That(Remember.ValueOf<long>(key))).IsEqualTo(value);
         }
+
+        [Fact]
+        public void actor_should_tell_if_he_can_recall_something()
+        {
+            actor.Remember(key, value);
+
+            var canRecall = actor.CanRecall(key);
+
+            Check.That(canRecall).IsTrue();
+        }
+
+        [Fact]
+        public void actor_should_tell_if_he_can_not_recall_something()
+        {
+            var canRecall = actor.CanRecall(key);
+
+            Check.That(canRecall).IsFalse();
+        }
     }
 }

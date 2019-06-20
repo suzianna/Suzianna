@@ -1,18 +1,19 @@
-﻿using System.Linq;
-using System.Net.Http;
+﻿using System.Net.Http;
 using NFluent;
 using Suzianna.Rest.Screenplay.Abilities;
+using Suzianna.Rest.Screenplay.Interactions;
 using Suzianna.Rest.Tests.Unit.TestConstants;
 using Suzianna.Rest.Tests.Unit.TestDoubles;
 using Suzianna.Rest.Tests.Unit.TestUtils;
 using Xunit;
 
-namespace Suzianna.Rest.Tests.Unit.Screenplay
+namespace Suzianna.Rest.Tests.Unit.Tests.Screenplay
 {
     public class CallAnApiTests
     {
         private readonly FakeHttpRequestSender _sender;
         private readonly HttpRequestMessage _request;
+        private const string TokenValue = "VALUE";
         public CallAnApiTests()
         {
             this._sender = new FakeHttpRequestSender();
@@ -40,18 +41,18 @@ namespace Suzianna.Rest.Tests.Unit.Screenplay
         [Fact]
         public void should_intercept_requests_with_interceptors()
         {
-            var interceptor = FakeHttpInterceptor.SetupToAddHeader(HttpHeaders.Authorization, Tokens.SomeToken);
+            var interceptor = FakeHttpInterceptor.SetupToAddHeader(HttpHeaders.Authorization, TokenValue);
             var callAnApi = CallAnApi.At(Urls.Google).With(_sender).WhichRequestsInterceptedBy(interceptor);
 
             callAnApi.SendRequest(_request);
 
-            Check.That(_sender.GetLastSentMessage().FirstValueOfHeader(HttpHeaders.Authorization)).IsEqualTo(Tokens.SomeToken);
+            Check.That(_sender.GetLastSentMessage().FirstValueOfHeader(HttpHeaders.Authorization)).IsEqualTo(TokenValue);
         }
 
         [Fact]
         public void should_intercept_requests_with_multiple_interceptors()
         {
-            var tokenInterceptor = FakeHttpInterceptor.SetupToAddHeader(HttpHeaders.Authorization, Tokens.SomeToken);
+            var tokenInterceptor = FakeHttpInterceptor.SetupToAddHeader(HttpHeaders.Authorization, TokenValue);
             var acceptInterceptor = FakeHttpInterceptor.SetupToAddHeader(HttpHeaders.Accept, MediaTypes.ApplicationJson);
             var callAnApi = CallAnApi.At(Urls.Google).With(_sender)
                 .WhichRequestsInterceptedBy(tokenInterceptor)
@@ -59,7 +60,7 @@ namespace Suzianna.Rest.Tests.Unit.Screenplay
 
             callAnApi.SendRequest(_request);
 
-            Check.That(_sender.GetLastSentMessage().FirstValueOfHeader(HttpHeaders.Authorization)).IsEqualTo(Tokens.SomeToken);
+            Check.That(_sender.GetLastSentMessage().FirstValueOfHeader(HttpHeaders.Authorization)).IsEqualTo(TokenValue);
             Check.That(_sender.GetLastSentMessage().FirstValueOfHeader(HttpHeaders.Accept)).IsEqualTo(MediaTypes.ApplicationJson);
         }
         

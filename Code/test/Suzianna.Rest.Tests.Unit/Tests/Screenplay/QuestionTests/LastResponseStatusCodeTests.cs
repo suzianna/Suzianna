@@ -3,11 +3,10 @@ using NFluent;
 using Suzianna.Core.Screenplay.Questions;
 using Suzianna.Rest.Screenplay.Interactions;
 using Suzianna.Rest.Screenplay.Questions;
-using Suzianna.Rest.Tests.Unit.TestDoubles;
 using Suzianna.Rest.Tests.Unit.TestUtils;
 using Xunit;
 
-namespace Suzianna.Rest.Tests.Unit.Screenplay.QuestionTests
+namespace Suzianna.Rest.Tests.Unit.Tests.Screenplay.QuestionTests
 {
     public class LastResponseStatusCodeTests : LastResponseContentTests
     {
