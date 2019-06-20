@@ -22,5 +22,10 @@ namespace Suzianna.Rest.Tests.Unit.Screenplay
         {
             return Put.DataAsXml(content).To(Urls.UsersApi);
         }
+
+        protected override HttpInteraction GetHttpInteractionWithCustomContent(string content)
+        {
+            return Put.Data(content).To(Urls.UsersApi);
+        }
     }
 }

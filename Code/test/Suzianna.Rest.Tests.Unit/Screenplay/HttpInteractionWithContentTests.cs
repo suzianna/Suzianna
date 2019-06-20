@@ -29,6 +29,7 @@ namespace Suzianna.Rest.Tests.Unit.Screenplay
             Check.That(Sender.GetLastSentMessage().Content.Headers.ContentEncoding.First()).IsEqualTo(ContentEncodings.GZip);
         }
 
+
         [Fact]
         public void should_send_request_as_json_with_correct_serialization()
         {
@@ -76,7 +77,20 @@ namespace Suzianna.Rest.Tests.Unit.Screenplay
             Check.That(Sender.GetLastSentMessage().Content.Headers.ContentType.MediaType).IsEqualTo(MediaTypes.ApplicationXml);
         }
 
+        [Fact]
+        public void should_send_request_with_custom_content()
+        {
+            var actor = ActorFactory.CreateSomeActorWithApiCallAbility(Sender);
+            var content = ContentFactory.AccessTokenRequest();
+
+            actor.AttemptsTo(GetHttpInteractionWithCustomContent(content));
+
+            Check.That(Sender.GetLastSentMessage().Content.ReadAsStringAsync().Result).IsEqualTo(content);
+
+        }
+
         protected abstract HttpInteraction GetHttpInteractionWithJsonContent(object content);
         protected abstract HttpInteraction GetHttpInteractionWithXmlContent(object content);
+        protected abstract HttpInteraction GetHttpInteractionWithCustomContent(string content);
     }
 }

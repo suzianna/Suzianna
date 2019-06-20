@@ -21,7 +21,6 @@ namespace Suzianna.Rest.Tests.Unit.Screenplay
         {
             return Post.DataAsJson(ContentFactory.SomeContent()).To(resource);
         }
-
         protected override HttpInteraction GetHttpInteractionWithJsonContent(object content)
         {
             return Post.DataAsJson(content).To(Urls.UsersApi);
@@ -29,6 +28,10 @@ namespace Suzianna.Rest.Tests.Unit.Screenplay
         protected override HttpInteraction GetHttpInteractionWithXmlContent(object content)
         {
             return Post.DataAsXml(content).To(Urls.UsersApi);
+        }
+        protected override HttpInteraction GetHttpInteractionWithCustomContent(string content)
+        {
+            return Post.Data(content).To(Urls.UsersApi);
         }
     }
 }

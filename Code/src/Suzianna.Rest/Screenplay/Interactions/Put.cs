@@ -21,5 +21,12 @@
             put.RequestBuilder.WithPutVerb().WithContentAsXml(content);
             return put;
         }
+
+        public static Put Data(string content)
+        {
+            var put = new Put();
+            put.RequestBuilder.WithPutVerb().WithContentAsPlainText(content);
+            return put;
+        }
     }
 }

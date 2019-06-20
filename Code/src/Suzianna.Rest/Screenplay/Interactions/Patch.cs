@@ -1,4 +1,6 @@
-﻿namespace Suzianna.Rest.Screenplay.Interactions
+﻿using System.IO;
+
+namespace Suzianna.Rest.Screenplay.Interactions
 {
     public class Patch : HttpInteraction
     {
@@ -18,6 +20,13 @@
         {
             var patch = new Patch();
             patch.RequestBuilder.WithPatchVerb().WithContentAsXml(content);
+            return patch;
+        }
+
+        public static Patch Data(string content)
+        {
+            var patch = new Patch();
+            patch.RequestBuilder.WithPatchVerb().WithContentAsPlainText(content);
             return patch;
         }
     }
