@@ -23,7 +23,7 @@ namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
         {
             Reporter.StepStarted(feature.Title, scenario, TestConstants.SampleSteps.RefundedItems.GivenText);
 
-            var report = Reporter.ExportXml().ToXmlSource();
+            var report = Reporter.ExportXml();
             
             Check.That(report.EvaluateXPath("//Report/Features/FeatureNode/Scenarios/ScenarioNode/Steps/StepNode[1]/Text"))
                 .IsEqualTo(TestConstants.SampleSteps.RefundedItems.GivenText);
@@ -37,7 +37,7 @@ namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
             Reporter.StepStarted(feature.Title, scenario, TestConstants.SampleSteps.RefundedItems.WhenText);
             Reporter.StepStarted(feature.Title, scenario, TestConstants.SampleSteps.RefundedItems.ThenText);
 
-            var report = Reporter.ExportXml().ToXmlSource();
+            var report = Reporter.ExportXml();
 
             Check.That(report.EvaluateXPath("count(//Report/Features/FeatureNode/Scenarios/ScenarioNode/Steps/StepNode)").ToNumber()).IsEqualTo(4);
             Check.That(report.EvaluateXPath("//StepNode[1]/Text")).IsEqualTo(TestConstants.SampleSteps.RefundedItems.GivenText);

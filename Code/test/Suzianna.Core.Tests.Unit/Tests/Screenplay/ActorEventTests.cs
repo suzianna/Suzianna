@@ -23,11 +23,9 @@ namespace Suzianna.Core.Tests.Unit.Tests.Screenplay
         public ActorEventTests()
         {
             this.actor = Actor.Named(Names.Jack);
-            this.task = new FakeTask();
+            this.task = new DummyTask();
             this.publishedEvents = new Queue<IEvent>();
             Broadcaster.SubscribeToAllEvents(new DelegatingEventHandler(a=> publishedEvents.Enqueue(a)));
-
-
         }
 
         [Fact]
@@ -46,6 +44,11 @@ namespace Suzianna.Core.Tests.Unit.Tests.Screenplay
 
             Check.That(publishedEvents.Last()).IsInstanceOf<ActorEndsPerformanceEvent>();
             Check.That(publishedEvents.Last().As<ActorEndsPerformanceEvent>().ActorName).IsEqualTo(actor.Name);
+        }
+
+        private class DummyTask : ITask
+        {
+            public void PerformAs<T>(T actor) where T : Actor { }
         }
     }
 }

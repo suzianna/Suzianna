@@ -13,6 +13,12 @@
             this.RequestBuilder.WithResourceName(resource);
             return this;
         }
-      
+
+        public static Patch DataAsXml(object content)
+        {
+            var patch = new Patch();
+            patch.RequestBuilder.WithPatchVerb().WithContentAsXml(content);
+            return patch;
+        }
     }
 }

@@ -74,6 +74,10 @@ namespace Suzianna.Rest
         {
             return WithContent(content, ContentType.Json);
         }
+        public HttpRequestBuilder WithContentAsXml(object content)
+        {
+            return WithContent(content, ContentType.Xml);
+        }
         public HttpRequestBuilder WithContentAsPlainText(string content)
         {
             return WithContent(content, ContentType.PlainText);
@@ -120,5 +124,7 @@ namespace Suzianna.Rest
             }
             return request;
         }
+
+      
     }
 }

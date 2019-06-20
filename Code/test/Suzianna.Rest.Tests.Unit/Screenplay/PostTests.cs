@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Net.Http;
 using NFluent;
+using Suzianna.Core.Screenplay.Actors;
 using Suzianna.Rest.Screenplay.Interactions;
 using Suzianna.Rest.Tests.Unit.TestConstants;
 using Suzianna.Rest.Tests.Unit.TestUtils;
@@ -10,20 +11,24 @@ namespace Suzianna.Rest.Tests.Unit.Screenplay
 {
     public class PostTests : HttpInteractionWithContentTests
     {
+        private Actor actor;
+        public PostTests()
+        {
+            actor = ActorFactory.CreateSomeActorWithApiCallAbility(Sender);
+        }
         protected override HttpMethod GetHttpMethod() => HttpMethod.Post;
         protected override HttpInteraction GetHttpInteraction(string resource)
         {
             return Post.DataAsJson(ContentFactory.SomeContent()).To(resource);
         }
 
-        [Fact]
-        public void should_post_data_as_json_with_appropriate_content_type_header()
+        protected override HttpInteraction GetHttpInteractionWithJsonContent(object content)
         {
-            var actor = ActorFactory.CreateSomeActorWithApiCallAbility(Sender);
-
-            actor.AttemptsTo(Post.DataAsJson(ContentFactory.SomeContent()).To(Urls.UsersApi));
-
-            Check.That(Sender.GetLastSentMessage().Content.Headers.ContentType.MediaType).IsEqualTo(MediaTypes.ApplicationJson);
+            return Post.DataAsJson(content).To(Urls.UsersApi);
+        }
+        protected override HttpInteraction GetHttpInteractionWithXmlContent(object content)
+        {
+            return Post.DataAsXml(content).To(Urls.UsersApi);
         }
     }
 }

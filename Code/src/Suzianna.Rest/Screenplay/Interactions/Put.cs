@@ -14,5 +14,12 @@
             put.RequestBuilder.WithPutVerb().WithContentAsJson(content);
             return put;
         }
+
+        public static Put DataAsXml(object content)
+        {
+            var put = new Put();
+            put.RequestBuilder.WithPutVerb().WithContentAsXml(content);
+            return put;
+        }
     }
 }

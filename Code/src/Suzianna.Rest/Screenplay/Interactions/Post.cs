@@ -13,6 +13,12 @@
             this.RequestBuilder.WithResourceName(resource);
             return this;
         }
-      
+
+        public static Post DataAsXml(object content)
+        {
+            var post = new Post();
+            post.RequestBuilder.WithPostVerb().WithContentAsXml(content);
+            return post;
+        }
     }
 }

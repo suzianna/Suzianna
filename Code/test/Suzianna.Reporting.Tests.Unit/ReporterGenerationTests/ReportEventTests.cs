@@ -26,10 +26,10 @@ namespace Suzianna.Reporting.Tests.Unit.ReporterGenerationTests
         {
             Reporter.EventPublished(_feature.Title, _scenario, SampleEvents.AdminAttemptsToDefineUsers);
 
-            var report = Reporter.ExportXml().ToXmlSource();
+            var report = Reporter.ExportXml();
 
             Check.That(report.EvaluateXPath("//Report/Features/FeatureNode/Scenarios/ScenarioNode/Steps/StepNode/Events/string"))
-                 .IsEqualTo(TestConstants.SampleEvents.AdminAttemptsToDefineUsers);
+                 .IsEqualTo(SampleEvents.AdminAttemptsToDefineUsers);
         }
     }
 }
