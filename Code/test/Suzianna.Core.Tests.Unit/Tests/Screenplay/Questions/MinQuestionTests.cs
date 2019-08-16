@@ -19,7 +19,7 @@ namespace Suzianna.Core.Tests.Unit.Tests.Screenplay.Questions
         }
         
         [Fact]
-        public void should_return_maximum_value_of_answers()
+        public void should_return_minimum_value_of_answers()
         {
             var questions = QuestionTestFactory.CreateSomeQuestionsWithAnswers(40, 100, 50);
             var expectedAnswer = 40L;
@@ -30,7 +30,7 @@ namespace Suzianna.Core.Tests.Unit.Tests.Screenplay.Questions
         }
         
         [Fact]
-        public void should_return_maximum_of_results_on_complex_objects()
+        public void should_return_minimum_of_results_on_complex_objects()
         {
             var hot = new Celsius(70);
             var cold = new Celsius(25);
