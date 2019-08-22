@@ -1,8 +1,8 @@
 #tool "nuget:?package=xunit.runner.console&version=2.4.1"
 #tool "nuget:?package=GitVersion.CommandLine&version=4.0.0"
 #tool "nuget:?package=OpenCover&version=4.7.922"
-#tool nuget:?package=Codecov
-#addin nuget:?package=Cake.Codecov
+#tool nuget:?package=Codecov&version=1.5.0
+#addin nuget:?package=Cake.Codecov&version=0.6.0
 
 using System.Text.RegularExpressions;
 
