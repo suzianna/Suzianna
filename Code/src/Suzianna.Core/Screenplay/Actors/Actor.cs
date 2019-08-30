@@ -116,6 +116,10 @@ namespace Suzianna.Core.Screenplay.Actors
             return ability;
         }
 
+        /// <summary>
+        /// Performs a performable (Task or Interaction)
+        /// </summary>
+        /// <param name="tasks">Performable items to perform</param>
         public void AttemptsTo(params IPerformable[] tasks)
         {
             Broadcaster.Publish(new ActorBeginsPerformanceEvent(Name));
@@ -123,6 +127,12 @@ namespace Suzianna.Core.Screenplay.Actors
             Broadcaster.Publish(new ActorEndsPerformanceEvent(Name));
         }
 
+        /// <summary>
+        /// Ask a question about the state of the SUT and returns the result
+        /// </summary>
+        /// <typeparam name="T">The type of answer</typeparam>
+        /// <param name="question">Question to be asked</param>
+        /// <returns>The answer of the question</returns>
         public T AsksFor<T>(IQuestion<T> question)
         {
             return question.AnsweredBy(this);
@@ -133,11 +143,25 @@ namespace Suzianna.Core.Screenplay.Actors
             return AsksFor(question);
         }
 
+        /// <summary>
+        /// Puts some value into the actor's memory so actor can remember it later
+        /// </summary>
+        /// <param name="key">The key which use to retrieve the value</param>
+        /// <param name="value">Value that stored in the actor's memory</param>
+        /// <exception cref="ArgumentException">Thrown when an item with the same key has been remembered before</exception>
         public void Remember(string key, object value)
         {
             notepad.WriteDown(key, value);
         }
 
+        /// <summary>
+        /// Answers the question and put the answer of question in actor's memory so actor can remember it later
+        /// </summary>
+        /// <typeparam name="T">The type of answer</typeparam>
+        /// <param name="key">The key which use to retrieve the value</param>
+        /// <param name="question">Question to be asked</param>
+        /// <returns>The answer of the question</returns>
+        /// <exception cref="ArgumentException">Thrown when an item with the same key has been remembered before</exception>
         public T Remember<T>(string key, IQuestion<T> question)
         {
             var answer = question.AnsweredBy(this);
@@ -145,11 +169,24 @@ namespace Suzianna.Core.Screenplay.Actors
             return answer;
         }
 
+        /// <summary>
+        /// Recalls a value from actor's memory
+        /// </summary>
+        /// <typeparam name="T">The type of value</typeparam>
+        /// <param name="key">The key to retrieve the value</param>
+        /// <returns>Value stored with specified key in the actor's memory</returns>
+        /// <exception cref="KeyNotFoundException">Thrown when key is not present in actor's memory</exception>
+        /// <exception cref="InvalidCastException">Thrown when cast from type of stored value to type of T is not valid</exception>
         public T Recall<T>(string key)
         {
             return notepad.Read<T>(key);
         }
 
+        /// <summary>
+        /// Checks if a value with given key has been remembered before
+        /// </summary>
+        /// <param name="key">The key to retrieve the value</param>
+        /// <returns>true if actor can recall a value from memory</returns>
         public bool CanRecall(string key)
         {
             return notepad.HasWroteDown(key);
