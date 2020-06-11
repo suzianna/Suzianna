@@ -1,10 +1,6 @@
-﻿using System.Linq;
-using System.Net.Http;
-using FluentAssertions;
+﻿using System.Net.Http;
 using Suzianna.Rest.Screenplay.Interactions;
-using Suzianna.Rest.Tests.Unit.TestConstants;
 using Suzianna.Rest.Tests.Unit.TestUtils;
-using Xunit;
 
 namespace Suzianna.Rest.Tests.Unit.Screenplay
 {
