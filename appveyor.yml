@@ -1,5 +1,5 @@
 version: 0.0.{build}
-image: Visual Studio 2017
+image: Visual Studio 2019
 configuration: Release
 for:
   -
@@ -7,14 +7,12 @@ for:
       only:
         - master
     build_script:
-      - ps: .\BuildScript\build.ps1 -Script BuildScript/build.cake -shouldPublish="True" -BranchName="master"
+      - ps: .\build.ps1 --target PushNugetPackages
   -
     branches:
-      only:
-        - develop
+      except:
+        - master
     build_script:
-      - ps: .\BuildScript\build.ps1 -Script BuildScript/build.cake -shouldPublish="False" -BranchName="develop"
-cache:
-  - BuildScript\tools
+      - ps: .\build.ps1 --target RunUnitTests
 test: off
 deploy: off
