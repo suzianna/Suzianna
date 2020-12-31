@@ -27,9 +27,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suzianna.Hosting.Tests.Inte
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suzianna.Rest.Tests.Integration", "test\Suzianna.Rest.Tests.Integration\Suzianna.Rest.Tests.Integration.csproj", "{D4C869CF-7511-4E03-96B7-56E20117A478}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Suzianna.Reporting", "src\Suzianna.Reporting\Suzianna.Reporting.csproj", "{D73B5F42-231C-4EE9-A5AD-63F648AEEEEA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suzianna.Reporting", "src\Suzianna.Reporting\Suzianna.Reporting.csproj", "{D73B5F42-231C-4EE9-A5AD-63F648AEEEEA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Suzianna.Reporting.Tests.Unit", "test\Suzianna.Reporting.Tests.Unit\Suzianna.Reporting.Tests.Unit.csproj", "{CE9364BE-2354-4EBC-BF3F-2317C8DDA885}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suzianna.Reporting.Tests.Unit", "test\Suzianna.Reporting.Tests.Unit\Suzianna.Reporting.Tests.Unit.csproj", "{CE9364BE-2354-4EBC-BF3F-2317C8DDA885}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "..\BuildScript\_build.csproj", "{495643A9-F1C4-491E-B6A1-7EB2E9F7EDE7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{B343DED0-55B6-4E9C-9C7B-AA34A299D1F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,6 +81,8 @@ Global
 		{CE9364BE-2354-4EBC-BF3F-2317C8DDA885}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE9364BE-2354-4EBC-BF3F-2317C8DDA885}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE9364BE-2354-4EBC-BF3F-2317C8DDA885}.Release|Any CPU.Build.0 = Release|Any CPU
+		{495643A9-F1C4-491E-B6A1-7EB2E9F7EDE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{495643A9-F1C4-491E-B6A1-7EB2E9F7EDE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -94,6 +100,7 @@ Global
 		{D4C869CF-7511-4E03-96B7-56E20117A478} = {1D04D148-C088-4074-B3D4-2CF9AAB9BB73}
 		{D73B5F42-231C-4EE9-A5AD-63F648AEEEEA} = {115F2B78-6D70-47AD-B931-03F890315DCD}
 		{CE9364BE-2354-4EBC-BF3F-2317C8DDA885} = {370E192C-D0CA-492F-8BCA-F13A764ECC73}
+		{495643A9-F1C4-491E-B6A1-7EB2E9F7EDE7} = {B343DED0-55B6-4E9C-9C7B-AA34A299D1F2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {10110833-F56D-4316-BC70-01C3573FC979}
