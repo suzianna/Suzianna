@@ -8,35 +8,99 @@ using Suzianna.Core.Screenplay.Questions;
 using Suzianna.Rest.Screenplay.Abilities;
 using Suzianna.Rest.Screenplay.Interactions;
 using Suzianna.Rest.Screenplay.Questions;
-using Suzianna.Rest.Tests.Integration.Collections;
-using Suzianna.Rest.Tests.Integration.Constants;
 using Suzianna.Rest.Tests.Integration.Model;
 using Xunit;
 
 namespace Suzianna.Rest.Tests.Integration
 {
-    [Collection(TestCollections.NeedsHost)]
     public class RestTests
     {
-        private readonly HostFixture _fixture;
-        public RestTests(HostFixture fixture)
+        [Fact]
+        public void Define_a_new_user()
         {
-            _fixture = fixture;
+            var jack = Actor.Named("Jack").WhoCan(CallAnApi.At("https://reqres.in"));
+            var user = new User { Name = "Sarah", Job = "Software Architect"};
+
+            jack.AttemptsTo(CreateAn(user));
+
+            jack.Should(See.That(LastResponse.Content<CreateUserResponse>()))
+                .Considering().All.Properties.HasFieldsWithSameValues(user);
+            jack.Should(See.That(LastResponse.StatusCode()))
+                .IsEqualTo(HttpStatusCode.Created);
+        }
+
+        public static Post CreateAn(User user)
+        {
+            return Post.DataAsJson(user).To("api/Users");
         }
 
         [Fact]
-        public void should_post_a_person_to_api()
+        public void Fetch_user_by_id()
         {
-            var jack = Actor.Named("Jack").WhoCan(CallAnApi.At(_fixture.Host.BaseUrl));
-            var person = new CreatePerson { Firstname = "Sarah", Lastname = "Ohara"};
+            var jack = Actor.Named("Jack").WhoCan(CallAnApi.At("https://reqres.in"));
+            var expectedResponse = new GetUserByIdResponse(id: 2, name: "fuchsia rose");
 
-            jack.AttemptsTo(Post.DataAsJson(person).To("api/People"));
-            var resourceLocation = jack.AsksFor(LastResponse.Header(HttpHeaders.Location));
+            jack.AttemptsTo(FetchUserById(2));
 
-            jack.AttemptsTo(Get.ResourceAt(resourceLocation));
+            jack.Should(See.That(LastResponse.Content<GetUserByIdResponse>()))
+                .Considering().All.Properties.HasFieldsWithSameValues(expectedResponse);
+            jack.Should(See.That(LastResponse.StatusCode())).IsEqualTo(HttpStatusCode.OK);
+        }
 
-            jack.Should(See.That(LastResponse.Content<Person>()))
-                .Considering().All.Properties.HasFieldsWithSameValues(person);
+        private static Get FetchUserById(int id)
+        {
+            return Get.ResourceAt($"api/Users/{id}");
+        }
+        [Fact]
+        public void Modify_entire_user()
+        {
+            var jack = Actor.Named("Jack").WhoCan(CallAnApi.At("https://reqres.in"));
+            var user = new User { Name = "Sarah", Job = "Software Architect" };
+
+            jack.AttemptsTo(ModifyEntire(user));
+
+            jack.Should(See.That(LastResponse.Content<ModifyUserResponse>()))
+                .Considering().All.Properties.HasFieldsWithSameValues(user);
+            jack.Should(See.That(LastResponse.StatusCode())).IsEqualTo(HttpStatusCode.OK);
+        }
+
+        private static Put ModifyEntire(User user)
+        {
+            return Put.DataAsJson(user).To("api/Users/2");
+        }
+
+        [Fact]
+        public void Modify_part_of_an_user()
+        {
+            var jack = Actor.Named("Jack").WhoCan(CallAnApi.At("https://reqres.in"));
+            var user = new User { Name = "Sarah", Job = "Software Architect" };
+
+            jack.AttemptsTo(ModifyPartOf(user));
+
+            jack.Should(See.That(LastResponse.Content<ModifyUserResponse>()))
+                .Considering().All.Properties.HasFieldsWithSameValues(user);
+            jack.Should(See.That(LastResponse.StatusCode())).IsEqualTo(HttpStatusCode.OK);
+        }
+
+        private static Patch ModifyPartOf(User user)
+        {
+            return Patch.DataAsJson(user).To("api/users/2");
+        }
+        [Fact]
+        public void Delete_an_user()
+        {
+            var jack = Actor.Named("Jack").WhoCan(CallAnApi.At("https://reqres.in"));
+            var user = new User { Name = "Sarah", Job = "Software Architect" };
+
+            jack.AttemptsTo(DeleteAn(user));
+
+            jack.Should(See.That(LastResponse.Content<object>())).IsNull();
+            jack.Should(See.That(LastResponse.StatusCode())).IsEqualTo(HttpStatusCode.NoContent);
+        }
+
+        private static Delete DeleteAn(User user)
+        {
+            return Delete.From("api/users/2");
         }
     }
 }

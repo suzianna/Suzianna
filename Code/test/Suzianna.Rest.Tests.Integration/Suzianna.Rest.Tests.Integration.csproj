@@ -15,7 +15,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Suzianna.Core\Suzianna.Core.csproj" />
-    <ProjectReference Include="..\..\src\Suzianna.Hosting\Suzianna.Hosting.csproj" />
     <ProjectReference Include="..\..\src\Suzianna.Rest\Suzianna.Rest.csproj" />
   </ItemGroup>
 
