@@ -10,6 +10,8 @@ variables:
   isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
 
 steps:
+- script: chmod +x ./build.sh
+  displayName: 'Add Execution permission to shell script'
 - script: ./build.sh --target PushNugetPackages
   condition: eq(variables.isMain, true)
   displayName: 'Buildscript ⚙️'
