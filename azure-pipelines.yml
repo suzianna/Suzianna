@@ -10,9 +10,9 @@ variables:
   isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
 
 steps:
-- script: .\build.sh --target PushNugetPackages
+- script: ./build.sh --target PushNugetPackages
   condition: eq(variables.isMain, true)
   displayName: 'Buildscript ⚙️'
-- script: .\build.sh --target RunUnitTests
+- script: ./build.sh --target RunUnitTests
   condition: eq(variables.isMain, false)
   displayName: 'Buildscript ⚙️'
