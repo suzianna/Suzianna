@@ -10,9 +10,7 @@ namespace Suzianna.WebDriver.Screenplay.Interactions
 {
     public abstract class WebInteraction : IInteraction
     {
-        public void PerformAs<T>(T actor) where T : Actor
-        {
-        }
+        public abstract void PerformAs<T>(T actor) where T : Actor;
 
         public IWebDriver GetDriver(Actor actor)
         {
