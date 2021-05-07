@@ -14,5 +14,17 @@
             RequestBuilder.WithDeleteVerb().WithContentAsJson(content);
             return this;
         }
+        public Delete DataAsXml(object content)
+        {
+            var delete = new Delete();
+            delete.RequestBuilder.WithPostVerb().WithContentAsXml(content);
+            return delete;
+        }
+        public Delete Data(string content)
+        {
+            var delete = new Delete();
+            delete.RequestBuilder.WithPostVerb().WithContentAsPlainText(content);
+            return delete;
+        }
     }
 }
