@@ -1,7 +1,7 @@
 using System;
 using NFluent;
-using NSubstitute;
 using Suzianna.Core.Screenplay;
+using Suzianna.Core.Screenplay.Actors;
 using Suzianna.Core.Tests.Unit.Utils;
 using Suzianna.Core.Tests.Unit.Utils.Constants;
 using Suzianna.Core.Tests.Unit.Utils.TestDoubles;
@@ -59,14 +59,16 @@ namespace Suzianna.Core.Tests.Unit.Tests.Screenplay
         [Fact]
         public void should_perform_tasks()
         {
-            var fetchUser = Substitute.For<IPerformable>();
-            var saveUser = Substitute.For<IPerformable>();
+            var fetchUser = new StubPerformable();
+            var saveUser = new StubPerformable();
             var jack = new Actor(Names.Jack);
 
             jack.AttemptsTo(fetchUser, saveUser);
 
-            fetchUser.Received(1).PerformAs(jack);
-            saveUser.Received(1).PerformAs(jack);
+            Check.That(fetchUser.LatestPerformer()).IsEqualTo(jack);
+            Check.That(fetchUser.PerformTimes()).IsEqualTo(1);
+            Check.That(saveUser.LatestPerformer()).IsEqualTo(jack);
+            Check.That(saveUser.PerformTimes()).IsEqualTo(1);
         }
 
         [Fact]

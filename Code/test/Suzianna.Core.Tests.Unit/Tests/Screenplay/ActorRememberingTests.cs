@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using NFluent;
 using Suzianna.Core.Screenplay;
+using Suzianna.Core.Screenplay.Actors;
 using Suzianna.Core.Screenplay.Questions;
 using Suzianna.Core.Tests.Unit.Utils.Constants;
 using Suzianna.Core.Tests.Unit.Utils.TestDoubles;
@@ -67,6 +68,24 @@ namespace Suzianna.Core.Tests.Unit.Tests.Screenplay
             actor.Remember(key, value);
 
             actor.Should(See.That(Remember.ValueOf<long>(key))).IsEqualTo(value);
+        }
+
+        [Fact]
+        public void actor_should_tell_if_he_can_recall_something()
+        {
+            actor.Remember(key, value);
+
+            var canRecall = actor.CanRecall(key);
+
+            Check.That(canRecall).IsTrue();
+        }
+
+        [Fact]
+        public void actor_should_tell_if_he_can_not_recall_something()
+        {
+            var canRecall = actor.CanRecall(key);
+
+            Check.That(canRecall).IsFalse();
         }
     }
 }

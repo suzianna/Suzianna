@@ -1,10 +1,15 @@
-#tool "nuget:?package=xunit.runner.console"
-#tool "nuget:?package=GitVersion.CommandLine"
+#tool "nuget:?package=xunit.runner.console&version=2.4.1"
+#tool "nuget:?package=GitVersion.CommandLine&version=4.0.0"
+#tool "nuget:?package=OpenCover&version=4.7.922"
+#tool nuget:?package=Codecov
+#addin nuget:?package=Cake.Codecov
 
 using System.Text.RegularExpressions;
 
 var solutionPath = Argument("SolutionPath", "../Code/Suzianna.sln");
 var buildNumber = Argument("BuildNumber","0");
+var shouldPublish = Argument("ShouldPublish", false);
+var branchName = Argument("BranchName", "");
 
 var projects = GetFiles("../Code/src/**/*.csproj");
 var unitTestProjects = GetFiles("../Code/test/**/*Tests.Unit.csproj");
@@ -67,13 +72,44 @@ Task("Build")
         }
     });
 
+Task("Prepare-Test-Result-Folder")
+    .Does(() =>
+    {
+        EnsureDirectoryExists("./test-results");
+        CleanDirectories("./test-results");
+    }
+);
+
 Task("Run-Unit-Tests")
     .Does(() =>
     {
         foreach(var file in unitTestProjects) {
-            DotNetCoreTest(file.FullPath);
+            var name = System.IO.Path.GetFileName(file.FullPath).Replace(".Tests.Unit.csproj","");
+
+            var settings = new OpenCoverSettings().WithFilter("+[" + name + "*]*").WithFilter("-[*Tests*]*");
+            settings.MergeOutput = true;
+            settings.OldStyle = true;
+
+            OpenCover(tool => {
+                tool.DotNetCoreTest(file.FullPath);
+            },
+                new FilePath("./test-results/result.xml"),
+                settings
+            );
         }
-    });
+});
+
+Task("Publish-Unit-Tests-Coverage-Result")
+    .WithCriteria(isRunningOnCiServer)
+    .Does(() =>
+    {
+        Codecov(new CodecovSettings(){
+            Files = new[] { "./test-results/result.xml" },
+            Token = EnvironmentVariable("CODECOV_TOKEN"),
+            Branch = branchName
+        });
+    }
+);
 
 Task("Run-Integration-Tests")
     .Does(() =>
@@ -84,7 +120,7 @@ Task("Run-Integration-Tests")
     });
 
 Task("Create-Nuget-Packages")
-    .WithCriteria(isRunningOnCiServer)
+    .WithCriteria(isRunningOnCiServer && shouldPublish)
     .Does(()=>
     {
         CleanDirectories("./artifacts/**");
@@ -101,7 +137,7 @@ Task("Create-Nuget-Packages")
     });
 
 Task("Push-Nuget-Packages")
-    .WithCriteria(isRunningOnCiServer)
+    .WithCriteria(isRunningOnCiServer && shouldPublish)
     .Does(() =>
     {
         var files = System.IO.Directory.GetFiles("./artifacts", "*.nupkg").Select(z => new FilePath(z)).ToList();
@@ -122,7 +158,9 @@ Task("Default")
     .IsDependentOn("Restore-NuGet-Packages")
     .IsDependentOn("Version")
     .IsDependentOn("Build")
+    .IsDependentOn("Prepare-Test-Result-Folder")
     .IsDependentOn("Run-Unit-Tests")
+    .IsDependentOn("Publish-Unit-Tests-Coverage-Result")
     .IsDependentOn("Run-Integration-Tests")
     .IsDependentOn("Create-Nuget-Packages")
     .IsDependentOn("Push-Nuget-Packages")

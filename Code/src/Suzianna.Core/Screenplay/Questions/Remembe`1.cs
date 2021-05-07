@@ -1,4 +1,6 @@
-﻿namespace Suzianna.Core.Screenplay.Questions
+﻿using Suzianna.Core.Screenplay.Actors;
+
+namespace Suzianna.Core.Screenplay.Questions
 {
     internal class Remember<T> : IQuestion<T>
     {

@@ -1,10 +1,20 @@
 version: 0.0.{build}
 image: Visual Studio 2017
 configuration: Release
-branches:
-  only:
-    - master
-build_script:
-  - ps: .\BuildScript\build.ps1 -Script BuildScript/build.cake
+for:
+  -
+    branches:
+      only:
+        - master
+    build_script:
+      - ps: .\BuildScript\build.ps1 -Script BuildScript/build.cake -shouldPublish="True" -BranchName="master"
+  -
+    branches:
+      only:
+        - develop
+    build_script:
+      - ps: .\BuildScript\build.ps1 -Script BuildScript/build.cake -shouldPublish="False" -BranchName="develop"
+cache:
+  - BuildScript\tools
 test: off
 deploy: off
