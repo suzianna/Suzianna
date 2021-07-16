@@ -3,7 +3,7 @@ trigger:
 - develop
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'ubuntu-18.04'
 
 variables:
   buildConfiguration: 'Release'
