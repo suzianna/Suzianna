@@ -3,7 +3,7 @@ trigger:
 - develop
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'ubuntu-18.04'
 
 variables:
   buildConfiguration: 'Release'
@@ -12,9 +12,17 @@ variables:
 steps:
 - script: chmod +x ./build.sh
   displayName: 'Add Execution permission to shell script'
-- script: ./build.sh --target PushNugetPackages
+- script: ./build.sh --target Information --skip
+  displayName: 'Information ℹ'
+- script: ./build.sh --target Preparation --skip
+  displayName: 'Preparation 🏗'
+- script: ./build.sh --target Compile Restore Clean --skip
+  displayName: 'Compile ⚙️'
+- script: ./build.sh --target RunUnitTests --skip
+  displayName: 'Run Unit Tests 🧪'
+- script: ./build.sh --target PushNugetPackages PackNugetPackages --skip
   condition: eq(variables.isMain, true)
-  displayName: 'Buildscript ⚙️'
-- script: ./build.sh --target RunUnitTests
-  condition: eq(variables.isMain, false)
-  displayName: 'Buildscript ⚙️'
+  displayName: 'Pack & Push Nuget Packages 📦'
+  env:
+    NugetServerUrl: $(NUGETSERVERURL)
+    NugetApiKey: $(NUGETAPIKEY)

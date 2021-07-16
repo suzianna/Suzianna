@@ -4,6 +4,7 @@ namespace Suzianna.Rest.Screenplay.Interactions
 {
     public class Patch : HttpInteraction
     {
+        private Patch() { }
         public static Patch DataAsJson(object content)
         {
             var patch = new Patch();
