@@ -2,6 +2,7 @@
 {
     public class Post : HttpInteraction
     {
+        private Post() { }
         public static Post DataAsJson(object content)
         {
             var post = new Post();

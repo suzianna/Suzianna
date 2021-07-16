@@ -2,6 +2,7 @@
 {
     public class Put : HttpInteraction
     {
+        private Put() { }
         public Put To(string resource)
         {
             this.RequestBuilder.WithResourceName(resource);
