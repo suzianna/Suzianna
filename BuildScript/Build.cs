@@ -47,6 +47,7 @@ class Build : NukeBuild
             Logger.Info($"TestResultDirectory : {TestResultDirectory}");
             Logger.Info($"NugetOutputDirectory : {NugetOutputDirectory}");
             Logger.Info($"NugetOutputDirectory : {NugetServerUrl}");
+            Logger.Info($"GitVersion.NuGetVersionV2 : {GitVersion.NuGetVersionV2}");
         });
 
     Target Preparation => _ => _
@@ -54,6 +55,7 @@ class Build : NukeBuild
         .Executes(() =>
         {
             EnsureCleanDirectory(TestResultDirectory);
+            EnsureCleanDirectory(NugetOutputDirectory);
         });
 
     Target Clean => _ => _

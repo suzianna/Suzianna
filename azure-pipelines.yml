@@ -23,3 +23,6 @@ steps:
 - script: ./build.sh --target PushNugetPackages PackNugetPackages --skip
   condition: eq(variables.isMain, true)
   displayName: 'Pack & Push Nuget Packages 📦'
+  env:
+    NugetServerUrl: $(NUGETSERVERURL)
+    NugetApiKey: $(NUGETAPIKEY)
