@@ -18,7 +18,7 @@ namespace Suzianna.Rest.Screenplay.Questions
         }
         public string AnsweredBy(Actor actor)
         {
-            var callApi = actor.FindAbility<CallAnApi>();
+            var callApi = actor.AbilityTo<CallAnApi>();
             return callApi.LastResponse.Headers.FirstOrDefault(a => a.Key == this._key).Value.FirstOrDefault();
         }
     }

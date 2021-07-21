@@ -19,7 +19,7 @@ namespace Suzianna.Rest.Screenplay.Interactions
 
         public void PerformAs<T>(T actor) where T : Actor
         {
-            var ability = actor.FindAbility<CallAnApi>();
+            var ability = actor.AbilityTo<CallAnApi>();
             var request = RequestBuilder.WithBaseUrl(ability.BaseUrl).Build();
             Broadcaster.Publish(new StartSendingHttpRequestEvent(actor, request));
             if (ActorHasAccessToken(actor)) request = AddAccessTokenToHeader(actor, request);

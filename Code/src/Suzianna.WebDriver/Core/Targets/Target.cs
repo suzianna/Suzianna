@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using NFluent.Helpers;
 using OpenQA.Selenium;
 using Suzianna.Core.Functional;
 using Suzianna.Core.Screenplay.Actors;
 
-namespace Suzianna.WebDriver.Screenplay.Targets
+namespace Suzianna.WebDriver.Pages.Targets
 {
     public abstract class Target
     {

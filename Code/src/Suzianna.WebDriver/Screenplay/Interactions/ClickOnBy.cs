@@ -32,7 +32,5 @@ namespace Suzianna.WebDriver.Screenplay.Interactions
             this._clickStrategy = ClickStrategy.Immediate;
             return this;
         }
-
-        
     }
 }

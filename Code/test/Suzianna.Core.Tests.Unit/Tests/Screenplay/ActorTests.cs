@@ -77,7 +77,7 @@ namespace Suzianna.Core.Tests.Unit.Tests.Screenplay
             var callAnApi = new CallApiAbility();
             var actor = Actor.Named(Names.Jack).WhoCan(callAnApi);
 
-            var ability = actor.FindAbility<CallApiAbility>();
+            var ability = actor.AbilityTo<CallApiAbility>();
 
             Check.That(ability).IsEqualTo(callAnApi);
         }
@@ -87,7 +87,7 @@ namespace Suzianna.Core.Tests.Unit.Tests.Screenplay
         {
             var actor = Actor.Named(Names.Jack);
 
-            Action findAbility = ()=> actor.FindAbility<CallApiAbility>();
+            Action findAbility = ()=> actor.AbilityTo<CallApiAbility>();
 
             Check.ThatCode(findAbility).Throws<ActorIsUnableException<CallApiAbility>>();
         }

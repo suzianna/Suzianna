@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using Suzianna.Core.Functional;
 using Suzianna.Core.Screenplay.Actors;
 using Suzianna.WebDriver.Screenplay.Abilities;
+using ExpectedConditions = SeleniumExtras.WaitHelpers.ExpectedConditions;
 
-namespace Suzianna.WebDriver.Screenplay.Targets
+namespace Suzianna.WebDriver.Pages.Targets
 {
     public class ByTarget : Target
     {
@@ -24,7 +23,7 @@ namespace Suzianna.WebDriver.Screenplay.Targets
 
         public override IWebElement ResolveFor(Actor actor)
         {
-            var driver = actor.FindAbility<BrowseTheWeb>().WebDriver;
+            var driver = actor.AbilityTo<BrowseTheWeb>().WebDriver;
             if (this.Timeout.HasValue)
             {
                 var wait = new WebDriverWait(driver, this.Timeout.Value);

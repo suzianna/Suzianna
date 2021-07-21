@@ -10,7 +10,7 @@ namespace Suzianna.Rest.Screenplay.Questions
     {
         public T AnsweredBy(Actor actor)
         {
-            var apiAbility = actor.FindAbility<CallAnApi>();
+            var apiAbility = actor.AbilityTo<CallAnApi>();
             var content = apiAbility.LastResponse.Content.ReadAsStringAsync().Result;
             return JsonConvert.DeserializeObject<T>(content);
         }

@@ -108,7 +108,7 @@ namespace Suzianna.Core.Screenplay.Actors
         /// <typeparam name="T">A type that inherits from the <see cref="IAbility"/> interface</typeparam>
         /// <exception cref="ActorIsUnableException{T}">Thrown when requested ability is not in the abilities of actor</exception>
         /// <returns>The founded ability</returns>
-        public T FindAbility<T>() where T : IAbility
+        public T AbilityTo<T>() where T : IAbility
         {
             var ability = _abilities.OfType<T>().FirstOrDefault();
             if (ability == null)
