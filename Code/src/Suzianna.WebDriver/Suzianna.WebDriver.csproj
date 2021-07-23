@@ -5,6 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="XXX_Core\**" />
+    <Compile Remove="XXX_Screenplay\**" />
+    <EmbeddedResource Remove="XXX_Core\**" />
+    <EmbeddedResource Remove="XXX_Screenplay\**" />
+    <None Remove="XXX_Core\**" />
+    <None Remove="XXX_Screenplay\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="DotNetSeleniumExtras.WaitHelpers" Version="3.11.0" />
     <PackageReference Include="selenium.support" Version="3.141.0" />
     <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
@@ -12,6 +21,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Suzianna.Core\Suzianna.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Core\" />
+    <Folder Include="Screenplay\Actors\" />
   </ItemGroup>
 
 </Project>

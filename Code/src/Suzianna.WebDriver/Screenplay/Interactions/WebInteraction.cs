@@ -11,7 +11,7 @@ namespace Suzianna.WebDriver.Screenplay.Interactions
     public abstract class WebInteraction : IInteraction
     {
         public abstract void PerformAs<T>(T actor) where T : Actor;
-        public IWebDriver GetDriver(Actor actor)
+        protected IWebDriver GetDriver(Actor actor)
         {
             var ability = actor.AbilityTo<BrowseTheWeb>();
             return ability.WebDriver;

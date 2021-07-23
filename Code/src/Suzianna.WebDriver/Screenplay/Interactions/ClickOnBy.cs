@@ -2,35 +2,31 @@
 using System.Collections.Generic;
 using System.Text;
 using OpenQA.Selenium;
+using Suzianna.Core.Screenplay.Actors;
 
 namespace Suzianna.WebDriver.Screenplay.Interactions
 {
-    public class ClickOnBy : ByAction, IClickInteraction<ClickOnBy>
+    internal class ClickOnBy : ByAction, IClickInteraction
     {
-        private ClickStrategy _clickStrategy = ClickStrategy.WaitUntilPresent;
-        public ClickOnBy(params By[] locator) : base(locator)
-        {
-        }
+        public ClickOnBy(By selector) : base(selector) { }
         public override void PerformAs<T>(T actor)
         {
             throw new NotImplementedException();
         }
-        public ClickOnBy AfterWaitingUntilEnabled()
+
+        public IClickInteraction AfterWaitingUntilEnabled()
         {
-            this._clickStrategy = ClickStrategy.WaitUntilEnabled;
-            return this;
+            throw new NotImplementedException();
         }
 
-        public ClickOnBy AfterWaitingUntilPresent()
+        public IClickInteraction AfterWaitingUntilPresent()
         {
-            this._clickStrategy = ClickStrategy.WaitUntilPresent;
-            return this;
+            throw new NotImplementedException();
         }
 
-        public ClickOnBy WithNoDelay()
+        public IClickInteraction WithNoDelay()
         {
-            this._clickStrategy = ClickStrategy.Immediate;
-            return this;
+            throw new NotImplementedException();
         }
     }
 }

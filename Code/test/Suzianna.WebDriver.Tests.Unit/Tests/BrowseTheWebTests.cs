@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using NFluent;
+using NSubstitute;
+using OpenQA.Selenium;
 using Suzianna.WebDriver.Screenplay.Abilities;
-using Suzianna.WebDriver.Tests.Unit.TestDoubles;
 using Xunit;
 
 namespace Suzianna.WebDriver.Tests.Unit.Tests
@@ -11,13 +13,13 @@ namespace Suzianna.WebDriver.Tests.Unit.Tests
     public class BrowseTheWebTests
     {
         [Fact]
-        public void ability_to_browse_the_web_needs_a_web_driver()
+        public void browsing_the_web_is_powered_by_a_driver()
         {
-            var driver = new SpyWebDriver();
+            var driver = Substitute.For<IWebDriver>();
 
-            var ability = BrowseTheWeb.With(driver);
+            var browseTheWebAbility = BrowseTheWeb.With(driver);
 
-            Check.That(ability.WebDriver).IsEqualTo(driver);
+            Check.That(browseTheWebAbility.WebDriver).IsEqualTo(driver);
         }
     }
 }
