@@ -19,16 +19,26 @@ using Xunit;
 
 namespace Suzianna.WebDriver.Tests.Integration
 {
-    public class OpeningPageTests : DriverIntegrationTest
+    public class MakingAssertionsOnElements : DriverIntegrationTest
     {
         [Fact]
-        public void can_open_a_page()
+        public void can_make_assertions_about_text_of_web_elements()
         {
             var actor = Actor.Named("jack").WhoCan(BrowseTheWeb.With(Driver));
 
             actor.AttemptsTo(Open.The(Home));
 
             actor.Should(See.That(HomePage.Title())).IsEqualTo("The Screenplay Demo");
+        }
+        
+        [Fact]
+        public void can_make_assertions_about_enable_of_web_elements()
+        {
+            var actor = Actor.Named("jack").WhoCan(BrowseTheWeb.With(Driver));
+
+            actor.AttemptsTo(Open.The(Home));
+
+            actor.Should(See.That(HomePage.BoatEnable())).IsFalse();
         }
     }
 }
