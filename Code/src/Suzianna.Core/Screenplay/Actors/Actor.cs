@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using NFluent;
 using Suzianna.Core.Events;
 using Suzianna.Core.Screenplay.Actors.Events;
@@ -120,10 +121,13 @@ namespace Suzianna.Core.Screenplay.Actors
         /// Performs a performable (Task or Interaction)
         /// </summary>
         /// <param name="tasks">Performable items to perform</param>
-        public void AttemptsTo(params IPerformable[] tasks)
+        public async Task AttemptsTo(params IPerformable[] tasks)
         {
             Broadcaster.Publish(new ActorBeginsPerformanceEvent(Name));
-            foreach (var performable in tasks) performable.PerformAs(this);
+            foreach (var performable in tasks)
+            {
+                await performable.PerformAs(this);
+            }
             Broadcaster.Publish(new ActorEndsPerformanceEvent(Name));
         }
 

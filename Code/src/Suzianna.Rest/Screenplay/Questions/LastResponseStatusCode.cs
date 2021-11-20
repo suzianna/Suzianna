@@ -11,7 +11,7 @@ namespace Suzianna.Rest.Screenplay.Questions
         public HttpStatusCode AnsweredBy(Actor actor)
         {
             var callApi = actor.FindAbility<CallAnApi>();
-            return callApi.LastResponse.StatusCode;
+            return callApi.LastResponseStatusCode;
         }
     }
 }

@@ -9,10 +9,10 @@ namespace Suzianna.Rest.Events
 {
     public class HttpRequestSentEvent : ISelfDescriptiveEvent
     {
-        public HttpRequestSentEvent(HttpResponseMessage response)
+        public HttpRequestSentEvent(HttpStatusCode responseCode, string responseContent)
         {
-            this.ResponseCode = response.StatusCode;
-            this.ResponseContent = response.Content?.ReadAsStringAsync().Result;
+            ResponseCode = responseCode;
+            ResponseContent = responseContent;
         }
 
         public HttpStatusCode ResponseCode { get; private set; }

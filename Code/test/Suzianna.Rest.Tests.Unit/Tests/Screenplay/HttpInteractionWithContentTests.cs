@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using NFluent;
 using Org.XmlUnit.Builder;
 using Org.XmlUnit.Xpath;
@@ -18,11 +19,11 @@ namespace Suzianna.Rest.Tests.Unit.Tests.Screenplay
         }
 
         [Fact]
-        public void should_send_request_content_headers()
+        public async Task should_send_request_content_headers()
         {
             var actor = ActorFactory.CreateSomeActorWithApiCallAbility(Sender);
 
-            actor.AttemptsTo(GetHttpInteraction(Urls.UsersApi)
+            await actor.AttemptsTo(GetHttpInteraction(Urls.UsersApi)
                 .WithHeader(HttpHeaders.ContentEncoding, ContentEncodings.GZip));
 
             Check.That(Sender.GetLastSentMessage().Content.Headers.ContentEncoding.First()).IsEqualTo(ContentEncodings.GZip);
@@ -30,61 +31,60 @@ namespace Suzianna.Rest.Tests.Unit.Tests.Screenplay
 
 
         [Fact]
-        public void should_send_request_as_json_with_correct_serialization()
+        public async Task should_send_request_as_json_with_correct_serialization()
         {
             var content = new Package { Title = "Suzianna", Version = "1.0"};
             var expectedJson = "{\"Title\":\"Suzianna\",\"Version\":\"1.0\"}";
             var actor = ActorFactory.CreateSomeActorWithApiCallAbility(Sender);
 
-            actor.AttemptsTo(GetHttpInteractionWithJsonContent(content));
+            await actor.AttemptsTo(GetHttpInteractionWithJsonContent(content));
 
-            Check.That(Sender.GetLastSentMessage().Content.ReadAsStringAsync().Result).IsEqualTo(expectedJson);
+            Check.That(await Sender.GetLastSentMessage().Content.ReadAsStringAsync()).IsEqualTo(expectedJson);
         }
 
         [Fact]
-        public void should_send_request_as_json_with_content_type_header()
+        public async Task should_send_request_as_json_with_content_type_header()
         {
             var actor = ActorFactory.CreateSomeActorWithApiCallAbility(Sender);
 
-            actor.AttemptsTo(GetHttpInteractionWithJsonContent(ContentFactory.SomeContent()));
+            await actor.AttemptsTo(GetHttpInteractionWithJsonContent(ContentFactory.SomeContent()));
 
             Check.That(Sender.GetLastSentMessage().Content.Headers.ContentType.MediaType).IsEqualTo(MediaTypes.ApplicationJson);
         }
 
         [Fact]
-        public void should_send_request_as_xml_with_correct_serialization()
+        public async Task should_send_request_as_xml_with_correct_serialization()
         {
             var content = new Package { Title = "Suzianna", Version = "1.0" };
-            var expectedXml = "<Package><Title>Suzianna</Title><Version>1.0</Version></Package>";
             var actor = ActorFactory.CreateSomeActorWithApiCallAbility(Sender);
 
-            actor.AttemptsTo(GetHttpInteractionWithXmlContent(content));
+            await actor.AttemptsTo(GetHttpInteractionWithXmlContent(content));
 
-            var xml = Sender.GetLastSentMessage().Content.ReadAsStringAsync().Result;
+            var xml = await Sender.GetLastSentMessage().Content.ReadAsStringAsync();
             var source = Input.FromString(xml).Build();
             Check.That(new XPathEngine().Evaluate("//Package/Title", source)).IsEqualTo("Suzianna");
             Check.That(new XPathEngine().Evaluate("//Package/Version", source)).IsEqualTo("1.0");
         }
 
         [Fact]
-        public void should_send_request_as_xml_with_content_type_header()
+        public async Task should_send_request_as_xml_with_content_type_header()
         {
             var actor = ActorFactory.CreateSomeActorWithApiCallAbility(Sender);
 
-            actor.AttemptsTo(GetHttpInteractionWithXmlContent(ContentFactory.SomeContent()));
+            await actor.AttemptsTo(GetHttpInteractionWithXmlContent(ContentFactory.SomeContent()));
 
             Check.That(Sender.GetLastSentMessage().Content.Headers.ContentType.MediaType).IsEqualTo(MediaTypes.ApplicationXml);
         }
 
         [Fact]
-        public void should_send_request_with_custom_content()
+        public async Task should_send_request_with_custom_content()
         {
             var actor = ActorFactory.CreateSomeActorWithApiCallAbility(Sender);
             var content = ContentFactory.AccessTokenRequest();
 
-            actor.AttemptsTo(GetHttpInteractionWithCustomContent(content));
+            await actor.AttemptsTo(GetHttpInteractionWithCustomContent(content));
 
-            Check.That(Sender.GetLastSentMessage().Content.ReadAsStringAsync().Result).IsEqualTo(content);
+            Check.That(await Sender.GetLastSentMessage().Content.ReadAsStringAsync()).IsEqualTo(content);
 
         }
 

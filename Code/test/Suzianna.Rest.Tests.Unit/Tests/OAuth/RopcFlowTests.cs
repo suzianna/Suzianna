@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using NFluent;
 using Suzianna.Core.Screenplay.Actors;
@@ -24,14 +25,14 @@ namespace Suzianna.Rest.Tests.Unit.Tests.OAuth
         }
 
         [Fact]
-        public void should_send_request_to_correct_url()
+        public async Task should_send_request_to_correct_url()
         {
             const string endpoint = "http://localhost:5000/";
             const string username = "admin";
             const string password = "123456";
             SetupSuccessfulResponse(OAuthTokenFactory.SomeToken());
 
-            actor.AttemptsTo(GetAccessToken
+            await actor.AttemptsTo(GetAccessToken
                 .UsingResourceOwnerPasswordCredentialFlow()
                 .WithCredentials(username, password)
                 .FromEndpoint(endpoint));
@@ -41,7 +42,7 @@ namespace Suzianna.Rest.Tests.Unit.Tests.OAuth
         }
 
         [Fact]
-        public void should_send_username_and_password()
+        public async Task should_send_username_and_password()
         {
             const string endpoint = "http://localhost:5000/";
             const string username = "admin";
@@ -49,17 +50,17 @@ namespace Suzianna.Rest.Tests.Unit.Tests.OAuth
             const string expected = "grant_type=password&username=admin&password=123456";
             SetupSuccessfulResponse(OAuthTokenFactory.SomeToken());
 
-            actor.AttemptsTo(GetAccessToken
+            await actor.AttemptsTo(GetAccessToken
                 .UsingResourceOwnerPasswordCredentialFlow()
                 .WithCredentials(username, password)
                 .FromEndpoint(endpoint));
 
-            var lastRequestContent = sender.GetLastSentMessage().Content.ReadAsStringAsync().Result;
+            var lastRequestContent = await sender.GetLastSentMessage().Content.ReadAsStringAsync();
             Check.That(lastRequestContent).IsEqualTo(expected);
         }
 
         [Fact]
-        public void should_send_scope()
+        public async Task should_send_scope()
         {
             const string endpoint = "http://localhost:5000/";
             const string username = "admin";
@@ -68,18 +69,18 @@ namespace Suzianna.Rest.Tests.Unit.Tests.OAuth
             const string expected = "grant_type=password&username=admin&password=123456&scope=read-emails";
             SetupSuccessfulResponse(OAuthTokenFactory.SomeToken());
 
-            actor.AttemptsTo(GetAccessToken
+            await actor.AttemptsTo(GetAccessToken
                 .UsingResourceOwnerPasswordCredentialFlow()
                 .WithCredentials(username, password)
                 .WithScope(scope)
                 .FromEndpoint(endpoint));
 
-            var lastRequestContent = sender.GetLastSentMessage().Content.ReadAsStringAsync().Result;
+            var lastRequestContent = await sender.GetLastSentMessage().Content.ReadAsStringAsync();
             Check.That(lastRequestContent).IsEqualTo(expected);
         }
 
         [Fact]
-        public void actor_should_remember_access_token_after_response()
+        public async Task actor_should_remember_access_token_after_response()
         {
             const string endpoint = "http://localhost:5000/";
             const string username = "admin";
@@ -87,7 +88,7 @@ namespace Suzianna.Rest.Tests.Unit.Tests.OAuth
             var token = OAuthTokenFactory.SomeToken();
             SetupSuccessfulResponse(token);
 
-            actor.AttemptsTo(GetAccessToken
+            await actor.AttemptsTo(GetAccessToken
                 .UsingResourceOwnerPasswordCredentialFlow()
                 .WithCredentials(username, password)
                 .FromEndpoint(endpoint));
@@ -98,14 +99,14 @@ namespace Suzianna.Rest.Tests.Unit.Tests.OAuth
         }
 
         [Fact]
-        public void actor_not_remember_anything_when_response_is_not_success()
+        public async Task actor_not_remember_anything_when_response_is_not_success()
         {
             const string endpoint = "http://localhost:5000/";
             const string username = "admin";
             const string password = "123456";
             sender.SetupResponse(new HttpResponseBuilder().WithHttpStatusCode(HttpStatusCode.BadRequest).Build());
 
-            actor.AttemptsTo(GetAccessToken
+            await actor.AttemptsTo(GetAccessToken
                 .UsingResourceOwnerPasswordCredentialFlow()
                 .WithCredentials(username, password)
                 .FromEndpoint(endpoint));

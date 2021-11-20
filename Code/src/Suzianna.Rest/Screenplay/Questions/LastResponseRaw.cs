@@ -6,12 +6,12 @@ using Suzianna.Rest.Screenplay.Abilities;
 
 namespace Suzianna.Rest.Screenplay.Questions
 {
-    internal class LastResponseRaw : IQuestion<HttpResponseMessage>
+    internal class LastResponseRaw : IQuestion<string>
     {
-        public HttpResponseMessage AnsweredBy(Actor actor)
+        public string AnsweredBy(Actor actor)
         {
             var callApi = actor.FindAbility<CallAnApi>();
-            return callApi.LastResponse;
+            return callApi.LastResponseContent;
         }
     }
 }

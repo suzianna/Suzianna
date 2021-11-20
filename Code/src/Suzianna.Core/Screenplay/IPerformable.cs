@@ -1,4 +1,5 @@
 ﻿using Suzianna.Core.Screenplay.Actors;
+using System.Threading.Tasks;
 
 namespace Suzianna.Core.Screenplay
 {
@@ -7,6 +8,6 @@ namespace Suzianna.Core.Screenplay
     /// </summary>
     public interface IPerformable
     {
-        void PerformAs<T>(T actor) where T : Actor;
+        Task PerformAs<T>(T actor) where T : Actor;
     }
 }

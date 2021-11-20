@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using Suzianna.Core.Screenplay;
 using Suzianna.Core.Screenplay.Actors;
 using Suzianna.Rest.Screenplay.Interactions;
@@ -16,10 +17,11 @@ namespace Suzianna.Rest.OAuth
         private string endpointUrl;
         private string scope;
         internal RopcFlowTask() { }
-        public void PerformAs<T>(T actor) where T : Actor
+        public async Task PerformAs<T>(T actor) where T : Actor
         {
             var requestBody = GetRequestBody();
-            actor.AttemptsTo(Post.Data(requestBody).To(endpointUrl));
+            await actor.AttemptsTo(Post.Data(requestBody).To(endpointUrl));
+
             if (actor.AsksFor(LastResponse.StatusCode()) == HttpStatusCode.OK)
             {
                 var response = actor.AsksFor(LastResponse.Content<OAuthToken>());

@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using NFluent;
 using Suzianna.Core.Screenplay;
 using Suzianna.Core.Screenplay.Actors;
@@ -57,13 +58,13 @@ namespace Suzianna.Core.Tests.Unit.Tests.Screenplay
         }
 
         [Fact]
-        public void should_perform_tasks()
+        public async Task should_perform_tasks()
         {
             var fetchUser = new StubPerformable();
             var saveUser = new StubPerformable();
             var jack = new Actor(Names.Jack);
 
-            jack.AttemptsTo(fetchUser, saveUser);
+            await jack.AttemptsTo(fetchUser, saveUser);
 
             Check.That(fetchUser.LatestPerformer()).IsEqualTo(jack);
             Check.That(fetchUser.PerformTimes()).IsEqualTo(1);

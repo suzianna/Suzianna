@@ -19,7 +19,7 @@ namespace Suzianna.Rest.Screenplay.Questions
         public string AnsweredBy(Actor actor)
         {
             var callApi = actor.FindAbility<CallAnApi>();
-            return callApi.LastResponse.Headers.FirstOrDefault(a => a.Key == this._key).Value.FirstOrDefault();
+            return callApi.LastResponseHeaders.FirstOrDefault(a => a.Key == this._key).Value.FirstOrDefault();
         }
     }
 }

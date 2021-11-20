@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using System.Threading.Tasks;
 using Suzianna.Core.Events;
 using Suzianna.Core.Screenplay;
 using Suzianna.Core.Screenplay.Actors;
@@ -17,14 +18,20 @@ namespace Suzianna.Rest.Screenplay.Interactions
 
         internal HttpRequestBuilder RequestBuilder { get; }
 
-        public void PerformAs<T>(T actor) where T : Actor
+        public async Task PerformAs<T>(T actor) where T : Actor
         {
             var ability = actor.FindAbility<CallAnApi>();
             var request = RequestBuilder.WithBaseUrl(ability.BaseUrl).Build();
+            
             Broadcaster.Publish(new StartSendingHttpRequestEvent(actor, request));
-            if (ActorHasAccessToken(actor)) request = AddAccessTokenToHeader(actor, request);
-            ability.SendRequest(request);
-            Broadcaster.Publish(new HttpRequestSentEvent(ability.LastResponse));
+            if (ActorHasAccessToken(actor))
+            {
+                request = AddAccessTokenToHeader(actor, request);
+            }
+
+            await ability.SendRequest(request);
+
+            Broadcaster.Publish(new HttpRequestSentEvent(ability.LastResponseStatusCode, ability.LastResponseContent));
         }
 
         private static bool ActorHasAccessToken<T>(T actor) where T : Actor

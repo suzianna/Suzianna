@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using NFluent;
 using Suzianna.Core.Events;
 using Suzianna.Core.Screenplay;
@@ -29,18 +30,18 @@ namespace Suzianna.Core.Tests.Unit.Tests.Screenplay
         }
 
         [Fact]
-        public void should_raise_actor_raise_performance_begin_event_when_actor_performs_a_task()
+        public async Task should_raise_actor_raise_performance_begin_event_when_actor_performs_a_task()
         {
-            actor.AttemptsTo(task);
+            await actor.AttemptsTo(task);
 
             Check.That(publishedEvents.First()).IsInstanceOf<ActorBeginsPerformanceEvent>();
             Check.That(publishedEvents.First().As<ActorBeginsPerformanceEvent>().ActorName).IsEqualTo(actor.Name);
         }
 
         [Fact]
-        public void should_raise_actor_raise_performance_end_event_when_actor_performs_a_task()
+        public async Task should_raise_actor_raise_performance_end_event_when_actor_performs_a_task()
         {
-            actor.AttemptsTo(task);
+            await actor.AttemptsTo(task);
 
             Check.That(publishedEvents.Last()).IsInstanceOf<ActorEndsPerformanceEvent>();
             Check.That(publishedEvents.Last().As<ActorEndsPerformanceEvent>().ActorName).IsEqualTo(actor.Name);
@@ -48,7 +49,7 @@ namespace Suzianna.Core.Tests.Unit.Tests.Screenplay
 
         private class DummyTask : ITask
         {
-            public void PerformAs<T>(T actor) where T : Actor { }
+            public Task PerformAs<T>(T actor) where T : Actor { return Task.CompletedTask; }
         }
     }
 }

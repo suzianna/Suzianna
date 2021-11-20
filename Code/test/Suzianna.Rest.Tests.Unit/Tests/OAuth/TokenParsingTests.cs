@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using NFluent;
 using Suzianna.Core.Screenplay.Actors;
 using Suzianna.Rest.OAuth;
@@ -22,7 +23,7 @@ namespace Suzianna.Rest.Tests.Unit.Tests.OAuth
         }
 
         [Fact]
-        public void should_be_able_parse_token_response()
+        public async Task should_be_able_parse_token_response()
         {
             var content = "{" +
                           "\"access_token\":\"TOKEN_VALUE\"," +
@@ -32,7 +33,7 @@ namespace Suzianna.Rest.Tests.Unit.Tests.OAuth
                           "}";
             var response = new HttpResponseBuilder().WithContent(content).Build();
             _sender.SetupResponse(response);
-            ActorRequestsForAccessToken();
+            await ActorRequestsForAccessToken();
 
             var token = _actor.AsksFor(LastResponse.Content<OAuthToken>());
 
@@ -42,9 +43,9 @@ namespace Suzianna.Rest.Tests.Unit.Tests.OAuth
             Check.That(token.RefreshToken).IsEqualTo("tGzv3JOkF0XG5Qx2TlKWIA");
         }
 
-        private void ActorRequestsForAccessToken()
+        private Task ActorRequestsForAccessToken()
         {
-            this._actor.AttemptsTo(GetAccessToken.UsingResourceOwnerPasswordCredentialFlow()
+            return _actor.AttemptsTo(GetAccessToken.UsingResourceOwnerPasswordCredentialFlow()
                 .WithCredentials("Admin","123456")
                 .FromEndpoint("http://localhost:5000"));
         }

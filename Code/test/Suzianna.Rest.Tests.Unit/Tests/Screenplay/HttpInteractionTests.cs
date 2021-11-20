@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using NFluent;
 using Suzianna.Core.Events;
 using Suzianna.Core.Screenplay.Actors;
@@ -50,10 +51,10 @@ namespace Suzianna.Rest.Tests.Unit.Tests.Screenplay
         [Theory]
         [MemberData(nameof(GetUrlsWithRelativeResources))]
         [MemberData(nameof(GetUrlsWithAbsoluteResources))]
-        public void should_send_request_to_correct_url(string baseUrl, string resource, string expectedUrl)
+        public async Task should_send_request_to_correct_url(string baseUrl, string resource, string expectedUrl)
         {
             var juliet = Actor.Named(Names.Juliet).WhoCan(CallAnApi.At(baseUrl).With(Sender));
-            juliet.AttemptsTo(GetHttpInteraction(resource));
+            await juliet.AttemptsTo(GetHttpInteraction(resource));
 
             Check.That(Sender.GetLastSentMessage().RequestUri.AbsoluteUri).IsEqualTo(expectedUrl);
         }
@@ -62,38 +63,38 @@ namespace Suzianna.Rest.Tests.Unit.Tests.Screenplay
         protected abstract HttpInteraction GetHttpInteraction(string resource);
 
         [Fact]
-        public void should_add_query_string_when_resource_have_query_string_in_it()
+        public async Task should_add_query_string_when_resource_have_query_string_in_it()
         {
             var baseUrl = "http://localhost:5050";
             var resourceName = "api/users?page=2";
             var expectedUrl = "http://localhost:5050/api/users?page=2";
             var juliet = Actor.Named(Names.Juliet).WhoCan(CallAnApi.At(baseUrl).With(Sender));
 
-            juliet.AttemptsTo(GetHttpInteraction(resourceName));
+            await juliet.AttemptsTo(GetHttpInteraction(resourceName));
 
             Check.That(Sender.GetLastSentMessage().RequestUri.AbsoluteUri).IsEqualTo(expectedUrl);
         }
 
         [Fact]
-        public void should_send_request_headers()
+        public async Task should_send_request_headers()
         {
             var actor = ActorFactory.CreateSomeActorWithApiCallAbility(Sender);
 
-            actor.AttemptsTo(GetHttpInteraction(Urls.UsersApi)
+            await actor.AttemptsTo(GetHttpInteraction(Urls.UsersApi)
                 .WithHeader(HttpHeaders.Accept, MediaTypes.ApplicationXml));
 
             Check.That(Sender.GetLastSentMessage().Headers.Accept.First().MediaType).IsEqualTo(MediaTypes.ApplicationXml);
         }
 
         [Fact]
-        public void should_send_request_to_url_with_query_parameters()
+        public async Task should_send_request_to_url_with_query_parameters()
         {
             var baseUrl = "http://localhost:5050";
             var resourceName = "api/users";
             var expectedUrl = "http://localhost:5050/api/users?UserId=2&LocationId=3";
             var juliet = Actor.Named(Names.Juliet).WhoCan(CallAnApi.At(baseUrl).With(Sender));
 
-            juliet.AttemptsTo(GetHttpInteraction(resourceName)
+            await juliet.AttemptsTo(GetHttpInteraction(resourceName)
                 .WithQueryParameter("UserId", "2")
                 .WithQueryParameter("LocationId", "3"));
 
@@ -101,24 +102,24 @@ namespace Suzianna.Rest.Tests.Unit.Tests.Screenplay
         }
 
         [Fact]
-        public void should_sent_correct_http_verb()
+        public async Task should_sent_correct_http_verb()
         {
             var actor = ActorFactory.CreateSomeActorWithApiCallAbility(Sender);
 
-            actor.AttemptsTo(GetHttpInteraction(Urls.UsersApi));
+            await actor.AttemptsTo(GetHttpInteraction(Urls.UsersApi));
 
             Check.That(Sender.GetLastSentMessage().Method).IsEqualTo(GetHttpMethod());
         }
 
         [Fact]
-        public void should_use_query_string_both_from_resource_name_and_added_query_strings()
+        public async Task should_use_query_string_both_from_resource_name_and_added_query_strings()
         {
             var baseUrl = "http://localhost:5050";
             var resourceName = "api/users?page=2";
             var expectedUrl = "http://localhost:5050/api/users?page=2&UserId=2&LocationId=3";
             var juliet = Actor.Named(Names.Juliet).WhoCan(CallAnApi.At(baseUrl).With(Sender));
 
-            juliet.AttemptsTo(GetHttpInteraction(resourceName)
+            await juliet.AttemptsTo(GetHttpInteraction(resourceName)
                 .WithQueryParameter("UserId", "2")
                 .WithQueryParameter("LocationId", "3"));
 
@@ -126,7 +127,7 @@ namespace Suzianna.Rest.Tests.Unit.Tests.Screenplay
         }
 
         [Fact]
-        public void should_raise_start_sending_http_request_event()
+        public async Task should_raise_start_sending_http_request_event()
         {
             var baseUrl = "http://localhost:5050";
             var resourceName = "api/users";
@@ -135,7 +136,7 @@ namespace Suzianna.Rest.Tests.Unit.Tests.Screenplay
             var publishedEvents = new Queue<IEvent>();
             Broadcaster.SubscribeToAllEvents(new DelegatingEventHandler(z=> publishedEvents.Enqueue(z)));
 
-            juliet.AttemptsTo(GetHttpInteraction(resourceName));
+            await juliet.AttemptsTo(GetHttpInteraction(resourceName));
 
             Check.That(publishedEvents.CountOfType<StartSendingHttpRequestEvent>()).IsEqualTo(1);
             Check.That(publishedEvents.FirstElementOfType<StartSendingHttpRequestEvent>().Method).IsEqualTo(GetHttpMethod());
@@ -144,7 +145,7 @@ namespace Suzianna.Rest.Tests.Unit.Tests.Screenplay
         }
 
         [Fact]
-        public void should_raise_http_request_sent_event()
+        public async Task should_raise_http_request_sent_event()
         {
             Sender.SetupResponse(new HttpResponseBuilder()
                             .WithHttpStatusCode(HttpStatusCode.Accepted)
@@ -155,7 +156,7 @@ namespace Suzianna.Rest.Tests.Unit.Tests.Screenplay
             var publishedEvents = new Queue<IEvent>();
             Broadcaster.SubscribeToAllEvents(new DelegatingEventHandler(z => publishedEvents.Enqueue(z)));
 
-            juliet.AttemptsTo(GetHttpInteraction(""));
+            await juliet.AttemptsTo(GetHttpInteraction(""));
 
             Check.That(publishedEvents.CountOfType<HttpRequestSentEvent>()).IsEqualTo(1);
             Check.That(publishedEvents.FirstElementOfType<HttpRequestSentEvent>().ResponseCode).IsEqualTo(HttpStatusCode.Accepted);
@@ -163,13 +164,13 @@ namespace Suzianna.Rest.Tests.Unit.Tests.Screenplay
         }
 
         [Fact]
-        public void should_send_request_with_authorization_header_when_actor_has_remembered_access_token()
+        public async Task should_send_request_with_authorization_header_when_actor_has_remembered_access_token()
         {
             var actor = ActorFactory.CreateSomeActorWithApiCallAbility(Sender);
             var token = OAuthTokenFactory.SomeToken();
             actor.Remember(TokenConstants.TokenKey, token);
 
-            actor.AttemptsTo(GetHttpInteraction(Urls.UsersApi));
+            await actor.AttemptsTo(GetHttpInteraction(Urls.UsersApi));
 
             Check.That(Sender.GetLastSentMessage().Headers.Authorization.Scheme).IsEqualTo(token.TokenType);
             Check.That(Sender.GetLastSentMessage().Headers.Authorization.Parameter).IsEqualTo(token.AccessToken);

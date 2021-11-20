@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using NFluent;
 using Suzianna.Core.Screenplay.Questions;
 using Suzianna.Rest.Screenplay.Interactions;
@@ -12,7 +13,7 @@ namespace Suzianna.Rest.Tests.Unit.Tests.Screenplay.QuestionTests
     public class LastResponseHeaderTests : LastResponseTests
     {
         [Fact]
-        public void should_return_all_last_http_headers()
+        public async Task should_return_all_last_http_headers()
         {
             var locationHeaderValue = "http://localhost:5000/api/resource/1";
             var originValue = "*";
@@ -21,7 +22,7 @@ namespace Suzianna.Rest.Tests.Unit.Tests.Screenplay.QuestionTests
                 .WithHeader(HttpHeaders.AccessControlAllowOrigin, originValue)
                 .Build());
 
-            Actor.AttemptsTo(Get.ResourceAt("api/resource"));
+            await Actor.AttemptsTo(Get.ResourceAt("api/resource"));
 
             Actor.Should(See.That(LastResponse.Headers()))
                 .ContainsPair(HttpHeaders.Location, new List<string> {locationHeaderValue})
@@ -29,12 +30,12 @@ namespace Suzianna.Rest.Tests.Unit.Tests.Screenplay.QuestionTests
         }
 
         [Fact]
-        public void should_return_last_http_headers_by_key()
+        public async Task should_return_last_http_headers_by_key()
         {
             var locationHeaderValue = "http://localhost:5000/api/resource/1";
             SetupResponse(new HttpResponseBuilder().WithHeader(HttpHeaders.Location, locationHeaderValue).Build());
 
-            Actor.AttemptsTo(Post.DataAsJson(new { }).To("api/resource"));
+            await Actor.AttemptsTo(Post.DataAsJson(new { }).To("api/resource"));
 
             Actor.Should(See.That(LastResponse.Header(HttpHeaders.Location))).IsEqualTo(locationHeaderValue);
         }

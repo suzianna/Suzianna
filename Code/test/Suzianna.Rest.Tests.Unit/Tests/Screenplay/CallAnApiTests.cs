@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using System.Threading.Tasks;
 using NFluent;
 using Suzianna.Rest.Screenplay.Abilities;
 using Suzianna.Rest.Screenplay.Interactions;
@@ -29,28 +30,28 @@ namespace Suzianna.Rest.Tests.Unit.Tests.Screenplay
         }
 
         [Fact]
-        public void should_send_http_request_using_sender()
+        public async Task should_send_http_request_using_sender()
         {
             var callAnApi = CallAnApi.At(Urls.Google).With(_sender);
 
-            callAnApi.SendRequest(_request);
+            await callAnApi.SendRequest(_request);
 
             Check.That(_sender.GetLastSentMessage()).IsEqualTo(_request);
         }
 
         [Fact]
-        public void should_intercept_requests_with_interceptors()
+        public async Task should_intercept_requests_with_interceptors()
         {
             var interceptor = FakeHttpInterceptor.SetupToAddHeader(HttpHeaders.Authorization, TokenValue);
             var callAnApi = CallAnApi.At(Urls.Google).With(_sender).WhichRequestsInterceptedBy(interceptor);
 
-            callAnApi.SendRequest(_request);
+            await callAnApi.SendRequest(_request);
 
             Check.That(_sender.GetLastSentMessage().FirstValueOfHeader(HttpHeaders.Authorization)).IsEqualTo(TokenValue);
         }
 
         [Fact]
-        public void should_intercept_requests_with_multiple_interceptors()
+        public async Task should_intercept_requests_with_multiple_interceptors()
         {
             var tokenInterceptor = FakeHttpInterceptor.SetupToAddHeader(HttpHeaders.Authorization, TokenValue);
             var acceptInterceptor = FakeHttpInterceptor.SetupToAddHeader(HttpHeaders.Accept, MediaTypes.ApplicationJson);
@@ -58,14 +59,14 @@ namespace Suzianna.Rest.Tests.Unit.Tests.Screenplay
                 .WhichRequestsInterceptedBy(tokenInterceptor)
                 .WhichRequestsInterceptedBy(acceptInterceptor);
 
-            callAnApi.SendRequest(_request);
+            await callAnApi.SendRequest(_request);
 
             Check.That(_sender.GetLastSentMessage().FirstValueOfHeader(HttpHeaders.Authorization)).IsEqualTo(TokenValue);
             Check.That(_sender.GetLastSentMessage().FirstValueOfHeader(HttpHeaders.Accept)).IsEqualTo(MediaTypes.ApplicationJson);
         }
         
         [Fact]
-        public void should_intercept_requests_in_order_of_registration()
+        public async Task should_intercept_requests_in_order_of_registration()
         {
             const string sandbox = "Sandbox";
             var firstInterceptor = FakeHttpInterceptor.SetupToAddHeader(sandbox, "test");
@@ -74,7 +75,7 @@ namespace Suzianna.Rest.Tests.Unit.Tests.Screenplay
                 .WhichRequestsInterceptedBy(firstInterceptor)
                 .WhichRequestsInterceptedBy(secondInterceptor);
 
-            callAnApi.SendRequest(_request);
+            await callAnApi.SendRequest(_request);
 
             Check.That(_sender.GetLastSentMessage().FirstValueOfHeader(sandbox)).IsEqualTo("test");
             Check.That(_sender.GetLastSentMessage().SecondValueOfHeader(sandbox)).IsEqualTo("test test");

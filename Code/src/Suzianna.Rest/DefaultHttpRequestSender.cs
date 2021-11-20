@@ -1,19 +1,20 @@
 ﻿using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Suzianna.Rest
 {
-    internal class DefaultHttpRequestSender : IHttpRequestSender
+    public class DefaultHttpRequestSender : IHttpRequestSender
     {
-        private static readonly HttpClient Client;
-
-        static DefaultHttpRequestSender()
+        private readonly IHttpClientFactory _httpClientFactory;
+        public DefaultHttpRequestSender(IHttpClientFactory httpClientFactory)
         {
-            Client = new HttpClient();
+            _httpClientFactory = httpClientFactory;
         }
 
-        public HttpResponseMessage Send(HttpRequestMessage message)
+        public Task<HttpResponseMessage> Send(HttpRequestMessage message)
         {
-            return Client.SendAsync(message).Result;
+            var client = _httpClientFactory.CreateClient();
+            return client.SendAsync(message);
         }
     }
 }

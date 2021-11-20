@@ -11,7 +11,7 @@ namespace Suzianna.Rest.Screenplay.Questions
         public HttpResponseHeaders AnsweredBy(Actor actor)
         {
             var callApi = actor.FindAbility<CallAnApi>();
-            return callApi.LastResponse.Headers;
+            return callApi.LastResponseHeaders;
         }
     }
 }
